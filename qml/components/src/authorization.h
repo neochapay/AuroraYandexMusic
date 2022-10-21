@@ -7,18 +7,17 @@
 #include <QUrlQuery>
 
 #include <QDebug>
-#include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 
-class Authorization : public QObject
-{
+class Authorization : public QObject {
     Q_OBJECT
 
 public:
-    explicit Authorization(QObject *parent = 0);
+    explicit Authorization(QObject* parent = 0);
     ~Authorization();
 
-    static void setupRequest(QNetworkRequest *r);
+    static void setupRequest(QNetworkRequest* r);
     Q_INVOKABLE void doAuth(QString username, QString password);
     Q_INVOKABLE bool checkToken();
     Q_INVOKABLE void removeAccessToken();

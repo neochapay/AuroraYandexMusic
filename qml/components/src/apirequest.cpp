@@ -1,34 +1,38 @@
+#include <QElapsedTimer>
+#include <QGuiApplication>
+#include <QHttpMultiPart>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QHttpMultiPart>
 #include <QNetworkReply>
-#include <QElapsedTimer>
-#include <QGuiApplication>
 
 #include "apirequest.h"
 #include "settings.h"
 
-ApiRequest::ApiRequest(QObject *parent) : QObject(parent) {
+ApiRequest::ApiRequest(QObject* parent)
+    : QObject(parent)
+{
     _manager = new QNetworkAccessManager(this);
 }
 
-ApiRequest::~ApiRequest() {
+ApiRequest::~ApiRequest()
+{
     delete _manager;
 }
 
 void delay(int ms)
 {
-  QElapsedTimer et;
-  et.start();
-  while(true)
-  {
-    QGuiApplication::processEvents();
-    if(et.elapsed() > ms) break;
-  }
+    QElapsedTimer et;
+    et.start();
+    while (true) {
+        QGuiApplication::processEvents();
+        if (et.elapsed() > ms)
+            break;
+    }
 }
 
-void ApiRequest::makeApiGetRequest(const QString &method, const QUrlQuery &q) {
+void ApiRequest::makeApiGetRequest(const QString& method, const QUrlQuery& q)
+{
     Settings settings;
     QString accessToken = settings.value("accessToken").toString();
 
@@ -36,7 +40,7 @@ void ApiRequest::makeApiGetRequest(const QString &method, const QUrlQuery &q) {
     QUrl url(API_URL + method);
     url.setQuery(query.query());
     QNetworkRequest request(url);
-    request.setRawHeader("Authorization", "OAuth "+accessToken.toUtf8());
+    request.setRawHeader("Authorization", "OAuth " + accessToken.toUtf8());
     request.setRawHeader("Accept", "*/*");
     request.setRawHeader("X-Yandex-Music-Content-Type", "adult");
     request.setHeader(QNetworkRequest::UserAgentHeader, "Maple/519 (iPhone; iOS 12.2; Scale/2.00)");
@@ -47,7 +51,8 @@ void ApiRequest::makeApiGetRequest(const QString &method, const QUrlQuery &q) {
     _manager->get(request);
 }
 
-void ApiRequest::makeApiPostRequest(const QString &method, const QString &q) {
+void ApiRequest::makeApiPostRequest(const QString& method, const QString& q)
+{
     Settings settings;
     QString accessToken = settings.value("accessToken").toString();
 
@@ -55,7 +60,7 @@ void ApiRequest::makeApiPostRequest(const QString &method, const QString &q) {
     QUrl url(API_URL + method);
     qDebug() << url.toString();
     QNetworkRequest request(url);
-    request.setRawHeader("Authorization", "OAuth "+accessToken.toUtf8());
+    request.setRawHeader("Authorization", "OAuth " + accessToken.toUtf8());
     if (query.contains("{")) {
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     } else {
@@ -70,7 +75,8 @@ void ApiRequest::makeApiPostRequest(const QString &method, const QString &q) {
     _manager->post(request, query.toLatin1());
 }
 
-void ApiRequest::dataReady(QNetworkReply *reply) {
+void ApiRequest::dataReady(QNetworkReply* reply)
+{
     QByteArray data = reply->readAll();
     QJsonDocument jDoc = QJsonDocument::fromJson(data);
     QJsonObject jObj = jDoc.object();
@@ -83,7 +89,5 @@ void ApiRequest::dataReady(QNetworkReply *reply) {
         qDebug() << "Error in API request!";
         qDebug() << "+++++++++++++++++++";
         qDebug() << data;
-
     }
-
 }

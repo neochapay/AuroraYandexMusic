@@ -24,10 +24,15 @@ HEADERS += \
     src/models/playlistmodel.h \
     src/models/searchmodel.h \
     src/settings.h \
-    src/track.h
+    src/track.h \
+    src/YaSailMusic.h
 
 DISTFILES += \
     rpm/org.ilyavysotsky.yasailmusic.yaml \
+    qml/* \
+    qml/pages/* \
+    qml/covers/* \
+    qml/components/* \
     LICENSE \
     README.md \
 

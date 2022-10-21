@@ -1,13 +1,14 @@
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
 #include "authorization.h"
 #include "settings.h"
 
-Authorization::Authorization(QObject *parent) : QObject(parent)
+Authorization::Authorization(QObject* parent)
+    : QObject(parent)
 {
 }
 
@@ -15,7 +16,7 @@ Authorization::~Authorization()
 {
 }
 
-void Authorization::setupRequest(QNetworkRequest *r)
+void Authorization::setupRequest(QNetworkRequest* r)
 {
     Settings settings;
     QString accessToken = settings.value("accessToken").toString();
@@ -25,7 +26,7 @@ void Authorization::setupRequest(QNetworkRequest *r)
     r->setHeader(QNetworkRequest::UserAgentHeader, "Yandex-Music-API");
     r->setRawHeader("X-Yandex-Music-Client", "YandexMusicAndroid/23020251");
 
-    if(accessToken.size() > 0) {
+    if (accessToken.size() > 0) {
         r->setRawHeader("Authorization", QString("OAuth %1").arg(accessToken).toLatin1());
     }
 }
@@ -45,7 +46,7 @@ void Authorization::doAuth(QString username, QString password)
     setupRequest(&r);
 
     QNetworkAccessManager* m = new QNetworkAccessManager;
-    QNetworkReply *reply = m->post(r, q.toString().toLatin1());
+    QNetworkReply* reply = m->post(r, q.toString().toLatin1());
 
     connect(reply, &QNetworkReply::finished, this, &Authorization::doAuthFinished);
 }
@@ -57,34 +58,35 @@ bool Authorization::checkToken()
     QString userId = settings.value("userId").toString();
     QDateTime ttl = settings.value("ttl").toDateTime();
 
-    if(!accessToken.isEmpty() && !userId.isEmpty()) {
+    if (!accessToken.isEmpty() && !userId.isEmpty()) {
         return true;
     }
 
     return false;
 }
 
-
-void Authorization::removeAccessToken() {
+void Authorization::removeAccessToken()
+{
     Settings settings;
     settings.remove("accessToken");
 }
 
-void Authorization::removeUserId() {
+void Authorization::removeUserId()
+{
     Settings settings;
     settings.remove("userId");
 }
 
 void Authorization::doAuthFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
-    if(reply->error() == QNetworkReply::NoError) {
+    if (reply->error() == QNetworkReply::NoError) {
         const QByteArray info = reply->readAll();
         qDebug() << Q_FUNC_INFO << info;
         QJsonDocument doc = QJsonDocument::fromJson(info);
         QJsonObject jo = doc.object();
-        if(jo.contains("access_token")) {
+        if (jo.contains("access_token")) {
             m_userId = QString::number(jo.value("uid").toInt());
             m_token = jo.value("access_token").toString();
             m_ttl = QDateTime::currentDateTime().addSecs(jo.value("expires_in").toInt());

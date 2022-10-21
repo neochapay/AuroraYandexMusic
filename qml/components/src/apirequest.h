@@ -12,27 +12,26 @@ class QNetworkReply;
 class QJsonValue;
 QT_END_NAMESPACE
 
-class ApiRequest : public QObject
-{
+class ApiRequest : public QObject {
     Q_OBJECT
 
 public:
-    explicit ApiRequest(QObject *parent = 0);
+    explicit ApiRequest(QObject* parent = 0);
     ~ApiRequest();
 
-    void makeApiGetRequest(const QString &method, const QUrlQuery &query);
-    void makeApiPostRequest(const QString &method, const QString &query);
+    void makeApiGetRequest(const QString& method, const QUrlQuery& query);
+    void makeApiPostRequest(const QString& method, const QString& query);
 
 signals:
-    void gotResponse(const QJsonValue &value);
+    void gotResponse(const QJsonValue& value);
 
 public slots:
-    void dataReady(QNetworkReply *reply);
+    void dataReady(QNetworkReply* reply);
 
 private:
     const QString API_URL = "https://api.music.yandex.net";
 
-    QNetworkAccessManager *_manager;
+    QNetworkAccessManager* _manager;
 };
 
 #endif // APIREQUEST_H

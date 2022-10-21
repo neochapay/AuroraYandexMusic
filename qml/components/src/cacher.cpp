@@ -1,6 +1,6 @@
 #include "cacher.h"
-#include "authorization.h"
 #include "apirequest.h"
+#include "authorization.h"
 #include "downloader.h"
 
 #include <QDir>
@@ -10,28 +10,29 @@
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 
-Cacher::Cacher(Track *track, QObject *parent) : QObject(parent)
+Cacher::Cacher(Track* track, QObject* parent)
+    : QObject(parent)
 {
     m_track = track;
 }
 
 void Cacher::saveToCache()
 {
-    QString cachepath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/"+QString::number(m_track->artistId);
-    m_fileToSave = cachepath+"/"+QString::number(m_track->trackId)+".mp3";
+    QString cachepath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + QString::number(m_track->artistId);
+    m_fileToSave = cachepath + "/" + QString::number(m_track->trackId) + ".mp3";
 
     QDir cacheDir(cachepath);
-    if(!cacheDir.exists()) {
+    if (!cacheDir.exists()) {
         cacheDir.mkpath(cachepath);
     }
 
-    if(QFile::exists(m_fileToSave)) {
+    if (QFile::exists(m_fileToSave)) {
         return;
     }
 
     ApiRequest* getTrackDownloadInfoRequest = new ApiRequest();
     QUrlQuery query;
-    getTrackDownloadInfoRequest->makeApiGetRequest("/tracks/"+QString::number(m_track->trackId)+"/download-info", query);
+    getTrackDownloadInfoRequest->makeApiGetRequest("/tracks/" + QString::number(m_track->trackId) + "/download-info", query);
     connect(getTrackDownloadInfoRequest, &ApiRequest::gotResponse, this, &Cacher::getDownloadInfoFinished);
 }
 
@@ -45,28 +46,28 @@ QString Cacher::Url()
     return m_Url;
 }
 
-void Cacher::getDownloadInfoFinished(const QJsonValue &value)
+void Cacher::getDownloadInfoFinished(const QJsonValue& value)
 {
     QJsonArray qja = value.toArray();
 
     int bitrateInKbps = 0;
     QString downloadInfoUrl;
 
-    foreach (const QJsonValue & value, qja) {
-        if(value.toObject()["codec"].toString() == "mp3" && value.toObject()["bitrateInKbps"].toInt() > bitrateInKbps) {
+    foreach (const QJsonValue& value, qja) {
+        if (value.toObject()["codec"].toString() == "mp3" && value.toObject()["bitrateInKbps"].toInt() > bitrateInKbps) {
             bitrateInKbps = value.toObject()["bitrateInKbps"].toInt();
             downloadInfoUrl = value.toObject()["downloadInfoUrl"].toString();
         }
     }
 
-    if(downloadInfoUrl.isEmpty()) {
+    if (downloadInfoUrl.isEmpty()) {
         return;
     }
 
     QNetworkAccessManager* dInfoManager = new QNetworkAccessManager(this);
     QNetworkRequest nr(downloadInfoUrl);
     Authorization::setupRequest(&nr);
-    QNetworkReply *reply = dInfoManager->get(nr);
+    QNetworkReply* reply = dInfoManager->get(nr);
 
     connect(reply, &QNetworkReply::finished, this, &Cacher::getSongUrl);
 }
@@ -83,13 +84,13 @@ void Cacher::getSongUrl()
     QString s;
 
     QXmlStreamReader reader(DataAsString2);
-    while(!reader.atEnd() && !reader.hasError()) {
-        if(reader.readNext() == QXmlStreamReader::StartElement) {
+    while (!reader.atEnd() && !reader.hasError()) {
+        if (reader.readNext() == QXmlStreamReader::StartElement) {
             if (reader.name() == "host") {
                 host = reader.readElementText();
             }
             if (reader.name() == "path") {
-                path =reader.readElementText();
+                path = reader.readElementText();
             }
             if (reader.name() == "ts") {
                 ts = reader.readElementText();
@@ -103,10 +104,10 @@ void Cacher::getSongUrl()
         }
     }
 
-    QString  sign  = QString(QCryptographicHash::hash((("XGRlBW9FXlekgbPrRHuSiA" + path.mid(1) + s).toUtf8()),QCryptographicHash::Md5).toHex());
-    QString finalUrl = "https://"+host+"/get-mp3/"+sign+"/"+ts+path;
+    QString sign = QString(QCryptographicHash::hash((("XGRlBW9FXlekgbPrRHuSiA" + path.mid(1) + s).toUtf8()), QCryptographicHash::Md5).toHex());
+    QString finalUrl = "https://" + host + "/get-mp3/" + sign + "/" + ts + path;
     m_Url = finalUrl;
-    Downloader *songDownloader = new Downloader(finalUrl);
+    Downloader* songDownloader = new Downloader(finalUrl);
     connect(songDownloader, &Downloader::stringReady, this, &Cacher::saveData);
     songDownloader->loadData();
 }
@@ -120,4 +121,3 @@ void Cacher::saveData(QByteArray data)
 
     qDebug() << m_fileToSave << "ready";
 }
-

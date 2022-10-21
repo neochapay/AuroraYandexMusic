@@ -2,31 +2,29 @@
 #include <QtQuick>
 #endif
 
+#include "YaSailMusic.h"
+#include "authorization.h"
+#include "models/playlistmodel.h"
+#include "models/searchmodel.h"
+#include "settings.h"
+#include "track.h"
 #include <QGuiApplication>
-#include <QStandardPaths>
 #include <QQmlContext>
 #include <QQuickView>
 #include <QScopedPointer>
+#include <QStandardPaths>
 #include <QtGlobal>
 #include <sailfishapp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <QScopedPointer>
-#include "authorization.h"
-#include "models/playlistmodel.h"
-#include "settings.h"
-#include "models/searchmodel.h"
-#include "track.h"
-#include "YaSailMusic.h"
 
 BaseValues* baseValues_;
 
 BaseValues::BaseValues()
 {
-
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // SailfishApp::main() will display "qml/YandexMusic.qml", if you need more
     // control over initialization, you can use:
@@ -46,9 +44,9 @@ int main(int argc, char *argv[])
     Settings settings;
 
     baseValues_ = new BaseValues();
-    qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic",1,0,"PlaylistModel");
-    qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic",1,0,"SearchModel");
-    qmlRegisterType<Track>("org.ilyavysotsky.yasailmusic",1,0,"Track");
+    qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
+    qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
+    qmlRegisterType<Track>("org.ilyavysotsky.yasailmusic", 1, 0, "Track");
 
     Authorization* auth = new Authorization();
     view->rootContext()->setContextProperty("application", application.data());

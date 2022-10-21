@@ -4,11 +4,10 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-class Settings : public QSettings
-{
+class Settings : public QSettings {
     Q_OBJECT
 public:
-    explicit Settings(QObject *parent = nullptr);
+    explicit Settings(QObject* parent = nullptr);
 };
 
 #endif // SETTINGS_H
