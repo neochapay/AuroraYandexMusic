@@ -65,7 +65,6 @@ Page {
                 id: medbut
                 source: rootAudio.isPlaying ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
                 mouseArea.onClicked: {
-
                     if(playListModel.currentIndex === -1) {
                         playListModel.currentIndex = 0;
                     }
@@ -98,6 +97,10 @@ Page {
 
     Connections{
         target: playListModel
-        onLoadFirstDataFinished: busyIndicator.visible = false
+        onRowCountChanged: {
+            if(playListModel.rowCount > 0) {
+                busyIndicator.visible = false
+            }
+        }
     }
 }

@@ -37,32 +37,32 @@
 <context>
     <name>MainPage</name>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="22"/>
+        <location filename="../qml/pages/MainPage.qml" line="24"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="26"/>
+        <location filename="../qml/pages/MainPage.qml" line="28"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="34"/>
+        <location filename="../qml/pages/MainPage.qml" line="36"/>
         <source>View playlist</source>
         <translation>Просмотр плейлиста</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="41"/>
+        <location filename="../qml/pages/MainPage.qml" line="43"/>
         <source>My wave</source>
         <translation>Моя волна</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="83"/>
+        <location filename="../qml/pages/MainPage.qml" line="87"/>
         <source>Play</source>
         <translation>Играть</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="83"/>
+        <location filename="../qml/pages/MainPage.qml" line="87"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
@@ -86,12 +86,12 @@
 <context>
     <name>YaSailMusic</name>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="72"/>
+        <location filename="../qml/YaSailMusic.qml" line="67"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="73"/>
+        <location filename="../qml/YaSailMusic.qml" line="68"/>
         <source>tags...</source>
         <translation>тэги...</translation>
     </message>

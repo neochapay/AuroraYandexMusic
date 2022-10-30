@@ -7,11 +7,15 @@
 
 class Cacher : public QObject {
     Q_OBJECT
+
 public:
     explicit Cacher(Track* track, QObject* parent = nullptr);
     void saveToCache();
     QString fileToSave();
     QString Url();
+
+signals:
+    void fileSaved();
 
 private slots:
     void getDownloadInfoFinished(const QJsonValue& value);

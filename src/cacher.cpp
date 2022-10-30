@@ -120,4 +120,6 @@ void Cacher::saveData(QByteArray data)
     fileToSave.close();
 
     qDebug() << m_fileToSave << "ready";
+
+    emit fileSaved();
 }

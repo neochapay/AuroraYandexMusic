@@ -42,6 +42,9 @@ PlaylistModel::PlaylistModel(QObject* parent)
 
     m_api = new ApiRequest();
     baseValues_->currentPlaylist = m_playList;
+
+    connect(this, &QAbstractListModel::rowsInserted, this, &PlaylistModel::rowCountChanged);
+    connect(this, &QAbstractListModel::rowsRemoved, this, &PlaylistModel::rowCountChanged);
 }
 
 int PlaylistModel::rowCount(const QModelIndex& parent) const
@@ -282,18 +285,24 @@ void PlaylistModel::getWaveFinished(const QJsonValue& value)
             emit loadFirstDataFinished();
         }
 
-        if (!newTrack->albumName.isEmpty() && (!(m_playList.contains(newTrack))) && !newTrack->trackName.isEmpty() && (!(m_oldValue.toString().contains(trackObject["track"].toObject()["id"].toString())))) {
-            beginInsertRows(QModelIndex(), m_playList.size(), m_playList.size());
+        if (!newTrack->albumName.isEmpty()
+                && (!(m_playList.contains(newTrack)))
+                && !newTrack->trackName.isEmpty()
+                && (!(m_oldValue.toString().contains(trackObject["track"].toObject()["id"].toString())))) {
+
             Cacher* cacher = new Cacher(newTrack);
             cacher->saveToCache();
-            newTrack->fileUrl = cacher->fileToSave();
-            newTrack->url = cacher->Url();
-            m_playList.push_back(newTrack);
-            endInsertRows();
+            connect(cacher, &Cacher::fileSaved,
+                    [=]() {
+                        beginInsertRows(QModelIndex(), m_playList.size(), m_playList.size());
+                        newTrack->fileUrl = cacher->fileToSave();
+                        newTrack->url = cacher->Url();
+                        m_playList.push_back(newTrack);
+                        endInsertRows();
+            });
         }
     }
 
-    // endInsertRows();
     m_loading = false;
     baseValues_->currentPlaylist = m_playList;
 }

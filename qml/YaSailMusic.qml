@@ -28,13 +28,8 @@ ApplicationWindow {
             mprisPlayer.song = playListModel.get(currentIndex).trackName
             mprisPlayer.artist = playListModel.get(currentIndex).artistName
             playListModel.sendFeedback("trackFinished")
+
             rootAudio.play()
-            //playListModel.sendFeedback("trackStarted")
-            //playListModel.playTrack()
-
-            //
-            console.log("Track started")
-
         }
     }
 
@@ -46,10 +41,7 @@ ApplicationWindow {
             mprisPlayer.artist = searchModel.get(currentIndex).artistName
             searchModel.sendFeedback("trackFinished")
             rootAudio.play()
-            //playListModel.sendFeedback("trackStarted")
-            //playListModel.playTrack()
 
-            //
             console.log("Track started")
 
         }

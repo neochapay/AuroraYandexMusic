@@ -34,14 +34,10 @@ Page {
                 }
 
                 color:  playListModel.currentIndex === index ? Theme.highlightColor : Theme.primaryColor
-                //delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
 
             onClicked: {
                 playListModel.setCurrentIndex(index)
-                //playListModel.sendFeedback("trackStarted")
-                //playListModel.playTrack()
-                //playListModel.sendFeedback("trackFinished")
             }
         }
         VerticalScrollDecorator {}
