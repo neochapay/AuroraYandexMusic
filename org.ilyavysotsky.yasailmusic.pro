@@ -28,7 +28,7 @@ HEADERS += \
     src/YaSailMusic.h
 
 DISTFILES += \
-    rpm/org.ilyavysotsky.yasailmusic.yaml \
+    rpm/*.spec \
     qml/* \
     qml/pages/* \
     qml/covers/* \

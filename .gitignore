@@ -16,4 +16,3 @@ configure-stamp
 build-stamp
 .project
 .cproject
-rpm/*.spec
