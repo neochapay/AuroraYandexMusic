@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtMultimedia 5.0
 
 import "../components"
 
@@ -63,7 +64,7 @@ Page {
 
             MediaButton {
                 id: medbut
-                source: rootAudio.isPlaying ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
+                source: rootAudio.playbackState === MediaPlayer.PlayingState ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
                 mouseArea.onClicked: {
                     if(playListModel.currentIndex === -1) {
                         playListModel.currentIndex = 0;

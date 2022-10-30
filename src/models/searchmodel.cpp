@@ -38,7 +38,6 @@ SearchModel::SearchModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 9, QByteArray("duration"));
     m_hash.insert(Qt::UserRole + 10, QByteArray("storageDir"));
     m_hash.insert(Qt::UserRole + 11, QByteArray("liked"));
-    m_hash.insert(Qt::UserRole + 12, QByteArray("fileUrl"));
     // SearchModel::model = this;
     m_api = new ApiRequest();
 }
@@ -92,8 +91,6 @@ QVariant SearchModel::data(const QModelIndex& index, int role) const
         return item->storageDir;
     } else if (role == Qt::UserRole + 11) {
         return item->liked;
-    } else if (role == Qt::UserRole + 12) {
-        return item->fileUrl;
     }
     return QVariant();
 }
@@ -136,11 +133,6 @@ void SearchModel::setCurrentIndex(int currentIndex)
         m_currentSong = m_playList.at(currentIndex)->trackName;
         m_currentArtist = m_playList.at(currentIndex)->artistName;
         emit currentIndexChanged(currentIndex);
-
-        /*if(m_currentIndex == m_playList.size()-1) {
-            qDebug() << "Load new tracks!";
-            searchTracks();
-        }*/
     }
 }
 
@@ -166,14 +158,7 @@ QVariant SearchModel::get(int idx)
     itemData.insert("duration", item->duration);
     itemData.insert("storageDir", item->storageDir);
     itemData.insert("liked", item->liked);
-    QFile fileToSave(item->fileUrl);
-    if (QFile::exists(item->fileUrl) && fileToSave.size() > 1000000) {
-        qDebug() << "fileurl";
-        itemData.insert("fileUrl", "file://" + item->fileUrl);
-    } else {
-        qDebug() << "fullurl";
-        itemData.insert("fileUrl", item->url);
-    }
+
     return QVariant(itemData);
 }
 
@@ -293,10 +278,13 @@ void SearchModel::getSearchTracksFinished(const QJsonValue& value)
         }
 
         beginInsertRows(QModelIndex(), m_playList.size(), m_playList.size());
-        Cacher* cacher = new Cacher(newTrack);
+
+        // DOT USE CACHER IN MODEL!
+
+        /*Cacher* cacher = new Cacher(newTrack);
         cacher->saveToCache();
         newTrack->fileUrl = cacher->fileToSave();
-        newTrack->url = cacher->Url();
+        newTrack->url = cacher->Url();*/
         m_playList.push_back(newTrack);
         endInsertRows();
     }

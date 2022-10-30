@@ -7,6 +7,7 @@
 #include "models/playlistmodel.h"
 #include "models/searchmodel.h"
 #include "settings.h"
+#include "cacher.h"
 #include "track.h"
 #include <QGuiApplication>
 #include <QQmlContext>
@@ -41,15 +42,14 @@ int main(int argc, char* argv[])
     application->setApplicationName(QStringLiteral("yasailmusic"));
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
-    Settings settings;
 
     baseValues_ = new BaseValues();
+
     qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
-    qmlRegisterType<Track>("org.ilyavysotsky.yasailmusic", 1, 0, "Track");
+    qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
 
     Authorization* auth = new Authorization();
-    view->rootContext()->setContextProperty("application", application.data());
     view->rootContext()->setContextProperty("auth", auth);
     view->setSource(SailfishApp::pathTo("qml/YaSailMusic.qml"));
     view->show();

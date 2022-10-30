@@ -38,7 +38,6 @@ PlaylistModel::PlaylistModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 9, QByteArray("duration"));
     m_hash.insert(Qt::UserRole + 10, QByteArray("storageDir"));
     m_hash.insert(Qt::UserRole + 11, QByteArray("liked"));
-    m_hash.insert(Qt::UserRole + 12, QByteArray("fileUrl"));
 
     m_api = new ApiRequest();
     baseValues_->currentPlaylist = m_playList;
@@ -101,8 +100,6 @@ QVariant PlaylistModel::data(const QModelIndex& index, int role) const
         return item->storageDir;
     } else if (role == Qt::UserRole + 11) {
         return item->liked;
-    } else if (role == Qt::UserRole + 12) {
-        return item->fileUrl;
     }
     return QVariant();
 }
@@ -139,7 +136,6 @@ bool PlaylistModel::removeRows(int position, int rows, const QModelIndex& index)
 
 void PlaylistModel::setCurrentIndex(int currentIndex)
 {
-
     if (currentIndex >= 0 && currentIndex < m_playList.size() && currentIndex != m_currentIndex) {
         m_currentIndex = currentIndex;
         m_currentSong = m_playList.at(currentIndex)->trackName;
@@ -175,14 +171,7 @@ QVariant PlaylistModel::get(int idx)
     itemData.insert("duration", item->duration);
     itemData.insert("storageDir", item->storageDir);
     itemData.insert("liked", item->liked);
-    QFile fileToSave(item->fileUrl);
-    if (QFile::exists(item->fileUrl) && fileToSave.size() > 1000000) {
-        qDebug() << "fileurl";
-        itemData.insert("fileUrl", "file://" + item->fileUrl);
-    } else {
-        qDebug() << "fullurl";
-        itemData.insert("fileUrl", item->url);
-    }
+
     return QVariant(itemData);
 }
 
@@ -290,16 +279,10 @@ void PlaylistModel::getWaveFinished(const QJsonValue& value)
                 && !newTrack->trackName.isEmpty()
                 && (!(m_oldValue.toString().contains(trackObject["track"].toObject()["id"].toString())))) {
 
-            Cacher* cacher = new Cacher(newTrack);
-            cacher->saveToCache();
-            connect(cacher, &Cacher::fileSaved,
-                    [=]() {
-                        beginInsertRows(QModelIndex(), m_playList.size(), m_playList.size());
-                        newTrack->fileUrl = cacher->fileToSave();
-                        newTrack->url = cacher->Url();
-                        m_playList.push_back(newTrack);
-                        endInsertRows();
-            });
+            beginInsertRows(QModelIndex(), m_playList.size(), m_playList.size());
+            m_playList.push_back(newTrack);
+            endInsertRows();
+
         }
     }
 

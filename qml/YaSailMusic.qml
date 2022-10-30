@@ -24,26 +24,26 @@ ApplicationWindow {
     PlaylistModel{
         id: playListModel
         onCurrentIndexChanged: {
-            rootAudio.source = playListModel.get(currentIndex).fileUrl;
             mprisPlayer.song = playListModel.get(currentIndex).trackName
             mprisPlayer.artist = playListModel.get(currentIndex).artistName
             playListModel.sendFeedback("trackFinished")
 
-            rootAudio.play()
+            fileCacher.artistId = playListModel.get(currentIndex).artistId
+            fileCacher.trackId = playListModel.get(currentIndex).trackId
+            fileCacher.saveToCache();
         }
     }
 
     SearchModel{
         id: searchModel
         onCurrentIndexChanged: {
-            rootAudio.source = searchModel.get(currentIndex).fileUrl;
             mprisPlayer.song = searchModel.get(currentIndex).trackName
             mprisPlayer.artist = searchModel.get(currentIndex).artistName
             searchModel.sendFeedback("trackFinished")
-            rootAudio.play()
 
-            console.log("Track started")
-
+            fileCacher.artistId = searchModel.get(currentIndex).artistId
+            fileCacher.trackId = searchModel.get(currentIndex).trackId
+            fileCacher.saveToCache();
         }
     }
 
@@ -52,9 +52,16 @@ ApplicationWindow {
         onStopped: {
             if (rootAudio.status == MediaPlayer.EndOfMedia) {
                 console.log("Track finished")
-
                 ++playListModel.currentIndex
             }
+        }
+    }
+
+    Cacher{
+        id: fileCacher
+        onFileSaved: {
+            rootAudio.source = path
+            rootAudio.play();
         }
     }
 
@@ -116,8 +123,5 @@ ApplicationWindow {
         onPreviousRequested: {
             --playListModel.currentIndex
         }
-
     }
-
-
 }

@@ -10,16 +10,21 @@
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 
-Cacher::Cacher(Track* track, QObject* parent)
+Cacher::Cacher(QObject* parent)
     : QObject(parent)
 {
-    m_track = track;
+}
+
+void Cacher::setTrack(Track *track)
+{
+    setArtistId(track->artistId);
+    setTrackId(track->trackId);
 }
 
 void Cacher::saveToCache()
 {
-    QString cachepath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + QString::number(m_track->artistId);
-    m_fileToSave = cachepath + "/" + QString::number(m_track->trackId) + ".mp3";
+    QString cachepath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + QString::number(m_artistId);
+    m_fileToSave = cachepath + "/" + QString::number(m_trackId) + ".mp3";
 
     QDir cacheDir(cachepath);
     if (!cacheDir.exists()) {
@@ -27,23 +32,36 @@ void Cacher::saveToCache()
     }
 
     if (QFile::exists(m_fileToSave)) {
+        qDebug() << m_fileToSave << "exists!";
+        emit fileSaved(m_fileToSave);
         return;
     }
 
     ApiRequest* getTrackDownloadInfoRequest = new ApiRequest();
     QUrlQuery query;
-    getTrackDownloadInfoRequest->makeApiGetRequest("/tracks/" + QString::number(m_track->trackId) + "/download-info", query);
+    getTrackDownloadInfoRequest->makeApiGetRequest("/tracks/" + QString::number(m_trackId) + "/download-info", query);
     connect(getTrackDownloadInfoRequest, &ApiRequest::gotResponse, this, &Cacher::getDownloadInfoFinished);
-}
-
-QString Cacher::fileToSave()
-{
-    return m_fileToSave;
 }
 
 QString Cacher::Url()
 {
     return m_Url;
+}
+
+void Cacher::setTrackId(int id)
+{
+    if(id != m_trackId) {
+        m_trackId = id;
+        emit trackIdChanged();
+    }
+}
+
+void Cacher::setArtistId(int id)
+{
+    if(id != m_artistId) {
+        m_artistId = id;
+        emit artistIdChanged();
+    }
 }
 
 void Cacher::getDownloadInfoFinished(const QJsonValue& value)
@@ -121,5 +139,5 @@ void Cacher::saveData(QByteArray data)
 
     qDebug() << m_fileToSave << "ready";
 
-    emit fileSaved();
+    emit fileSaved(m_fileToSave);
 }
