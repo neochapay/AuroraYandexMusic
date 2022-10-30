@@ -4,6 +4,18 @@ import QtMultimedia 5.0
 
 CoverBackground {
 
+    Image{
+        id: bgCover
+        width: parent.width
+        height: width
+        anchors{
+            top: parent.top
+        }
+
+        fillMode: Image.PreserveAspectFit
+        source: "/usr/share/icons/hicolor/172x172/apps/org.ilyavysotsky.yasailmusic.png"
+    }
+
     Column {
         anchors.centerIn: parent
         spacing: Theme.paddingMedium
@@ -37,7 +49,6 @@ CoverBackground {
             iconSource: "image://theme/icon-cover-previous-song"
             onTriggered: {
                 --playListModel.currentIndex
-                //label.text = playListModel.get(currentIndex).trackName
             }
         }
 
@@ -56,11 +67,8 @@ CoverBackground {
             iconSource: "image://theme/icon-cover-next-song"
             onTriggered: {
                 ++playListModel.currentIndex
-                //label.text = playListModel.get(currentIndex).trackName
             }
         }
-
-
     }
 
     Connections{
@@ -68,6 +76,10 @@ CoverBackground {
         onCurrentIndexChanged: {
             song.text = playListModel.get(currentIndex).trackName
             artist.text = playListModel.get(currentIndex).artistName
+            var cover = "https://"+playListModel.get(currentIndex).albumCover;
+            //cover string always end on %25%25 in must to replace to 100x100
+            //or other multiple of one hundred
+            bgCover.source = cover.slice(0,-2)+"100x100"
         }
     }
 }
