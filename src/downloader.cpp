@@ -2,17 +2,34 @@
 
 #include <QNetworkRequest>
 
-Downloader::Downloader(QString urlString, QObject* parent)
+Downloader::Downloader(QObject* parent)
     : QObject(parent)
 {
     m_manager = new QNetworkAccessManager();
+}
 
+void Downloader::setUrl(QString urlString)
+{
     QUrl url(urlString);
-    if (url.isValid()) {
+    if (url.isValid() && m_url != url) {
         m_url = url;
     } else {
         emit urlNotValid();
     }
+}
+
+void Downloader::setUrl(QUrl url)
+{
+    if (url.isValid() && m_url != url) {
+        m_url = url;
+    } else {
+        emit urlNotValid();
+    }
+}
+
+void Downloader::abort()
+{
+    m_response->abort();
 }
 
 void Downloader::loadData()
@@ -22,7 +39,7 @@ void Downloader::loadData()
     }
 
     QNetworkRequest request(m_url);
-    // request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setRawHeader("User-Agent", "Glacier music player");
     m_response = m_manager->get(request);
 
@@ -49,9 +66,7 @@ void Downloader::onDownloadProgress(qint64 bytesRead, qint64 bytesTotal)
 {
     if (bytesTotal > 0) {
         float progress;
-        progress = bytesRead / bytesTotal * 100;
+        progress = (float)bytesRead / (float)bytesTotal;
         emit downloadProgress(progress);
-    } else {
-        emit downloadProgress(100);
     }
 }

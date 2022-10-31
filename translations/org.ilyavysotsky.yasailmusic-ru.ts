@@ -56,16 +56,6 @@
         <source>My wave</source>
         <translation>Моя волна</translation>
     </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="85"/>
-        <source>Play</source>
-        <translation>Играть</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="85"/>
-        <source>Pause</source>
-        <translation>Пауза</translation>
-    </message>
 </context>
 <context>
     <name>PlaylistPage</name>

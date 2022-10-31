@@ -44,8 +44,6 @@ Page {
             title: qsTr("My wave")
         }
 
-
-
         contentHeight: mainPage.height
         Row {
             id: searchrow
@@ -54,39 +52,134 @@ Page {
             visible: false
 
         }
-        Row {
+
+        Column {
             id: column
-            height: childrenRect.height
-            width: childrenRect.width
+            anchors{
+                top: header.bottom
+                topMargin: Theme.paddingLarge
+                left: parent.left
+                leftMargin: Theme.paddingLarge
+            }
+            width: parent.width-Theme.paddingLarge*2
+            height: parent.height-header.height-Theme.paddingLarge*2
 
-            anchors.centerIn: parent
             visible: !busyIndicator.visible
+            spacing: Theme.paddingLarge
 
-            MediaButton {
-                id: medbut
-                source: rootAudio.playbackState === MediaPlayer.PlayingState ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
-                mouseArea.onClicked: {
-                    if(playListModel.currentIndex === -1) {
-                        playListModel.currentIndex = 0;
+
+            Image{
+                id: coverImage
+                width: column.width
+                height: width
+                fillMode: Image.PreserveAspectFit
+                source: "/usr/share/icons/hicolor/172x172/apps/org.ilyavysotsky.yasailmusic.png"
+            }
+
+            Label{
+                id: songTitle
+                color: Theme.primaryColor
+                font.bold: true
+                font.pixelSize: Theme.fontSizeLarge
+            }
+
+            Label{
+                id: artistTitle
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeMedium
+            }
+
+
+            Item{
+                id: downloadAndProgressItem
+                height: Theme.fontSizeLarge
+                width: parent.width
+
+                Rectangle{
+                    id: downloadProgressItem
+                    width: 0
+                    height: Theme.dp(1)
+                    color: Theme.highlightColor
+                    anchors{
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
                     }
+                }
 
-                    if (rootAudio.isPlaying) {
-                        rootAudio.pause()
-                        source = "image://theme/icon-cover-pause"
-                    } else {
-                        rootAudio.play()
-                        source = "image://theme/icon-cover-play"
+                Rectangle{
+                    id: playingProgressItem
+                    width: 0
+                    height: Theme.dp(3)
+                    color: Theme.primaryColor
+                    anchors{
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                    }
+                }
+
+                MouseArea{
+                    id: seekArea
+                    anchors.fill: parent
+                    onClicked: {
+                        if(downloadProgressItem.width == downloadAndProgressItem.width) {
+                            var current_poz = (mouseX-x)/width
+                            rootAudio.seek(rootAudio.duration*current_poz)
+                        }
                     }
                 }
             }
 
-            Label {
-                id: mediaButtLabel
-                text: rootAudio.isPlaying ? qsTr("Pause") : qsTr("Play")
-                font.pixelSize: Theme.fontSizeMedium
+            Item {
+                id: controlsArea
+                width: parent.width
+                height: childrenRect.height
 
-                anchors{
-                    verticalCenter: medbut.verticalCenter
+                MediaButton {
+                    id: prevButton
+                    anchors{
+                        right: playButton.left
+                        rightMargin: Theme.paddingLarge
+                        verticalCenter: playButton.verticalCenter
+                    }
+                    visible: playListModel.currentIndex > 0
+
+                    source: "image://theme/icon-cover-previous-song"
+                    mouseArea.onClicked: {
+                        --playListModel.currentIndex
+                    }
+                }
+
+                MediaButton {
+                    id: playButton
+                    anchors.centerIn: parent
+                    source: rootAudio.playbackState === MediaPlayer.PlayingState ?
+                                "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
+                    mouseArea.onClicked: {
+                        if(playListModel.currentIndex === -1) {
+                            playListModel.currentIndex = 0;
+                        }
+
+                        if (rootAudio.playbackState == MediaPlayer.PlayingState) {
+                            rootAudio.pause()
+                        } else {
+                            rootAudio.play()
+                        }
+                    }
+                }
+
+                MediaButton {
+                    id: nextButton
+                    anchors{
+                        left: playButton.right
+                        leftMargin: Theme.paddingLarge
+                        verticalCenter: playButton.verticalCenter
+                    }
+                    visible: !fileCacher.downloading
+
+                    source: "image://theme/icon-cover-next-song"
+                    mouseArea.onClicked: {
+                        ++playListModel.currentIndex
+                    }
                 }
             }
         }
@@ -101,7 +194,36 @@ Page {
         onRowCountChanged: {
             if(playListModel.rowCount > 0) {
                 busyIndicator.visible = false
+                if(playListModel.currentIndex == -1) {
+                    var cover = "https://"+playListModel.get(0).albumCover;
+                    coverImage.source = cover.slice(0,-2)+"1000x1000"
+                    songTitle.text = playListModel.get(0).trackName
+                    artistTitle.text = playListModel.get(0).artistName
+                }
             }
+        }
+
+        onCurrentIndexChanged: {
+        }
+    }
+
+    Connections{
+        target: fileCacher
+        onDownloadProgress: {
+            downloadProgressItem.width = downloadAndProgressItem.width*progress
+        }
+        onFileSaved: {
+            var cover = "https://"+playListModel.get(playListModel.currentIndex).albumCover;
+            coverImage.source = cover.slice(0,-2)+"1000x1000"
+            songTitle.text = playListModel.get(playListModel.currentIndex).trackName
+            artistTitle.text = playListModel.get(playListModel.currentIndex).artistName
+        }
+    }
+
+    Connections{
+        target: rootAudio
+        onPositionChanged: {
+            playingProgressItem.width = downloadAndProgressItem.width*(rootAudio.position/rootAudio.duration)
         }
     }
 }

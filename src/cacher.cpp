@@ -1,7 +1,6 @@
 #include "cacher.h"
 #include "apirequest.h"
 #include "authorization.h"
-#include "downloader.h"
 
 #include <QDir>
 #include <QJsonArray>
@@ -12,13 +11,20 @@
 
 Cacher::Cacher(QObject* parent)
     : QObject(parent)
+    , m_songDownloader(new Downloader())
+    , m_downloading(false)
 {
+    connect(m_songDownloader, &Downloader::stringReady, this, &Cacher::saveData);
+    connect(m_songDownloader, &Downloader::downloadProgress, this, &Cacher::downloadProgress);
 }
 
 void Cacher::setTrack(Track *track)
 {
-    setArtistId(track->artistId);
-    setTrackId(track->trackId);
+    if(!m_downloading) {
+        setArtistId(track->artistId);
+        setTrackId(track->trackId);
+    }
+    m_songDownloader->abort();
 }
 
 void Cacher::saveToCache()
@@ -32,10 +38,12 @@ void Cacher::saveToCache()
     }
 
     if (QFile::exists(m_fileToSave)) {
-        qDebug() << m_fileToSave << "exists!";
+        emit downloadProgress(1);
         emit fileSaved(m_fileToSave);
         return;
     }
+    m_downloading = true;
+    emit downloadingChanged();
 
     ApiRequest* getTrackDownloadInfoRequest = new ApiRequest();
     QUrlQuery query;
@@ -125,9 +133,9 @@ void Cacher::getSongUrl()
     QString sign = QString(QCryptographicHash::hash((("XGRlBW9FXlekgbPrRHuSiA" + path.mid(1) + s).toUtf8()), QCryptographicHash::Md5).toHex());
     QString finalUrl = "https://" + host + "/get-mp3/" + sign + "/" + ts + path;
     m_Url = finalUrl;
-    Downloader* songDownloader = new Downloader(finalUrl);
-    connect(songDownloader, &Downloader::stringReady, this, &Cacher::saveData);
-    songDownloader->loadData();
+
+    m_songDownloader->setUrl(finalUrl);
+    m_songDownloader->loadData();
 }
 
 void Cacher::saveData(QByteArray data)
@@ -139,5 +147,7 @@ void Cacher::saveData(QByteArray data)
 
     qDebug() << m_fileToSave << "ready";
 
+    m_downloading = false;
+    emit downloadingChanged();
     emit fileSaved(m_fileToSave);
 }

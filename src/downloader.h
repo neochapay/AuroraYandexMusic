@@ -7,7 +7,10 @@
 class Downloader : public QObject {
     Q_OBJECT
 public:
-    explicit Downloader(QString urlString, QObject* parent = 0);
+    explicit Downloader(QObject* parent = 0);
+    void setUrl(QString urlString);
+    void setUrl(QUrl url);
+    void abort();
 
 signals:
     void stringReady(QByteArray answer);
