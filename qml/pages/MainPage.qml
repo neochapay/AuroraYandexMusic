@@ -29,7 +29,6 @@ Page {
                 text: qsTr("Logout")
                 onClicked: {
                     auth.removeAccessToken()
-                    auth.removeUserId()
                     pageContainer.replace(Qt.resolvedUrl("LoginPage.qml"))
                 }
             }

@@ -1,7 +1,6 @@
-
 Name:       org.ilyavysotsky.yasailmusic
 Summary:    The unofficial client for Yandex Music
-Version:    0.2
+Version:    0.3
 Release:    0
 Group:      Qt/Qt
 License:    GNU GPLv3

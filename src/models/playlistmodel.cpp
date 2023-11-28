@@ -181,8 +181,6 @@ void PlaylistModel::playTrack()
     Settings settings;
     QDateTime current = QDateTime::currentDateTime();
     QString curdt = current.toString("yyyy-MM-ddThh:mm:ss.zzzZ");
-    QString userId = settings.value("userId").toString();
-    query.addQueryItem("uid", userId);
     query.addQueryItem("client-now", curdt);
     query.addQueryItem("from-cache", "false");
     query.addQueryItem("track-id", QString::number(m_playList.at(m_currentIndex)->albumCoverId));
@@ -275,14 +273,13 @@ void PlaylistModel::getWaveFinished(const QJsonValue& value)
         }
 
         if (!newTrack->albumName.isEmpty()
-                && (!(m_playList.contains(newTrack)))
-                && !newTrack->trackName.isEmpty()
-                && (!(m_oldValue.toString().contains(trackObject["track"].toObject()["id"].toString())))) {
+            && (!(m_playList.contains(newTrack)))
+            && !newTrack->trackName.isEmpty()
+            && (!(m_oldValue.toString().contains(trackObject["track"].toObject()["id"].toString())))) {
 
             beginInsertRows(QModelIndex(), m_playList.size(), m_playList.size());
             m_playList.push_back(newTrack);
             endInsertRows();
-
         }
     }
 

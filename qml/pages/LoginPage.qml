@@ -1,86 +1,23 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
-
+import Sailfish.WebView 1.0
 
 import "../components/"
 
-Page {
+WebViewPage {
     id: loginPage
+    WebView {
+        id: loginView
+        anchors.fill: parent
+        url: "https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d"
 
-    Notification {
-        id: loginNotification
-        category: "YaSailMusic"
-    }
-
-    Banner{
-        id: banner
-        z: 1000
-    }
-
-    Column {
-        width: parent.width
-
-        Label {
-            id: loginLabel
-            text: qsTr("Login:")
-            color: Theme.primaryColor
-        }
-
-        TextField {
-            id: loginField
-            width: parent.width
-            color: Theme.primaryColor
-
-            EnterKey.enabled: false
-        }
-
-        Label {
-            id: passwordLabel
-            text: qsTr("Password:")
-            color: Theme.primaryColor
-        }
-
-        TextField {
-            id: passwordField
-            width: parent.width
-            visible: true
-            color: Theme.primaryColor
-
-            EnterKey.enabled: false
-            echoMode: TextInput.Password
-        }
-
-        Label {
-            id: codeLabel
-            text: qsTr("Code:")
-            visible: false
-            color: Theme.primaryColor
-        }
-
-        TextField {
-            id: codeField
-            width: parent.width
-            color: Theme.primaryColor
-            visible: false
-            EnterKey.enabled: false
-            text: ""
-        }
-    }
-
-    Button {
-        id: enterButton
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        text: qsTr("Login")
-        enabled: passwordField.text != "" && loginField.text != ""
-        onClicked: {
-            if(loginField.text.indexOf("@") === -1) {
-                loginField.text = loginField.text.trim()+"@yandex.ru"
+        onUrlChanged: {
+            var urlString = loginView.url.toString();
+            console.log("HELLO STRING >>>>>>>>>>" + urlString)
+            if(urlString.indexOf("access_token=") != -1) {
+                auth.storeToken(urlString)
             }
-
-            auth.doAuth(loginField.text, passwordField.text, codeField.text)
         }
     }
 
@@ -88,11 +25,6 @@ Page {
         target: auth
         onAuthorized: {
             pageContainer.replace(Qt.resolvedUrl("MainPage.qml"))
-            loginNotification.previewBody = qsTr("Logged into Yandex Music")
-            loginNotification.publish()
-        }
-        onError: {
-            banner.notify(qsTr("Login fail!"))
         }
     }
 }

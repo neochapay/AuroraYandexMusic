@@ -35,7 +35,7 @@ void Authorization::doAuth(QString username, QString password)
 {
     QUrl url(m_oauthURL);
     QUrlQuery q;
-    q.addQueryItem("grant_type", "password");
+    q.addQueryItem("response_type", "token");
     q.addQueryItem("username", username);
     q.addQueryItem("password", password);
     q.addQueryItem("client_id", m_clientID);
@@ -51,14 +51,45 @@ void Authorization::doAuth(QString username, QString password)
     connect(reply, &QNetworkReply::finished, this, &Authorization::doAuthFinished);
 }
 
+void Authorization::storeToken(QString url)
+{
+    QUrl authUrl(url.replace("#", "?"));
+    if (!authUrl.isValid() || authUrl.isEmpty()) {
+        emit error("Login failed");
+        return;
+    }
+
+    QUrlQuery q;
+    q.setQuery(authUrl.query());
+    if (q.isEmpty()) {
+        emit error("Login failed");
+        return;
+    }
+
+    QString accessToken = q.queryItemValue("access_token", QUrl::FullyDecoded);
+    QString expiresIn = q.queryItemValue("expires_in", QUrl::FullyDecoded);
+
+    if (accessToken.isEmpty() || expiresIn.isEmpty()) {
+        emit error("Login failed");
+        return;
+    }
+    m_token = accessToken;
+    m_ttl = QDateTime::fromMSecsSinceEpoch(expiresIn.toInt() * 1000);
+
+    Settings settings;
+    settings.setValue("accessToken", m_token);
+    settings.setValue("ttl", m_ttl);
+
+    emit authorized(m_token);
+}
+
 bool Authorization::checkToken()
 {
     Settings settings;
     QString accessToken = settings.value("accessToken").toString();
-    QString userId = settings.value("userId").toString();
     QDateTime ttl = settings.value("ttl").toDateTime();
 
-    if (!accessToken.isEmpty() && !userId.isEmpty()) {
+    if (!accessToken.isEmpty()) {
         return true;
     }
 
@@ -71,32 +102,22 @@ void Authorization::removeAccessToken()
     settings.remove("accessToken");
 }
 
-void Authorization::removeUserId()
-{
-    Settings settings;
-    settings.remove("userId");
-}
-
 void Authorization::doAuthFinished()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
+    const QByteArray info = reply->readAll();
+
     if (reply->error() == QNetworkReply::NoError) {
-        const QByteArray info = reply->readAll();
-        qDebug() << Q_FUNC_INFO << info;
         QJsonDocument doc = QJsonDocument::fromJson(info);
         QJsonObject jo = doc.object();
         if (jo.contains("access_token")) {
-            m_userId = QString::number(jo.value("uid").toInt());
             m_token = jo.value("access_token").toString();
             m_ttl = QDateTime::currentDateTime().addSecs(jo.value("expires_in").toInt());
 
             Settings settings;
             settings.setValue("accessToken", m_token);
-            settings.setValue("userId", m_userId);
             settings.setValue("ttl", m_ttl);
-
-            emit authorized(m_token, m_userId);
         } else {
             emit error("Strange response");
         }

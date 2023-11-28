@@ -170,8 +170,6 @@ void SearchModel::playTrack()
     QSettings settings;
     QDateTime current = QDateTime::currentDateTime();
     QString curdt = current.toString("yyyy-MM-ddThh:mm:ss.zzzZ");
-    QString userId = settings.value("userId").toString();
-    query.addQueryItem("uid", userId);
     query.addQueryItem("client-now", curdt);
     query.addQueryItem("from-cache", "false");
     query.addQueryItem("track-id", QString::number(m_playList.at(m_currentIndex)->albumCoverId));
