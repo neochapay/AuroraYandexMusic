@@ -18,7 +18,7 @@ Cacher::Cacher(QObject* parent)
     connect(m_songDownloader, &Downloader::downloadProgress, this, &Cacher::downloadProgress);
 }
 
-void Cacher::setTrack(Track *track)
+void Cacher::setTrack(TrackObject *track)
 {
     if(!m_downloading) {
         setArtistId(track->artistId);

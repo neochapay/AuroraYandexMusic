@@ -7,7 +7,7 @@
 #include "../YaSailMusic.h"
 #include "../authorization.h"
 #include "../cacher.h"
-#include "../track.h"
+#include "../trackobject.h"
 #include "searchmodel.h"
 #include <QDir>
 #include <QElapsedTimer>
@@ -66,7 +66,7 @@ QVariant SearchModel::data(const QModelIndex& index, int role) const
     if (index.row() >= m_playList.size())
         return QVariant();
 
-    Track* item = m_playList.at(index.row());
+    TrackObject* item = m_playList.at(index.row());
     if (role == Qt::UserRole) {
         return item->trackId;
     } else if (role == Qt::UserRole + 1) {
@@ -95,7 +95,7 @@ QVariant SearchModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-bool SearchModel::insertRows(int position, int rows, Track* item, const QModelIndex& index)
+bool SearchModel::insertRows(int position, int rows, TrackObject* item, const QModelIndex& index)
 {
     Q_UNUSED(index);
     if (!(m_playList.contains(item))) {
@@ -144,7 +144,7 @@ QVariant SearchModel::get(int idx)
 
     QMap<QString, QVariant> itemData;
 
-    Track* item = m_playList.at(idx);
+    TrackObject* item = m_playList.at(idx);
 
     itemData.insert("trackId", item->trackId);
     itemData.insert("artistId", item->artistId);
@@ -235,7 +235,7 @@ void SearchModel::searchTracks(QString q)
     connect(m_api, &ApiRequest::gotResponse, this, &SearchModel::getSearchTracksFinished);
 }
 
-QList<Track*> SearchModel::playlist()
+QList<TrackObject*> SearchModel::playlist()
 {
 
     return m_playList;
@@ -256,7 +256,7 @@ void SearchModel::getSearchTracksFinished(const QJsonValue& value)
 
     foreach (const QJsonValue& value, results) {
         QJsonObject trackObject = value.toObject();
-        Track* newTrack = new Track;
+        TrackObject* newTrack = new TrackObject;
         newTrack->trackId = trackObject["id"].toInt();
         newTrack->artistId = trackObject["artists"].toArray().at(0).toObject()["id"].toInt();
         newTrack->artistName = trackObject["artists"].toArray().at(0).toObject()["name"].toString();

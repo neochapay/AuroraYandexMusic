@@ -1,12 +1,12 @@
-#ifndef TRACK_H
-#define TRACK_H
+#ifndef TRACKOBJECT_H
+#define TRACKOBJECT_H
 
 #include <QObject>
 
-class Track : public QObject {
+class TrackObject : public QObject {
     Q_OBJECT
 public:
-    explicit Track(QObject* parent = nullptr);
+    explicit TrackObject(QObject* parent = nullptr);
 
 public:
     int trackId;
@@ -25,4 +25,4 @@ public:
     QString url;
 };
 
-#endif // TRACK_H
+#endif // TRACKOBJECT_H

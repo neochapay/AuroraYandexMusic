@@ -7,7 +7,7 @@
 #include <QObject>
 
 #include "../apirequest.h"
-#include "../track.h"
+#include "../trackobject.h"
 
 class SearchModel : public QAbstractListModel {
     Q_OBJECT
@@ -23,7 +23,7 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const;
     QHash<int, QByteArray> roleNames() const { return m_hash; }
 
-    bool insertRows(int position, int rows, Track* item, const QModelIndex& index = QModelIndex());
+    bool insertRows(int position, int rows, TrackObject* item, const QModelIndex& index = QModelIndex());
     bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex());
 
     Q_INVOKABLE void searchTracks(QString q);
@@ -34,8 +34,8 @@ public:
     QString currentSong() { return m_currentSong; }
     QString currentArtist() { return m_currentArtist; }
     bool m_loading;
-    QList<Track*> m_playList;
-    Q_INVOKABLE QList<Track*> playlist();
+    QList<TrackObject*> m_playList;
+    Q_INVOKABLE QList<TrackObject*> playlist();
 
 signals:
     void loadFirstDataFinished();

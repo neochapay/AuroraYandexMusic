@@ -1,6 +1,6 @@
-#include "track.h"
+#include "trackobject.h"
 
-Track::Track(QObject* parent)
+TrackObject::TrackObject(QObject* parent)
     : QObject(parent)
 {
 }

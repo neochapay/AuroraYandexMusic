@@ -75,7 +75,7 @@ QVariant PlaylistModel::data(const QModelIndex& index, int role) const
     if (index.row() >= m_playList.size())
         return QVariant();
 
-    Track* item = m_playList.at(index.row());
+    TrackObject* item = m_playList.at(index.row());
     if (role == Qt::UserRole) {
         return item->trackId;
     } else if (role == Qt::UserRole + 1) {
@@ -104,7 +104,7 @@ QVariant PlaylistModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-bool PlaylistModel::insertRows(int position, int rows, Track* item, const QModelIndex& index)
+bool PlaylistModel::insertRows(int position, int rows, TrackObject* item, const QModelIndex& index)
 {
     Q_UNUSED(index);
     if (!(m_playList.contains(item))) {
@@ -157,7 +157,7 @@ QVariant PlaylistModel::get(int idx)
 
     QMap<QString, QVariant> itemData;
 
-    Track* item = m_playList.at(idx);
+    TrackObject* item = m_playList.at(idx);
 
     itemData.insert("trackId", item->trackId);
     itemData.insert("artistId", item->artistId);
@@ -253,7 +253,7 @@ void PlaylistModel::getWaveFinished(const QJsonValue& value)
 
     foreach (const QJsonValue& value, tracks) {
         QJsonObject trackObject = value.toObject();
-        Track* newTrack = new Track;
+        TrackObject* newTrack = new TrackObject;
         newTrack->trackId = trackObject["track"].toObject()["id"].toString().toInt();
         newTrack->artistId = trackObject["track"].toObject()["artists"].toArray().at(0).toObject()["id"].toInt();
         newTrack->artistName = trackObject["track"].toObject()["artists"].toArray().at(0).toObject()["name"].toString();

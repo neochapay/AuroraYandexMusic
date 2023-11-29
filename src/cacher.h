@@ -3,7 +3,7 @@
 
 #include "models/playlistmodel.h"
 #include "downloader.h"
-#include "track.h"
+#include "trackobject.h"
 #include <QObject>
 
 class Cacher : public QObject {
@@ -14,7 +14,7 @@ class Cacher : public QObject {
 
 public:
     explicit Cacher(QObject* parent = nullptr);
-    void setTrack(Track* track);
+    void setTrack(TrackObject* track);
     Q_INVOKABLE void saveToCache();
     QString Url();
     int artistId() {return m_artistId;}

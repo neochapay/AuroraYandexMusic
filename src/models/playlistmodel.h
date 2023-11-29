@@ -1,7 +1,7 @@
 #ifndef PLAYLISTMODEL_H
 #define PLAYLISTMODEL_H
 
-#include "../track.h"
+#include "../trackobject.h"
 #include <QAbstractListModel>
 #include <QJsonValue>
 #include <QObject>
@@ -21,7 +21,7 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const;
     QHash<int, QByteArray> roleNames() const { return m_hash; }
 
-    bool insertRows(int position, int rows, Track* item, const QModelIndex& index = QModelIndex());
+    bool insertRows(int position, int rows, TrackObject* item, const QModelIndex& index = QModelIndex());
     bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex());
 
     Q_INVOKABLE void loadMyWave();
@@ -33,7 +33,7 @@ public:
     QString currentSong() { return m_currentSong; }
     QString currentArtist() { return m_currentArtist; }
 
-    QList<Track*> m_playList;
+    QList<TrackObject*> m_playList;
 
 signals:
     void loadFirstDataFinished();
