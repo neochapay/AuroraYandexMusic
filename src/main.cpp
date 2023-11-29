@@ -4,11 +4,13 @@
 
 #include "YaSailMusic.h"
 #include "authorization.h"
+#include "cacher.h"
 #include "models/playlistmodel.h"
 #include "models/searchmodel.h"
 #include "settings.h"
-#include "cacher.h"
-#include "track.h"
+#include "trackobject.h"
+#include "user.h"
+
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQuickView>
@@ -42,12 +44,12 @@ int main(int argc, char* argv[])
     application->setApplicationName(QStringLiteral("yasailmusic"));
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
-
     baseValues_ = new BaseValues();
 
     qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
     qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
+    qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
 
     Authorization* auth = new Authorization();
     view->rootContext()->setContextProperty("auth", auth);

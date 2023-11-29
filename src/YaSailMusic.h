@@ -1,11 +1,11 @@
 #ifndef YASAILMUSIC_H
 #define YASAILMUSIC_H
 
-#include "track.h"
+#include "trackobject.h"
 
 struct BaseValues {
     BaseValues();
-    QList<Track*> currentPlaylist;
+    QList<TrackObject*> currentPlaylist;
 };
 #define baseValues (*baseValues_)
 extern BaseValues* baseValues_;
