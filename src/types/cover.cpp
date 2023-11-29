@@ -19,9 +19,9 @@
 
 #include "cover.h"
 
-Cover::Cover(QObject* parent)
+Cover::Cover(const Cover& other, QObject* parent)
     : QObject(parent)
-    , d_ptr(new CoverPrivate)
+    , d_ptr(other.d_ptr)
 {
 }
 
@@ -61,25 +61,9 @@ bool Cover::custom() const
     return d_ptr->custom;
 }
 
-void Cover::setCustom(bool newCustom)
-{
-    if (d_ptr->custom == newCustom)
-        return;
-    d_ptr->custom = newCustom;
-    emit customChanged();
-}
-
 const QString& Cover::dir() const
 {
     return d_ptr->dir;
-}
-
-void Cover::setDir(const QString& newDir)
-{
-    if (d_ptr->dir == newDir)
-        return;
-    d_ptr->dir = newDir;
-    emit dirChanged();
 }
 
 const QString& Cover::type() const
@@ -87,36 +71,12 @@ const QString& Cover::type() const
     return d_ptr->type;
 }
 
-void Cover::setType(const QString& newType)
-{
-    if (d_ptr->type == newType)
-        return;
-    d_ptr->type = newType;
-    emit typeChanged();
-}
-
 const QString& Cover::uri() const
 {
     return d_ptr->uri;
 }
 
-void Cover::setUri(const QString& newUri)
-{
-    if (d_ptr->uri == newUri)
-        return;
-    d_ptr->uri = newUri;
-    emit uriChanged();
-}
-
 int Cover::version() const
 {
     return d_ptr->version;
-}
-
-void Cover::setVersion(int newVersion)
-{
-    if (d_ptr->version == newVersion)
-        return;
-    d_ptr->version = newVersion;
-    emit versionChanged();
 }

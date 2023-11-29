@@ -23,70 +23,49 @@
 #include <QJsonObject>
 #include <QObject>
 
+class ArtistPrivate {
+public:
+    bool composer;
+    QString coverPrefix;
+    QString coverType;
+    QString coverUri;
+    QStringList disclaimers;
+    QStringList genres;
+    QString name;
+    int artistId;
+    bool various;
+};
+
 class Artist : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool composer READ composer WRITE setComposer NOTIFY composerChanged)
-    Q_PROPERTY(QString coverPrefix READ coverPrefix WRITE setCoverPrefix NOTIFY coverPrefixChanged)
-    Q_PROPERTY(QString coverType READ coverType WRITE setCoverType NOTIFY coverTypeChanged)
-    Q_PROPERTY(QString coverUri READ coverUri WRITE setCoverUri NOTIFY coverUriChanged)
-    Q_PROPERTY(QStringList disclaimers READ disclaimers WRITE setDisclaimers NOTIFY disclaimersChanged)
-    Q_PROPERTY(QStringList genres READ genres WRITE setGenres NOTIFY genresChanged)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(int artistId READ artistId WRITE setArtistId NOTIFY artistIdChanged)
-    Q_PROPERTY(bool various READ various WRITE setVarious NOTIFY variousChanged)
+    Q_PROPERTY(bool composer READ composer)
+    Q_PROPERTY(QString coverPrefix READ coverPrefix)
+    Q_PROPERTY(QString coverType READ coverType)
+    Q_PROPERTY(QString coverUri READ coverUri)
+    Q_PROPERTY(QStringList disclaimers READ disclaimers)
+    Q_PROPERTY(QStringList genres READ genres)
+    Q_PROPERTY(QString name READ name)
+    Q_PROPERTY(int artistId READ artistId)
+    Q_PROPERTY(bool various READ various)
 
 public:
-    explicit Artist(QObject* parent = nullptr);
+    explicit Artist(const Artist& other, QObject* parent = nullptr);
     explicit Artist(QJsonObject object, QObject* parent = nullptr);
+    virtual ~Artist();
+    Artist& operator=(const Artist& other);
 
     bool composer() const;
-    void setComposer(bool newComposer);
-
     const QString& coverPrefix() const;
-    void setCoverPrefix(const QString& newCoverPrefix);
-
     const QString& coverType() const;
-    void setCoverType(const QString& newCoverType);
-
     const QString& coverUri() const;
-    void setCoverUri(const QString& newCoverUri);
-
     const QStringList& disclaimers() const;
-    void setDisclaimers(const QStringList& newDisclaimers);
-
     const QStringList& genres() const;
-    void setGenres(const QStringList& newGenres);
-
     const QString& name() const;
-    void setName(const QString& newName);
-
     int artistId() const;
-    void setArtistId(int newArtistId);
-
     bool various() const;
-    void setVarious(bool newVarious);
-
-signals:
-    void composerChanged();
-    void coverPrefixChanged();
-    void coverTypeChanged();
-    void coverUriChanged();
-    void disclaimersChanged();
-    void genresChanged();
-    void nameChanged();
-    void artistIdChanged();
-    void variousChanged();
 
 private:
-    bool m_composer;
-    QString m_coverPrefix;
-    QString m_coverType;
-    QString m_coverUri;
-    QStringList m_disclaimers;
-    QStringList m_genres;
-    QString m_name;
-    int m_artistId;
-    bool m_various;
+    ArtistPrivate* d_ptr;
 };
 
 #endif // ARTIST_H

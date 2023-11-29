@@ -35,40 +35,24 @@ public:
 
 class Cover : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool custom READ custom WRITE setCustom NOTIFY customChanged)
-    Q_PROPERTY(QString dir READ dir WRITE setDir NOTIFY dirChanged)
-    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
-    Q_PROPERTY(QString uri READ uri WRITE setUri NOTIFY uriChanged)
-    Q_PROPERTY(int version READ version WRITE setVersion NOTIFY versionChanged)
+    Q_PROPERTY(bool custom READ custom)
+    Q_PROPERTY(QString dir READ dir)
+    Q_PROPERTY(QString type READ type)
+    Q_PROPERTY(QString uri READ uri)
+    Q_PROPERTY(int version READ version)
 
 public:
-    explicit Cover(QObject* parent = nullptr);
+    explicit Cover(const Cover& other, QObject* parent = nullptr);
     explicit Cover(QJsonObject object, QObject* parent = nullptr);
     virtual ~Cover();
     Cover& operator=(const Cover& other);
     bool operator==(const Cover& other);
 
     bool custom() const;
-    void setCustom(bool newCustom);
-
     const QString& dir() const;
-    void setDir(const QString& newDir);
-
     const QString& type() const;
-    void setType(const QString& newType);
-
     const QString& uri() const;
-    void setUri(const QString& newUri);
-
     int version() const;
-    void setVersion(int newVersion);
-
-signals:
-    void customChanged();
-    void dirChanged();
-    void typeChanged();
-    void uriChanged();
-    void versionChanged();
 
 private:
     CoverPrivate* d_ptr;

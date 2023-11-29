@@ -18,138 +18,79 @@
  */
 #include "artist.h"
 
-Artist::Artist(QObject* parent)
+Artist::Artist(const Artist& other, QObject* parent)
     : QObject(parent)
+    , d_ptr(other.d_ptr)
 {
 }
 
 Artist::Artist(QJsonObject object, QObject* parent)
     : QObject(parent)
+    , d_ptr(new ArtistPrivate)
 {
-    m_composer = object.take("composer").toBool();
-    m_coverPrefix = object.take("cover").toObject().take("prefix").toString();
-    m_coverType = object.take("cover").toObject().take("type").toString();
-    m_coverUri = object.take("cover").toObject().take("uri").toString();
+    d_ptr->composer = object.take("composer").toBool();
+    d_ptr->coverPrefix = object.take("cover").toObject().take("prefix").toString();
+    d_ptr->coverType = object.take("cover").toObject().take("type").toString();
+    d_ptr->coverUri = object.take("cover").toObject().take("uri").toString();
     // m_disclaimers = object.take("disclaimers").toArray();
     // m_genres = object.take("genres").toArray();
-    m_name = object.take("name").toString();
-    m_artistId = object.take("artistId").toInt();
-    m_various = object.take("various").toBool();
+    d_ptr->name = object.take("name").toString();
+    d_ptr->artistId = object.take("artistId").toInt();
+    d_ptr->various = object.take("various").toBool();
+}
+
+Artist::~Artist()
+{
+    delete d_ptr;
+}
+
+Artist& Artist::operator=(const Artist& other)
+{
+    *d_ptr = *other.d_ptr;
+    return *this;
 }
 
 bool Artist::composer() const
 {
-    return m_composer;
-}
-
-void Artist::setComposer(bool newComposer)
-{
-    if (m_composer == newComposer)
-        return;
-    m_composer = newComposer;
-    emit composerChanged();
+    return d_ptr->composer;
 }
 
 const QString& Artist::coverPrefix() const
 {
-    return m_coverPrefix;
-}
-
-void Artist::setCoverPrefix(const QString& newCoverPrefix)
-{
-    if (m_coverPrefix == newCoverPrefix)
-        return;
-    m_coverPrefix = newCoverPrefix;
-    emit coverPrefixChanged();
+    return d_ptr->coverPrefix;
 }
 
 const QString& Artist::coverType() const
 {
-    return m_coverType;
-}
-
-void Artist::setCoverType(const QString& newCoverType)
-{
-    if (m_coverType == newCoverType)
-        return;
-    m_coverType = newCoverType;
-    emit coverTypeChanged();
+    return d_ptr->coverType;
 }
 
 const QString& Artist::coverUri() const
 {
-    return m_coverUri;
-}
-
-void Artist::setCoverUri(const QString& newCoverUri)
-{
-    if (m_coverUri == newCoverUri)
-        return;
-    m_coverUri = newCoverUri;
-    emit coverUriChanged();
+    return d_ptr->coverUri;
 }
 
 const QStringList& Artist::disclaimers() const
 {
-    return m_disclaimers;
-}
-
-void Artist::setDisclaimers(const QStringList& newDisclaimers)
-{
-    if (m_disclaimers == newDisclaimers)
-        return;
-    m_disclaimers = newDisclaimers;
-    emit disclaimersChanged();
+    return d_ptr->disclaimers;
 }
 
 const QStringList& Artist::genres() const
 {
-    return m_genres;
-}
-
-void Artist::setGenres(const QStringList& newGenres)
-{
-    if (m_genres == newGenres)
-        return;
-    m_genres = newGenres;
-    emit genresChanged();
+    return d_ptr->genres;
 }
 
 const QString& Artist::name() const
 {
-    return m_name;
-}
-
-void Artist::setName(const QString& newName)
-{
-    if (m_name == newName)
-        return;
-    m_name = newName;
-    emit nameChanged();
+    return d_ptr->name;
 }
 
 int Artist::artistId() const
 {
-    return m_artistId;
-}
-
-void Artist::setArtistId(int newArtistId)
-{
-    if (m_artistId == newArtistId)
-        return;
-    m_artistId = newArtistId;
-    emit artistIdChanged();
+    return d_ptr->artistId;
 }
 
 bool Artist::various() const
 {
-    return m_various;
-}
-
-void Artist::setVarious(bool newVarious)
-{
-    if (m_various == newVarious)
-        return;
-    m_various = newVarious;
-    emit variousChanged();
+    return d_ptr->various;
 }
