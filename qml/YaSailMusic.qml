@@ -21,6 +21,14 @@ ApplicationWindow {
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 
+    User{
+        id: user
+        Component.onCompleted: if(auth.checkToken()) {
+                                   user.getAccountStatus();
+                               }
+
+    }
+
     PlaylistModel{
         id: playListModel
         onCurrentIndexChanged: {

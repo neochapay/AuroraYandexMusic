@@ -185,7 +185,8 @@ Page {
     }
 
     Component.onCompleted: {
-        playListModel.loadMyWave();
+        //playListModel.loadMyWave();
+        user.getFeed();
     }
 
     Connections{

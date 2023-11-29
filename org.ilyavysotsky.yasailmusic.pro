@@ -13,8 +13,14 @@ SOURCES += \
     src/models/playlistmodel.cpp \
     src/models/searchmodel.cpp \
     src/settings.cpp \
-    src/track.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/trackobject.cpp \
+    src/types/album.cpp \
+    src/types/artist.cpp \
+    src/types/cover.cpp \
+    src/types/playlist.cpp \
+    src/types/track.cpp \
+    src/user.cpp
 
 HEADERS += \
     src/apirequest.h \
@@ -24,8 +30,14 @@ HEADERS += \
     src/models/playlistmodel.h \
     src/models/searchmodel.h \
     src/settings.h \
-    src/track.h \
-    src/YaSailMusic.h
+    src/YaSailMusic.h \
+    src/trackobject.h \
+    src/types/album.h \
+    src/types/artist.h \
+    src/types/cover.h \
+    src/types/playlist.h \
+    src/types/track.h \
+    src/user.h
 
 DISTFILES += \
     rpm/*.spec \
