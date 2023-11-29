@@ -24,6 +24,33 @@
 #include <QDateTime>
 #include <QObject>
 
+class PlaylistPrivate {
+public:
+    bool available;
+    QString backgroundImageUrl;
+    QString backgroundVideoUrl;
+    Cover cover;
+    Cover coverWithoutText;
+    QDateTime created;
+    QString description;
+    QString descriptionFormatted;
+    int durationMs;
+    bool everPlayed;
+    QString generatedPlaylistType;
+    QString idForFrom;
+    bool isBanner;
+    bool isPremiere;
+    int kind;
+    QDateTime modified;
+    QString ogImage;
+    QString playlistUuid;
+    int revision;
+    int snapshot;
+    QStringList tags;
+    QString title;
+    int trackCount;
+};
+
 class Playlist : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool available READ available)
@@ -54,7 +81,10 @@ class Playlist : public QObject {
     // TODO: add tracks
 
 public:
+    explicit Playlist(const Playlist& other, QObject* parent = nullptr);
     explicit Playlist(QJsonObject object, QObject* parent = nullptr);
+    virtual ~Playlist();
+    Playlist& operator=(const Playlist& other);
 
     bool available() const;
     const QString& backgroundImageUrl() const;
@@ -81,29 +111,7 @@ public:
     int trackCount() const;
 
 private:
-    bool m_available;
-    QString m_backgroundImageUrl;
-    QString m_backgroundVideoUrl;
-    Cover m_cover;
-    Cover m_coverWithoutText;
-    QDateTime m_created;
-    QString m_description;
-    QString m_descriptionFormatted;
-    int m_durationMs;
-    bool m_everPlayed;
-    QString m_generatedPlaylistType;
-    QString m_idForFrom;
-    bool m_isBanner;
-    bool m_isPremiere;
-    int m_kind;
-    QDateTime m_modified;
-    QString m_ogImage;
-    QString m_playlistUuid;
-    int m_revision;
-    int m_snapshot;
-    QStringList m_tags;
-    QString m_title;
-    int m_trackCount;
+    PlaylistPrivate* d_ptr;
 };
 
 #endif // PLAYLIST_H

@@ -19,145 +19,163 @@
 
 #include "playlist.h"
 
+Playlist::Playlist(const Playlist& other, QObject* parent)
+    : QObject(parent)
+    , d_ptr(other.d_ptr)
+{
+}
+
 Playlist::Playlist(QJsonObject object, QObject* parent)
     : QObject(parent)
-    , m_cover(Cover(object.take("cover").toObject()))
-    , m_coverWithoutText(Cover(object.take("coverWithoutText").toObject()))
+    , d_ptr(new PlaylistPrivate())
 {
-    m_available = object.take("available").toBool();
-    m_backgroundImageUrl = object.take("backgroundImageUrl").toString();
-    m_backgroundVideoUrl = object.take("backgroundVideoUrl").toString();
-    m_created = QDateTime::fromString(object.take("created").toString());
-    m_description = object.take("description").toString();
-    m_descriptionFormatted = object.take("descriptionFormatted").toString();
-    m_durationMs = object.take("durationMs").toInt();
-    m_everPlayed = object.take("everPlayed").toBool();
-    m_generatedPlaylistType = object.take("generatedPlaylistType").toString();
-    m_idForFrom = object.take("idForFrom").toString();
-    m_isBanner = object.take("isBanner").toBool();
-    m_isPremiere = object.take("isPremiere").toBool();
-    m_kind = object.take("kind").toInt();
-    m_modified = QDateTime::fromString(object.take("modified").toString());
-    m_ogImage = object.take("ogImage").toString();
-    m_playlistUuid = object.take("playlistUuid").toString();
-    m_revision = object.take("revision").toInt();
-    m_snapshot = object.take("snapshot").toInt();
-    // m_tags = object.take("tags").toArray();
-    m_title = object.take("title").toString();
-    m_trackCount = object.take("trackCount").toInt();
+    d_ptr->available = object.take("available").toBool();
+    d_ptr->backgroundImageUrl = object.take("backgroundImageUrl").toString();
+    d_ptr->backgroundVideoUrl = object.take("backgroundVideoUrl").toString();
+    d_ptr->cover = Cover(object.take("cover").toObject());
+    d_ptr->coverWithoutText = Cover(object.take("coverWithoutText").toObject());
+    d_ptr->created = QDateTime::fromString(object.take("created").toString());
+    d_ptr->description = object.take("description").toString();
+    d_ptr->descriptionFormatted = object.take("descriptionFormatted").toString();
+    d_ptr->durationMs = object.take("durationMs").toInt();
+    d_ptr->everPlayed = object.take("everPlayed").toBool();
+    d_ptr->generatedPlaylistType = object.take("generatedPlaylistType").toString();
+    d_ptr->idForFrom = object.take("idForFrom").toString();
+    d_ptr->isBanner = object.take("isBanner").toBool();
+    d_ptr->isPremiere = object.take("isPremiere").toBool();
+    d_ptr->kind = object.take("kind").toInt();
+    d_ptr->modified = QDateTime::fromString(object.take("modified").toString());
+    d_ptr->ogImage = object.take("ogImage").toString();
+    d_ptr->playlistUuid = object.take("playlistUuid").toString();
+    d_ptr->revision = object.take("revision").toInt();
+    d_ptr->snapshot = object.take("snapshot").toInt();
+    // d_ptr->tags = object.take("tags").toArray();
+    d_ptr->title = object.take("title").toString();
+    d_ptr->trackCount = object.take("trackCount").toInt();
+}
+
+Playlist::~Playlist()
+{
+    delete d_ptr;
+}
+
+Playlist& Playlist::operator=(const Playlist& other)
+{
+    *d_ptr = *other.d_ptr;
+    return *this;
 }
 
 bool Playlist::available() const
 {
-    return m_available;
+    return d_ptr->available;
 }
 
 const QString& Playlist::backgroundImageUrl() const
 {
-    return m_backgroundImageUrl;
+    return d_ptr->backgroundImageUrl;
 }
 
 const QString& Playlist::backgroundVideoUrl() const
 {
-    return m_backgroundVideoUrl;
+    return d_ptr->backgroundVideoUrl;
 }
 
 const Cover& Playlist::cover() const
 {
-    return m_cover;
+    return d_ptr->cover;
 }
 
 const Cover& Playlist::coverWithoutText() const
 {
-    return m_coverWithoutText;
+    return d_ptr->coverWithoutText;
 }
 
 const QDateTime& Playlist::created() const
 {
-    return m_created;
+    return d_ptr->created;
 }
 
 const QString& Playlist::description() const
 {
-    return m_description;
+    return d_ptr->description;
 }
 
 const QString& Playlist::descriptionFormatted() const
 {
-    return m_descriptionFormatted;
+    return d_ptr->descriptionFormatted;
 }
 
 int Playlist::durationMs() const
 {
-    return m_durationMs;
+    return d_ptr->durationMs;
 }
 
 bool Playlist::everPlayed() const
 {
-    return m_everPlayed;
+    return d_ptr->everPlayed;
 }
 
 const QString& Playlist::generatedPlaylistType() const
 {
-    return m_generatedPlaylistType;
+    return d_ptr->generatedPlaylistType;
 }
 
 const QString& Playlist::idForFrom() const
 {
-    return m_idForFrom;
+    return d_ptr->idForFrom;
 }
 
 bool Playlist::isBanner() const
 {
-    return m_isBanner;
+    return d_ptr->isBanner;
 }
 
 bool Playlist::isPremiere() const
 {
-    return m_isPremiere;
+    return d_ptr->isPremiere;
 }
 
 int Playlist::kind() const
 {
-    return m_kind;
+    return d_ptr->kind;
 }
 
 const QDateTime& Playlist::modified() const
 {
-    return m_modified;
+    return d_ptr->modified;
 }
 
 const QString& Playlist::ogImage() const
 {
-    return m_ogImage;
+    return d_ptr->ogImage;
 }
 
 const QString& Playlist::playlistUuid() const
 {
-    return m_playlistUuid;
+    return d_ptr->playlistUuid;
 }
 
 int Playlist::revision() const
 {
-    return m_revision;
+    return d_ptr->revision;
 }
 
 int Playlist::snapshot() const
 {
-    return m_snapshot;
+    return d_ptr->snapshot;
 }
 
 const QStringList& Playlist::tags() const
 {
-    return m_tags;
+    return d_ptr->tags;
 }
 
 const QString& Playlist::title() const
 {
-    return m_title;
+    return d_ptr->title;
 }
 
 int Playlist::trackCount() const
 {
-    return m_trackCount;
+    return d_ptr->trackCount;
 }

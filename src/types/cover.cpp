@@ -19,6 +19,12 @@
 
 #include "cover.h"
 
+Cover::Cover(QObject* parent)
+    : QObject(parent)
+    , d_ptr(new CoverPrivate)
+{
+}
+
 Cover::Cover(const Cover& other, QObject* parent)
     : QObject(parent)
     , d_ptr(other.d_ptr)

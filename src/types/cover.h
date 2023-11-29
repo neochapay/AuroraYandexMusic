@@ -42,6 +42,7 @@ class Cover : public QObject {
     Q_PROPERTY(int version READ version)
 
 public:
+    explicit Cover(QObject* parent = nullptr);
     explicit Cover(const Cover& other, QObject* parent = nullptr);
     explicit Cover(QJsonObject object, QObject* parent = nullptr);
     virtual ~Cover();
