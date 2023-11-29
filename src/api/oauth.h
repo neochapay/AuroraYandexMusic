@@ -16,33 +16,38 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef OAUTH_H
+#define OAUTH_H
 
-import QtQuick 2.0
-import Sailfish.Silica 1.0
-import Nemo.Notifications 1.0
-import Sailfish.WebView 1.0
+#include <QObject>
+#include <QSettings>
 
-import "../components/"
+class OAuth : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(bool isLogined READ isLogined NOTIFY isLoginedChanged)
+    Q_PROPERTY(QString token READ token NOTIFY tokenChanged)
+    Q_PROPERTY(QString clientID READ clientID)
 
-WebViewPage {
-    id: loginPage
-    WebView {
-        id: loginView
-        anchors.fill: parent
-        url: "https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d"
+public:
+    explicit OAuth(QObject* parent = nullptr);
+    Q_INVOKABLE void parseUrl(QString url);
 
-        onUrlChanged: {
-            auth.parseUrl(loginView.url.toString());
-        }
-    }
+    bool isLogined() const;
+    const QString& token() const;
 
-    Connections {
-        target: auth
-        onTokenChanged: {
-            if(auth.token.length > 0 ) {
-                pageContainer.replace(Qt.resolvedUrl("MainPage.qml"))
-            }
-        }
-    }
-}
+    const QString& clientID() const;
 
+signals:
+    void isLoginedChanged();
+    void tokenChanged();
+
+    void error(QString errorMessage);
+
+private:
+    bool m_isLogined;
+    QString m_token;
+    QSettings* m_settings;
+    QString m_clientID;
+};
+
+#endif // OAUTH_H

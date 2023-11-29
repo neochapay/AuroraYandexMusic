@@ -43,12 +43,12 @@
 <context>
     <name>YaSailMusic</name>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="79"/>
+        <location filename="../qml/YaSailMusic.qml" line="83"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="80"/>
+        <location filename="../qml/YaSailMusic.qml" line="84"/>
         <source>tags...</source>
         <translation>тэги...</translation>
     </message>

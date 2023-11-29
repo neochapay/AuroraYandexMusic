@@ -3,7 +3,7 @@
 #endif
 
 #include "YaSailMusic.h"
-#include "authorization.h"
+#include "api/oauth.h"
 #include "cacher.h"
 #include "models/playlistmodel.h"
 #include "models/searchmodel.h"
@@ -50,9 +50,8 @@ int main(int argc, char* argv[])
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
     qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
     qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
+    qmlRegisterType<OAuth>("org.ilyavysotsky.yasailmusic", 1, 0, "Auth");
 
-    Authorization* auth = new Authorization();
-    view->rootContext()->setContextProperty("auth", auth);
     view->setSource(SailfishApp::pathTo("qml/YaSailMusic.qml"));
     view->show();
 

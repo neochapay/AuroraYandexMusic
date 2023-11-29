@@ -1,6 +1,5 @@
 #include "cacher.h"
 #include "api/request.h"
-#include "authorization.h"
 
 #include <QDir>
 #include <QJsonArray>
@@ -91,7 +90,6 @@ void Cacher::getDownloadInfoFinished(const QJsonValue& value)
 
     QNetworkAccessManager* dInfoManager = new QNetworkAccessManager(this);
     QNetworkRequest nr(downloadInfoUrl);
-    Authorization::setupRequest(&nr);
     QNetworkReply* reply = dInfoManager->get(nr);
 
     connect(reply, &QNetworkReply::finished, this, &Cacher::getSongUrl);

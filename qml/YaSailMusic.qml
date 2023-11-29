@@ -11,11 +11,15 @@ import "pages"
 ApplicationWindow {
     id: root
     initialPage: {
-        if (auth.checkToken()) {
+        if (auth.token.length > 0) {
             return Qt.createComponent(Qt.resolvedUrl("pages/MainPage.qml"))
         } else {
             return Qt.createComponent(Qt.resolvedUrl("pages/LoginPage.qml"))
         }
+    }
+
+    Auth{
+        id: auth
     }
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -23,7 +27,7 @@ ApplicationWindow {
 
     User{
         id: user
-        Component.onCompleted: if(auth.checkToken()) {
+        Component.onCompleted: if(auth.token.length > 0) {
                                    user.getAccountStatus();
                                }
 

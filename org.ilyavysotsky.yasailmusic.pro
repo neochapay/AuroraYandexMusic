@@ -6,8 +6,8 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/api/oauth.cpp \
     src/api/request.cpp \
-    src/authorization.cpp \
     src/cacher.cpp \
     src/downloader.cpp \
     src/models/playlistmodel.cpp \
@@ -23,8 +23,8 @@ SOURCES += \
     src/user.cpp
 
 HEADERS += \
+    src/api/oauth.h \
     src/api/request.h \
-    src/authorization.h \
     src/cacher.h \
     src/downloader.h \
     src/models/playlistmodel.h \
