@@ -17,9 +17,7 @@
 #include <QtQml>
 
 #include "../api/request.h"
-#include "../authorization.h"
 #include "../cacher.h"
-#include "../settings.h"
 #include "playlistmodel.h"
 
 PlaylistModel::PlaylistModel(QObject* parent)
@@ -178,7 +176,6 @@ QVariant PlaylistModel::get(int idx)
 void PlaylistModel::playTrack()
 {
     QUrlQuery query;
-    Settings settings;
     QDateTime current = QDateTime::currentDateTime();
     QString curdt = current.toString("yyyy-MM-ddThh:mm:ss.zzzZ");
     query.addQueryItem("client-now", curdt);

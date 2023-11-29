@@ -7,7 +7,6 @@
 #include "cacher.h"
 #include "models/playlistmodel.h"
 #include "models/searchmodel.h"
-#include "settings.h"
 #include "trackobject.h"
 #include "user.h"
 

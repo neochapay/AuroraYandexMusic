@@ -12,7 +12,6 @@ SOURCES += \
     src/downloader.cpp \
     src/models/playlistmodel.cpp \
     src/models/searchmodel.cpp \
-    src/settings.cpp \
     src/main.cpp \
     src/trackobject.cpp \
     src/types/album.cpp \
@@ -29,7 +28,6 @@ HEADERS += \
     src/downloader.h \
     src/models/playlistmodel.h \
     src/models/searchmodel.h \
-    src/settings.h \
     src/YaSailMusic.h \
     src/trackobject.h \
     src/types/album.h \

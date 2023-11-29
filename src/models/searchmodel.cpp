@@ -6,7 +6,6 @@
 
 #include "../YaSailMusic.h"
 #include "../api/request.h"
-#include "../authorization.h"
 #include "../cacher.h"
 #include "../trackobject.h"
 #include "searchmodel.h"
