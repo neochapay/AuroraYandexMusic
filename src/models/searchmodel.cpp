@@ -1,19 +1,18 @@
-#include <QAbstractListModel>
-#include <QDebug>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QJsonValue>
-
-#include "../YaSailMusic.h"
+#include "searchmodel.h"
 #include "../api/request.h"
 #include "../cacher.h"
 #include "../trackobject.h"
-#include "searchmodel.h"
+
+#include <QAbstractListModel>
+#include <QDebug>
 #include <QDir>
 #include <QElapsedTimer>
 #include <QEventLoop>
 #include <QGuiApplication>
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QNetworkRequest>
 #include <QSettings>
 #include <QStandardPaths>
@@ -288,5 +287,4 @@ void SearchModel::getSearchTracksFinished(const QJsonValue& value)
     }
 
     m_loading = false;
-    baseValues_->currentPlaylist = m_playList;
 }

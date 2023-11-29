@@ -1,4 +1,3 @@
-#include "../YaSailMusic.h"
 #include <QAbstractListModel>
 #include <QDebug>
 #include <QDir>
@@ -38,8 +37,6 @@ PlaylistModel::PlaylistModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 10, QByteArray("storageDir"));
     m_hash.insert(Qt::UserRole + 11, QByteArray("liked"));
 
-    baseValues_->currentPlaylist = m_playList;
-
     connect(this, &QAbstractListModel::rowsInserted, this, &PlaylistModel::rowCountChanged);
     connect(this, &QAbstractListModel::rowsRemoved, this, &PlaylistModel::rowCountChanged);
 }
@@ -52,7 +49,6 @@ int PlaylistModel::rowCount(const QModelIndex& parent) const
 
 void PlaylistModel::setNewData()
 {
-    m_playList = baseValues_->currentPlaylist;
 }
 
 inline void delayy(int millisecondsWait)
@@ -284,5 +280,4 @@ void PlaylistModel::getWaveFinished(const QJsonValue& value)
     }
 
     m_loading = false;
-    baseValues_->currentPlaylist = m_playList;
 }

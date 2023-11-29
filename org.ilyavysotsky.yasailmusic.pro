@@ -28,7 +28,6 @@ HEADERS += \
     src/downloader.h \
     src/models/playlistmodel.h \
     src/models/searchmodel.h \
-    src/YaSailMusic.h \
     src/trackobject.h \
     src/types/album.h \
     src/types/artist.h \

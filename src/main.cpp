@@ -2,7 +2,6 @@
 #include <QtQuick>
 #endif
 
-#include "YaSailMusic.h"
 #include "api/oauth.h"
 #include "cacher.h"
 #include "models/playlistmodel.h"
@@ -19,12 +18,6 @@
 #include <sailfishapp.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-BaseValues* baseValues_;
-
-BaseValues::BaseValues()
-{
-}
 
 int main(int argc, char* argv[])
 {
@@ -43,7 +36,6 @@ int main(int argc, char* argv[])
     application->setApplicationName(QStringLiteral("yasailmusic"));
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
-    baseValues_ = new BaseValues();
 
     qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
