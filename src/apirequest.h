@@ -19,11 +19,11 @@ public:
     explicit ApiRequest(QObject* parent = 0);
     ~ApiRequest();
 
-    void makeApiGetRequest(const QString& method, const QUrlQuery& query);
+    void makeApiGetRequest(const QString& method, const QUrlQuery& query = QUrlQuery());
     void makeApiPostRequest(const QString& method, const QString& query);
 
 signals:
-    void gotResponse(const QJsonValue& value);
+    void gotResponse(QJsonValue& value);
 
 public slots:
     void dataReady(QNetworkReply* reply);
