@@ -6,7 +6,6 @@
 #include <QJsonValue>
 #include <QObject>
 
-#include "../apirequest.h"
 #include "../trackobject.h"
 
 class SearchModel : public QAbstractListModel {
@@ -54,7 +53,6 @@ private:
     QString m_currentArtist;
 
     QHash<int, QByteArray> m_hash;
-    ApiRequest* m_api;
     QJsonValue m_oldValue;
 };
 

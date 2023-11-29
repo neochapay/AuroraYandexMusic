@@ -1,6 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
+#include <QJsonObject>
 #include <QObject>
 
 class User : public QObject {
@@ -21,8 +22,8 @@ public:
     const QString& displayName() const;
 
 private slots:
-    void getAccountStatusHandler(QJsonValue& value);
-    void getFeedHandler(QJsonValue& value);
+    void getAccountStatusHandler(QJsonObject object);
+    void getFeedHandler(QJsonObject object);
 
 signals:
     void userIDChanged();

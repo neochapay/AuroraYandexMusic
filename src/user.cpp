@@ -1,5 +1,5 @@
 #include "user.h"
-#include "apirequest.h"
+#include "api/request.h"
 
 #include <QDebug>
 #include <QJsonArray>
@@ -14,23 +14,23 @@ User::User(QObject* parent)
 
 void User::getAccountStatus()
 {
-    ApiRequest* getAccoutStatusApiRequest = new ApiRequest();
-    connect(getAccoutStatusApiRequest, &ApiRequest::gotResponse, this, &User::getAccountStatusHandler);
+    Request* getAccoutStatusApiRequest = new Request("/account/status");
+    connect(getAccoutStatusApiRequest, &Request::dataReady, this, &User::getAccountStatusHandler);
 
-    getAccoutStatusApiRequest->makeApiGetRequest("/account/status");
+    getAccoutStatusApiRequest->get();
 }
 
 void User::getFeed()
 {
-    ApiRequest* getFeedApiRequest = new ApiRequest();
-    connect(getFeedApiRequest, &ApiRequest::gotResponse, this, &User::getFeedHandler);
+    Request* getFeedApiRequest = new Request("/feed");
+    connect(getFeedApiRequest, &Request::dataReady, this, &User::getFeedHandler);
 
-    getFeedApiRequest->makeApiGetRequest("/feed");
+    getFeedApiRequest->get();
 }
 
-void User::getAccountStatusHandler(QJsonValue& value)
+void User::getAccountStatusHandler(QJsonObject object)
 {
-    QJsonObject accountObject = value.toObject().take("account").toObject();
+    QJsonObject accountObject = object.take("account").toObject();
     QString dName = accountObject.take("displayName").toString();
     if (dName != m_displayName) {
         m_displayName = dName;
@@ -44,9 +44,9 @@ void User::getAccountStatusHandler(QJsonValue& value)
     }
 }
 
-void User::getFeedHandler(QJsonValue& value)
+void User::getFeedHandler(QJsonObject object)
 {
-    qDebug() << value.toString();
+    qDebug() << object;
 }
 
 int User::userID() const

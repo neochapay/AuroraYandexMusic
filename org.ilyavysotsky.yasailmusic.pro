@@ -6,7 +6,7 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
-    src/apirequest.cpp \
+    src/api/request.cpp \
     src/authorization.cpp \
     src/cacher.cpp \
     src/downloader.cpp \
@@ -23,7 +23,7 @@ SOURCES += \
     src/user.cpp
 
 HEADERS += \
-    src/apirequest.h \
+    src/api/request.h \
     src/authorization.h \
     src/cacher.h \
     src/downloader.h \

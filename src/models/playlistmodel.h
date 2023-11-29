@@ -6,8 +6,6 @@
 #include <QJsonValue>
 #include <QObject>
 
-#include "../apirequest.h"
-
 class PlaylistModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
@@ -54,7 +52,6 @@ private:
     QString m_currentArtist;
 
     QHash<int, QByteArray> m_hash;
-    ApiRequest* m_api;
     QJsonValue m_oldValue;
 };
 

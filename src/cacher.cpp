@@ -1,5 +1,5 @@
 #include "cacher.h"
-#include "apirequest.h"
+#include "api/request.h"
 #include "authorization.h"
 
 #include <QDir>
@@ -18,9 +18,9 @@ Cacher::Cacher(QObject* parent)
     connect(m_songDownloader, &Downloader::downloadProgress, this, &Cacher::downloadProgress);
 }
 
-void Cacher::setTrack(TrackObject *track)
+void Cacher::setTrack(TrackObject* track)
 {
-    if(!m_downloading) {
+    if (!m_downloading) {
         setArtistId(track->artistId);
         setTrackId(track->trackId);
     }
@@ -45,10 +45,9 @@ void Cacher::saveToCache()
     m_downloading = true;
     emit downloadingChanged();
 
-    ApiRequest* getTrackDownloadInfoRequest = new ApiRequest();
-    QUrlQuery query;
-    getTrackDownloadInfoRequest->makeApiGetRequest("/tracks/" + QString::number(m_trackId) + "/download-info", query);
-    connect(getTrackDownloadInfoRequest, &ApiRequest::gotResponse, this, &Cacher::getDownloadInfoFinished);
+    Request* getTrackDownloadInfoRequest = new Request("/tracks/" + QString::number(m_trackId) + "/download-info");
+    getTrackDownloadInfoRequest->get();
+    connect(getTrackDownloadInfoRequest, &Request::dataReady, this, &Cacher::getDownloadInfoFinished);
 }
 
 QString Cacher::Url()
@@ -58,7 +57,7 @@ QString Cacher::Url()
 
 void Cacher::setTrackId(int id)
 {
-    if(id != m_trackId) {
+    if (id != m_trackId) {
         m_trackId = id;
         emit trackIdChanged();
     }
@@ -66,7 +65,7 @@ void Cacher::setTrackId(int id)
 
 void Cacher::setArtistId(int id)
 {
-    if(id != m_artistId) {
+    if (id != m_artistId) {
         m_artistId = id;
         emit artistIdChanged();
     }

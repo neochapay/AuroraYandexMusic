@@ -5,6 +5,7 @@
 #include <QJsonValue>
 
 #include "../YaSailMusic.h"
+#include "../api/request.h"
 #include "../authorization.h"
 #include "../cacher.h"
 #include "../trackobject.h"
@@ -38,8 +39,6 @@ SearchModel::SearchModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 9, QByteArray("duration"));
     m_hash.insert(Qt::UserRole + 10, QByteArray("storageDir"));
     m_hash.insert(Qt::UserRole + 11, QByteArray("liked"));
-    // SearchModel::model = this;
-    m_api = new ApiRequest();
 }
 
 int SearchModel::rowCount(const QModelIndex& parent) const
@@ -181,7 +180,8 @@ void SearchModel::playTrack()
     query.addQueryItem("timestamp", curdt);
     query.addQueryItem("total-played-seconds", QString::number(m_playList.at(m_currentIndex)->duration));
     qDebug() << query.toString();
-    m_api->makeApiPostRequest("/play-audio?" + query.toString(), QString(""));
+    Request playTrackRequest("/play-audio?" + query.toString());
+    playTrackRequest.post();
 }
 
 void SearchModel::sendFeedback(QString type)
@@ -205,8 +205,8 @@ void SearchModel::sendFeedback(QString type)
         };
     }
     QString strFromObj = QJsonDocument(o1).toJson(QJsonDocument::Compact).toStdString().c_str();
-    qDebug() << "JSON: " << strFromObj;
-    m_api->makeApiPostRequest("/rotor/station/user:onyourwave/feedback?batch-id=" + batchid, strFromObj);
+    Request* sendFeedbackRequest = new Request("/rotor/station/user:onyourwave/feedback?batch-id=" + batchid);
+    sendFeedbackRequest->post(strFromObj);
 }
 
 void SearchModel::searchTracks(QString q)
@@ -231,8 +231,9 @@ void SearchModel::searchTracks(QString q)
     query.addQueryItem("type", "track");
     query.addQueryItem("nocorrect", "false");
 
-    m_api->makeApiGetRequest("/search", query);
-    connect(m_api, &ApiRequest::gotResponse, this, &SearchModel::getSearchTracksFinished);
+    Request* serchRequest = new Request("/search");
+    serchRequest->get(query);
+    connect(serchRequest, &Request::dataReady, this, &SearchModel::getSearchTracksFinished);
 }
 
 QList<TrackObject*> SearchModel::playlist()

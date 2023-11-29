@@ -16,6 +16,7 @@
 #include <QUrlQuery>
 #include <QtQml>
 
+#include "../api/request.h"
 #include "../authorization.h"
 #include "../cacher.h"
 #include "../settings.h"
@@ -39,7 +40,6 @@ PlaylistModel::PlaylistModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 10, QByteArray("storageDir"));
     m_hash.insert(Qt::UserRole + 11, QByteArray("liked"));
 
-    m_api = new ApiRequest();
     baseValues_->currentPlaylist = m_playList;
 
     connect(this, &QAbstractListModel::rowsInserted, this, &PlaylistModel::rowCountChanged);
@@ -192,7 +192,8 @@ void PlaylistModel::playTrack()
     query.addQueryItem("timestamp", curdt);
     query.addQueryItem("total-played-seconds", QString::number(m_playList.at(m_currentIndex)->duration));
     qDebug() << query.toString();
-    m_api->makeApiPostRequest("/play-audio?" + query.toString(), QString(""));
+    Request* playTrackRequest = new Request("/play-audio?" + query.toString());
+    playTrackRequest->post(QString(""));
 }
 
 void PlaylistModel::sendFeedback(QString type)
@@ -218,7 +219,8 @@ void PlaylistModel::sendFeedback(QString type)
     }
     QString strFromObj = QJsonDocument(o1).toJson(QJsonDocument::Compact).toStdString().c_str();
     qDebug() << "JSON: " << strFromObj;
-    m_api->makeApiPostRequest("/rotor/station/user:onyourwave/feedback?batch-id=" + batchid, strFromObj);
+    Request* sendFeedbackRequest = new Request("/rotor/station/user:onyourwave/feedback?batch-id=" + batchid);
+    sendFeedbackRequest->post(strFromObj);
 }
 
 void PlaylistModel::loadMyWave()
@@ -233,8 +235,9 @@ void PlaylistModel::loadMyWave()
     if (m_playList.size() > 0) {
         query.addQueryItem("queue", QString::number(m_playList.at(m_playList.size() - 1)->trackId));
     }
-    m_api->makeApiGetRequest("/rotor/station/user:onyourwave/tracks", query);
-    connect(m_api, &ApiRequest::gotResponse, this, &PlaylistModel::getWaveFinished);
+    Request* loadWaveRequest = new Request("/rotor/station/user:onyourwave/tracks");
+    loadWaveRequest->get(query);
+    connect(loadWaveRequest, &Request::dataReady, this, &PlaylistModel::getWaveFinished);
 }
 
 void PlaylistModel::getWaveFinished(const QJsonValue& value)
