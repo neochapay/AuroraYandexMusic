@@ -6,35 +6,12 @@
     <message>
         <location filename="../qml/pages/FeedPage.qml" line="48"/>
         <source>You feed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваша лента</translation>
     </message>
     <message>
         <location filename="../qml/pages/FeedPage.qml" line="75"/>
         <source>Collect for you</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MainPage</name>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="25"/>
-        <source>Search</source>
-        <translation>Поиск</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="29"/>
-        <source>Logout</source>
-        <translation>Выход</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="36"/>
-        <source>View playlist</source>
-        <translation>Просмотр плейлиста</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="43"/>
-        <source>My wave</source>
-        <translation>Моя волна</translation>
+        <translation>Собрали для Вас</translation>
     </message>
 </context>
 <context>
