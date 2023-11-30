@@ -33,12 +33,12 @@
 <context>
     <name>YandexMusic</name>
     <message>
-        <location filename="../qml/YandexMusic.qml" line="84"/>
+        <location filename="../qml/YandexMusic.qml" line="62"/>
         <source>Loading</source>
         <translation type="unfinished">Загрузка</translation>
     </message>
     <message>
-        <location filename="../qml/YandexMusic.qml" line="85"/>
+        <location filename="../qml/YandexMusic.qml" line="63"/>
         <source>tags...</source>
         <translation type="unfinished">тэги...</translation>
     </message>

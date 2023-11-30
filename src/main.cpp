@@ -36,8 +36,8 @@ int main(int argc, char* argv[])
     // To display the view, call "show()" (will show fullscreen on device).
 
     QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
-    application->setOrganizationName(QStringLiteral("org.ilyavysotsky"));
-    application->setApplicationName(QStringLiteral("yasailmusic"));
+    application->setOrganizationName(QStringLiteral("ru.neochapay"));
+    application->setApplicationName(QStringLiteral("yandexmusic"));
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
 

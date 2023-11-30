@@ -47,19 +47,6 @@ ApplicationWindow {
         visible: currentPlayListModel.rowCount > 0
     }
 
-    SearchModel{
-        id: searchModel
-        onCurrentIndexChanged: {
-            mprisPlayer.song = searchModel.get(currentIndex).trackName
-            mprisPlayer.artist = searchModel.get(currentIndex).artistName
-            searchModel.sendFeedback("trackFinished")
-
-            fileCacher.artistId = searchModel.get(currentIndex).artistId
-            fileCacher.trackId = searchModel.get(currentIndex).trackId
-            fileCacher.saveToCache();
-        }
-    }
-
     MediaPlayer{
         id: rootAudio
         onStopped: {
@@ -70,14 +57,6 @@ ApplicationWindow {
         }
     }
 
-    Cacher{
-        id: fileCacher
-        onFileSaved: {
-            rootAudio.source = path
-            rootAudio.play();
-        }
-    }
-
     MprisPlayer {
         id: mprisPlayer
 
@@ -85,7 +64,7 @@ ApplicationWindow {
         property string song: qsTr("tags...")
 
         serviceName: "yandex-music"
-        identity: "YaSailMusic"
+        identity: "AuroraYandexMusic"
         supportedUriSchemes: ["file"]
         supportedMimeTypes: ["audio/x-wav", "audio/x-vorbis+ogg", "audio/mpeg"]
 
