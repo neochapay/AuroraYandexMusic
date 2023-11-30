@@ -37,56 +37,58 @@ Track::Track(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new TrackPrivate())
 {
-    for (const QJsonValue& v : object.take("albuns").toArray()) {
-        d_ptr->albums.push_back(Album(v.toObject()));
+    for (const QJsonValue& v : object.value("albuns").toArray()) {
+        Album* album = new Album(v.toObject());
+        d_ptr->albums.push_back(album);
     }
 
-    for (const QJsonValue& v : object.take("artists").toArray()) {
-        d_ptr->artists.push_back(Artist(v.toObject()));
+    for (const QJsonValue& v : object.value("artists").toArray()) {
+        Artist* artist = new Artist(v.toObject());
+        d_ptr->artists.push_back(artist);
     }
 
-    d_ptr->available = object.take("available").toBool();
+    d_ptr->available = object.value("available").toBool();
 
-    for (const QJsonValue& v : object.take("availableForOptions").toArray()) {
+    for (const QJsonValue& v : object.value("availableForOptions").toArray()) {
         d_ptr->availableForOptions.push_back(v.toString());
     }
 
-    d_ptr->availableForPremiumUsers = object.take("availableForPremiumUsers").toBool();
-    d_ptr->availableFullWithoutPermission = object.take("availableFullWithoutPermission").toBool();
-    d_ptr->coverUri = object.take("coverUri").toString();
+    d_ptr->availableForPremiumUsers = object.value("availableForPremiumUsers").toBool();
+    d_ptr->availableFullWithoutPermission = object.value("availableFullWithoutPermission").toBool();
+    d_ptr->coverUri = object.value("coverUri").toString();
 
     DerivedColors derivedColors;
-    derivedColors.accent = object.take("derivedColors").toObject().take("accent").toString();
-    derivedColors.average = object.take("derivedColors").toObject().take("average").toString();
-    derivedColors.miniPlayer = object.take("derivedColors").toObject().take("miniPlayer").toString();
-    derivedColors.waveText = object.take("derivedColors").toObject().take("waveText").toString();
+    derivedColors.accent = object.value("derivedColors").toObject().take("accent").toString();
+    derivedColors.average = object.value("derivedColors").toObject().take("average").toString();
+    derivedColors.miniPlayer = object.value("derivedColors").toObject().take("miniPlayer").toString();
+    derivedColors.waveText = object.value("derivedColors").toObject().take("waveText").toString();
 
-    for (const QJsonValue& v : object.take("disclaimers").toArray()) {
+    for (const QJsonValue& v : object.value("disclaimers").toArray()) {
         d_ptr->disclaimers.push_back(v.toString());
     }
 
-    d_ptr->durationMs = object.take("durationMs").toInt();
+    d_ptr->durationMs = object.value("durationMs").toInt();
 
     Fade fade;
-    fade.inStart = object.take("fade").toObject().take("inStart").toDouble();
-    fade.inStop = object.take("fade").toObject().take("inStop").toDouble();
-    fade.outStart = object.take("fade").toObject().take("outStart").toDouble();
-    fade.outStop = object.take("fade").toObject().take("outStop").toDouble();
+    fade.inStart = object.value("fade").toObject().take("inStart").toDouble();
+    fade.inStop = object.value("fade").toObject().take("inStop").toDouble();
+    fade.outStart = object.value("fade").toObject().take("outStart").toDouble();
+    fade.outStop = object.value("fade").toObject().take("outStop").toDouble();
     d_ptr->fade = fade;
 
-    d_ptr->fileSize = object.take("fileSize").toInt();
-    d_ptr->trackId = object.take("trackId").toInt();
-    d_ptr->lyricsAvailable = object.take("lyricsAvailable").toBool();
-    d_ptr->ogImage = object.take("ogImage").toString();
-    d_ptr->previewDurationMs = object.take("previewDurationMs").toInt();
-    d_ptr->realId = object.take("realId").toInt();
-    d_ptr->rememberPosition = object.take("rememberPosition").toBool();
-    d_ptr->storageDir = object.take("storageDir").toString();
-    d_ptr->title = object.take("title").toString();
-    d_ptr->trackSharingFlag = object.take("trackSharingFlag").toString();
-    d_ptr->trackSource = object.take("trackSource").toString();
-    d_ptr->type = object.take("type").toString();
-    d_ptr->contentWarning = object.take("contentWarning").toString();
+    d_ptr->fileSize = object.value("fileSize").toInt();
+    d_ptr->trackId = object.value("trackId").toInt();
+    d_ptr->lyricsAvailable = object.value("lyricsAvailable").toBool();
+    d_ptr->ogImage = object.value("ogImage").toString();
+    d_ptr->previewDurationMs = object.value("previewDurationMs").toInt();
+    d_ptr->realId = object.value("realId").toInt();
+    d_ptr->rememberPosition = object.value("rememberPosition").toBool();
+    d_ptr->storageDir = object.value("storageDir").toString();
+    d_ptr->title = object.value("title").toString();
+    d_ptr->trackSharingFlag = object.value("trackSharingFlag").toString();
+    d_ptr->trackSource = object.value("trackSource").toString();
+    d_ptr->type = object.value("type").toString();
+    d_ptr->contentWarning = object.value("contentWarning").toString();
 }
 
 Track::~Track()
@@ -100,12 +102,12 @@ Track& Track::operator=(const Track& other)
     return *this;
 }
 
-const QList<Album>& Track::albums() const
+const QList<Album*>& Track::albums() const
 {
     return d_ptr->albums;
 }
 
-const QList<Artist>& Track::artists() const
+const QList<Artist*>& Track::artists() const
 {
     return d_ptr->artists;
 }

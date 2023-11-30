@@ -44,8 +44,8 @@ public:
 
 class TrackPrivate {
 public:
-    QList<Album> albums;
-    QList<Artist> artists;
+    QList<Album*> albums;
+    QList<Artist*> artists;
     bool available;
     QStringList availableForOptions;
     bool availableForPremiumUsers;
@@ -72,8 +72,8 @@ public:
 
 class Track : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QList<Album> albums READ albums)
-    Q_PROPERTY(QList<Artist> artists READ artists)
+    Q_PROPERTY(QList<Album*> albums READ albums)
+    Q_PROPERTY(QList<Artist*> artists READ artists)
     Q_PROPERTY(bool available READ available)
     Q_PROPERTY(QStringList availableForOptions READ availableForOptions)
     Q_PROPERTY(bool availableForPremiumUsers READ availableForPremiumUsers)
@@ -107,8 +107,8 @@ public:
     virtual ~Track();
     Track& operator=(const Track& other);
 
-    const QList<Album>& albums() const;
-    const QList<Artist>& artists() const;
+    const QList<Album*>& albums() const;
+    const QList<Artist*>& artists() const;
     bool available() const;
     const QStringList& availableForOptions() const;
     bool availableForPremiumUsers() const;

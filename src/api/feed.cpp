@@ -18,6 +18,7 @@
  */
 
 #include "feed.h"
+#include "../types/artist.h"
 
 #include <QJsonArray>
 
@@ -42,11 +43,24 @@ void Feed::getFeedHandler(QJsonObject object)
         m_generatedPlaylists.push_back(playList);
     }
 
-    emit generatedPlaylistsChanged();
+    QJsonArray tracksToPlayArray = object.value("days").toArray().first().toObject().value("tracksToPlay").toArray();
+    for (const QJsonValue& v : tracksToPlayArray) {
+        Track* track = new Track(v.toObject());
+        m_tracksToPlay.push_back(track);
+
+        Artist* art = track->artists().first();
+        qDebug() << track->title() << art->name();
+    }
+
     emit feedReady();
 }
 
 const QList<QObject*>& Feed::generatedPlaylists() const
 {
     return *reinterpret_cast<const QList<QObject*>*>(&m_generatedPlaylists);
+}
+
+const QList<QObject*>& Feed::tracksToPlay() const
+{
+    return *reinterpret_cast<const QList<QObject*>*>(&m_tracksToPlay);
 }

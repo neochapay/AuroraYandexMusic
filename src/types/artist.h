@@ -49,6 +49,7 @@ class Artist : public QObject {
     Q_PROPERTY(bool various READ various)
 
 public:
+    explicit Artist(QObject* parent = nullptr);
     explicit Artist(const Artist& other, QObject* parent = nullptr);
     explicit Artist(QJsonObject object, QObject* parent = nullptr);
     virtual ~Artist();

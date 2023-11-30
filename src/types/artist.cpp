@@ -19,6 +19,12 @@
 
 #include "artist.h"
 
+Artist::Artist(QObject* parent)
+    : QObject(parent)
+    , d_ptr(new ArtistPrivate())
+{
+}
+
 Artist::Artist(const Artist& other, QObject* parent)
     : QObject(parent)
     , d_ptr(other.d_ptr)
@@ -27,17 +33,17 @@ Artist::Artist(const Artist& other, QObject* parent)
 
 Artist::Artist(QJsonObject object, QObject* parent)
     : QObject(parent)
-    , d_ptr(new ArtistPrivate)
+    , d_ptr(new ArtistPrivate())
 {
-    d_ptr->composer = object.take("composer").toBool();
-    d_ptr->coverPrefix = object.take("cover").toObject().take("prefix").toString();
-    d_ptr->coverType = object.take("cover").toObject().take("type").toString();
-    d_ptr->coverUri = object.take("cover").toObject().take("uri").toString();
-    // m_disclaimers = object.take("disclaimers").toArray();
-    // m_genres = object.take("genres").toArray();
-    d_ptr->name = object.take("name").toString();
-    d_ptr->artistId = object.take("artistId").toInt();
-    d_ptr->various = object.take("various").toBool();
+    d_ptr->composer = object.value("composer").toBool();
+    d_ptr->coverPrefix = object.value("cover").toObject().take("prefix").toString();
+    d_ptr->coverType = object.value("cover").toObject().take("type").toString();
+    d_ptr->coverUri = object.value("cover").toObject().take("uri").toString();
+    // m_disclaimers = object.value("disclaimers").toArray();
+    // m_genres = object.value("genres").toArray();
+    d_ptr->name = object.value("name").toString();
+    d_ptr->artistId = object.value("artistId").toInt();
+    d_ptr->various = object.value("various").toBool();
 }
 
 Artist::~Artist()

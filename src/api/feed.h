@@ -21,6 +21,7 @@
 #define FEED_H
 
 #include "../types/playlist.h"
+#include "../types/track.h"
 #include "request.h"
 
 #include <QJsonObject>
@@ -28,24 +29,26 @@
 
 class Feed : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QList<QObject*> generatedPlaylists READ generatedPlaylists NOTIFY generatedPlaylistsChanged)
+    Q_PROPERTY(QList<QObject*> generatedPlaylists READ generatedPlaylists NOTIFY feedReady)
+    Q_PROPERTY(QList<QObject*> tracksToPlay READ tracksToPlay NOTIFY feedReady)
 
 public:
     explicit Feed(QObject* parent = nullptr);
     Q_INVOKABLE void get();
 
     const QList<QObject*>& generatedPlaylists() const;
+    const QList<QObject*>& tracksToPlay() const;
 
 private slots:
     void getFeedHandler(QJsonObject object);
 
 signals:
     void feedReady();
-    void generatedPlaylistsChanged();
 
 private:
     Request* m_getFeedApiRequest;
     QList<Playlist*> m_generatedPlaylists;
+    QList<Track*> m_tracksToPlay;
 };
 
 #endif // FEED_H
