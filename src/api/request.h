@@ -39,6 +39,7 @@ public:
 signals:
     void dataReady(QJsonObject object);
     void errorReady(QJsonObject object);
+    void errorReady(QString message);
 
 private slots:
     void replyHandler(QNetworkReply* reply);
@@ -49,6 +50,7 @@ private:
     QNetworkAccessManager* m_manager;
     QSettings* m_settings;
     QString m_accessToken;
+    QString m_type;
 };
 
 #endif // REQUEST_H

@@ -32,12 +32,13 @@ Request::Request(QString point, QObject* parent)
     m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "yamusic.conf", QSettings::NativeFormat);
     m_accessToken = m_settings->value("accessToken").toString();
 
+    if (m_accessToken.isEmpty()) {
+        qFatal("Token is empty APP is broken!");
+    }
+
     m_request = QNetworkRequest(QUrl(API_URL + m_point));
     m_request.setRawHeader("Authorization", "OAuth " + m_accessToken.toUtf8());
     m_request.setRawHeader("Accept", "*/*");
-    m_request.setRawHeader("Accept Encoding", "gzip, deflate, sdch, br");
-    m_request.setRawHeader("Postman Token", "0602916c-c9be-3364-8938-6b4f5426539e");
-    m_request.setRawHeader("Cache Control", "no-cache");
     m_request.setRawHeader("Connection", "keep-alive");
     m_request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
@@ -46,6 +47,7 @@ Request::Request(QString point, QObject* parent)
 
 void Request::get(const QUrlQuery& query)
 {
+    m_type = "get";
     QUrl requestUrl = m_request.url();
     requestUrl.setQuery(query);
     m_request.setUrl(requestUrl);
@@ -55,6 +57,7 @@ void Request::get(const QUrlQuery& query)
 
 void Request::post(const QString& query)
 {
+    m_type = "post";
     if (query.contains("{")) {
         m_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     } else {
@@ -68,7 +71,12 @@ void Request::replyHandler(QNetworkReply* reply)
     QString rawAnswer = reply->readAll();
     QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
 
-    qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << rawAnswer;
+    if (reply->error()) {
+        qWarning() << reply->errorString();
+        emit errorReady(reply->errorString());
+    }
+
+    qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
 
     if (!ansObject.take("result").isNull()) {
         emit dataReady(ansObject.take("result").toObject());
