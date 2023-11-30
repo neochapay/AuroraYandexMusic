@@ -44,7 +44,7 @@ public:
     QString coverUri;
     QStringList disclaimers;
     QString genere;
-    int albumId;
+    QString albumId;
     QList<Label*> labels;
     int likesConut;
     QString metaType;
@@ -71,7 +71,7 @@ class Album : public QObject {
     Q_PROPERTY(QString coverUri READ coverUri)
     Q_PROPERTY(QStringList disclaimers READ disclaimers)
     Q_PROPERTY(QString genere READ genere)
-    Q_PROPERTY(int albumId READ albumId)
+    Q_PROPERTY(QString albumId READ albumId)
     Q_PROPERTY(QList<QObject*> labels READ labels)
     Q_PROPERTY(int likesConut READ likesConut)
     Q_PROPERTY(QString metaType READ metaType)
@@ -102,7 +102,7 @@ public:
     const QString& coverUri() const;
     const QStringList& disclaimers() const;
     const QString& genere() const;
-    int albumId() const;
+    QString albumId() const;
     const QList<QObject*> labels() const;
     int likesConut() const;
     const QString& metaType() const;

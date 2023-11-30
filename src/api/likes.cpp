@@ -18,9 +18,11 @@
  */
 
 #include "likes.h"
+#include "../types/album.h"
 #include "request.h"
 
 #include <QDebug>
+#include <QJsonArray>
 
 Likes::Likes(QObject* parent)
     : QObject(parent)
@@ -84,7 +86,6 @@ void Likes::dislike(int id, bool remove)
     query.addQueryItem("track-ids-ids", QString::number(id));
 
     Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/dislikes/tracks/" + action);
-    likeRequest->setDebug(true);
     connect(likeRequest, &Request::dataReady, this, &Likes::likeRequestHandler);
 
     likeRequest->post(query.toString());
@@ -100,6 +101,7 @@ void Likes::setUserID(int newUserID)
     if (m_userID == newUserID)
         return;
     m_userID = newUserID;
+    loadLikedTracks();
     emit userIDChanged();
 }
 
@@ -114,5 +116,48 @@ void Likes::dislikeRequestHandler(QJsonValue value)
 {
     if (!value.toObject().value("revision").toString().isEmpty()) {
         emit finished(m_actionID);
+    }
+}
+
+void Likes::loadLikedTracks()
+{
+    if (m_userID == 0) {
+        qWarning() << "user ID is empty";
+        return;
+    }
+    Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/tracks/");
+    likeRequest->setDebug(true);
+    connect(likeRequest, &Request::dataReady, this, &Likes::likedTracksHandler);
+    likeRequest->get();
+}
+
+bool Likes::isTrackLiked(Track* track)
+{
+    QString trackId = track->trackId();
+    if (trackId.isEmpty()) {
+        return false;
+    }
+
+    foreach (LikedTrack* track, m_likedTrackList) {
+        if (track->trackId == trackId) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Likes::likedTracksHandler(QJsonValue value)
+{
+    m_likedTrackList.clear();
+    QJsonArray likedTracksArray = value.toObject().value("library").toObject().value("tracks").toArray();
+    for (const QJsonValue& v : likedTracksArray) {
+        QJsonObject trackObject = v.toObject();
+        LikedTrack* track = new LikedTrack;
+        track->trackId = trackObject.value("id").toString();
+        track->albumId = trackObject.value("albumId").toString();
+        track->timestamp = QDateTime::fromString(trackObject.value("timestamp").toString());
+
+        m_likedTrackList.push_back(track);
     }
 }
