@@ -34,6 +34,10 @@ ApplicationWindow {
 
     }
 
+    MusicFetcher{
+        id: musicFetcher
+    }
+
     CurrentPlayListModel{
         id: currentPlayListModel
     }

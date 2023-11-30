@@ -40,7 +40,7 @@ public:
     const QList<QObject*>& tracksToPlay() const;
 
 private slots:
-    void getFeedHandler(QJsonObject object);
+    void getFeedHandler(QJsonValue value);
 
 signals:
     void feedReady();

@@ -34,16 +34,16 @@ void Feed::get()
     m_getFeedApiRequest->get();
 }
 
-void Feed::getFeedHandler(QJsonObject object)
+void Feed::getFeedHandler(QJsonValue value)
 {
     m_generatedPlaylists.clear();
-    QJsonArray generatedPlaylistsJsonArray = object.value("generatedPlaylists").toArray();
+    QJsonArray generatedPlaylistsJsonArray = value.toObject().value("generatedPlaylists").toArray();
     for (const QJsonValue& v : generatedPlaylistsJsonArray) {
         Playlist* playList = new Playlist(v.toObject().value("data").toObject());
         m_generatedPlaylists.push_back(playList);
     }
 
-    QJsonArray tracksToPlayArray = object.value("days").toArray().first().toObject().value("tracksToPlay").toArray();
+    QJsonArray tracksToPlayArray = value.toObject().value("days").toArray().first().toObject().value("tracksToPlay").toArray();
     for (const QJsonValue& v : tracksToPlayArray) {
         Track* track = new Track(v.toObject());
         m_tracksToPlay.push_back(track);

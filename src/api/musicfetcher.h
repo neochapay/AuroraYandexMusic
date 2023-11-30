@@ -17,44 +17,48 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef REQUEST_H
-#define REQUEST_H
+#ifndef MUSICFETCHER_H
+#define MUSICFETCHER_H
 
-#include <QJsonObject>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
+#include "../types/track.h"
+
+#include <QNetworkReply>
 #include <QObject>
 #include <QSettings>
-#include <QUrlQuery>
 
-const QString API_URL = "https://api.music.yandex.net";
-
-class Request : public QObject {
-    Q_OBJECT
-
+struct DownloadLink {
 public:
-    explicit Request(QString point, QObject* parent = nullptr);
-    void setDebug(bool debug);
-    void get(const QUrlQuery& query = QUrlQuery());
-    void post(const QString& query = "");
-
-signals:
-    void dataReady(QJsonValue object);
-    void errorReady(QJsonValue object);
-    void errorReady(QString message);
-
-private slots:
-    void replyHandler(QNetworkReply* reply);
-
-private:
-    QString m_point;
-    QNetworkRequest m_request;
-    QNetworkAccessManager* m_manager;
-    QSettings* m_settings;
-    QString m_accessToken;
-    QString m_type;
-
-    bool m_debug;
+    QString codec;
+    bool gain;
+    bool preview;
+    QString downloadInfoUrl;
+    bool direct;
+    int bitrateInKbps;
 };
 
-#endif // REQUEST_H
+class MusicFetcher : public QObject {
+    Q_OBJECT
+public:
+    explicit MusicFetcher(QObject* parent = nullptr);
+    Q_INVOKABLE void load(Track* track);
+
+signals:
+    void trackReady(QString path);
+    void error(QString errorMessage);
+    void downloadProgress(float progress);
+
+private slots:
+    void downloadInfoHandler(QJsonValue value);
+    void downloadInfoUrlHandler();
+
+    void dataReadyHandler(QNetworkReply* reply);
+    void onDownloadProgress(qint64 bytesRead, qint64 bytesTotal);
+
+private:
+    Track* m_track;
+    QSettings* m_settings;
+    QList<DownloadLink*> m_linksList;
+    QString m_trackPath;
+};
+
+#endif // MUSICFETCHER_H

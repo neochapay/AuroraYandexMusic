@@ -3,6 +3,7 @@
 #endif
 
 #include "api/feed.h"
+#include "api/musicfetcher.h"
 #include "api/oauth.h"
 
 #include "types/cover.h"
@@ -55,6 +56,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
     qmlRegisterType<OAuth>("org.ilyavysotsky.yasailmusic", 1, 0, "Auth");
     qmlRegisterType<Feed>("org.ilyavysotsky.yasailmusic", 1, 0, "Feed");
+    qmlRegisterType<MusicFetcher>("org.ilyavysotsky.yasailmusic", 1, 0, "MusicFetcher");
 
     view->setSource(SailfishApp::pathTo("qml/YaSailMusic.qml"));
     view->show();

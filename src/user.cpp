@@ -28,9 +28,9 @@ void User::getFeed()
     getFeedApiRequest->get();
 }
 
-void User::getAccountStatusHandler(QJsonObject object)
+void User::getAccountStatusHandler(QJsonValue value)
 {
-    QJsonObject accountObject = object.value("account").toObject();
+    QJsonObject accountObject = value.toObject().value("account").toObject();
     QString dName = accountObject.value("displayName").toString();
     if (dName != m_displayName) {
         m_displayName = dName;
@@ -40,7 +40,7 @@ void User::getAccountStatusHandler(QJsonObject object)
     int userId = accountObject.value("uid").toInt();
 
     if (userId == 0) {
-        qWarning() << "uer ID is null";
+        qWarning() << "uers ID is null";
         emit wrongUser();
     }
 
@@ -50,9 +50,9 @@ void User::getAccountStatusHandler(QJsonObject object)
     }
 }
 
-void User::getFeedHandler(QJsonObject object)
+void User::getFeedHandler(QJsonValue value)
 {
-    qDebug() << object;
+    qDebug() << value;
 }
 
 int User::userID() const

@@ -22,8 +22,8 @@ public:
     const QString& displayName() const;
 
 private slots:
-    void getAccountStatusHandler(QJsonObject object);
-    void getFeedHandler(QJsonObject object);
+    void getAccountStatusHandler(QJsonValue value);
+    void getFeedHandler(QJsonValue value);
 
 signals:
     void userIDChanged();

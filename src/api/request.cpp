@@ -28,6 +28,7 @@ Request::Request(QString point, QObject* parent)
     : QObject(parent)
     , m_point(point)
     , m_manager(new QNetworkAccessManager(this))
+    , m_debug(false)
 {
     m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "yamusic.conf", QSettings::NativeFormat);
     m_accessToken = m_settings->value("accessToken").toString();
@@ -43,6 +44,11 @@ Request::Request(QString point, QObject* parent)
     m_request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
     connect(m_manager, &QNetworkAccessManager::finished, this, &Request::replyHandler);
+}
+
+void Request::setDebug(bool debug)
+{
+    m_debug = debug;
 }
 
 void Request::get(const QUrlQuery& query)
@@ -76,15 +82,19 @@ void Request::replyHandler(QNetworkReply* reply)
         emit errorReady(reply->errorString());
     }
 
-    // qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
+    if (m_debug) {
+        qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
+    }
 
     if (!ansObject.value("result").isNull()) {
-        emit dataReady(ansObject.value("result").toObject());
+        emit dataReady(ansObject.value("result"));
         return;
     }
 
     if (!ansObject.value("error").isNull()) {
-        emit errorReady(ansObject.value("error").toObject());
+        emit errorReady(ansObject.value("error"));
         return;
     }
+
+    qWarning() << "download error!";
 }

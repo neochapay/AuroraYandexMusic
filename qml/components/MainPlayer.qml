@@ -103,6 +103,8 @@ Item {
         if(currentPlayListModel.rowCount > 0) {
             mainPlayer.title = currentPlayListModel.getTrack(0).title
             mainPlayer.artist = currentPlayListModel.getTrack(0).artists[0].name
+
+            musicFetcher.load(currentPlayListModel.getTrack(0))
         }
     }
 }
