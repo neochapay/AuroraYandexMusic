@@ -11,7 +11,7 @@ SOURCES += \
     src/api/request.cpp \
     src/cacher.cpp \
     src/downloader.cpp \
-    src/models/playlistmodel.cpp \
+    src/models/neteworkplaylistmodel.cpp \
     src/models/searchmodel.cpp \
     src/main.cpp \
     src/trackobject.cpp \
@@ -28,7 +28,7 @@ HEADERS += \
     src/api/request.h \
     src/cacher.h \
     src/downloader.h \
-    src/models/playlistmodel.h \
+    src/models/neteworkplaylistmodel.h \
     src/models/searchmodel.h \
     src/trackobject.h \
     src/types/album.h \
@@ -39,6 +39,7 @@ HEADERS += \
     src/user.h
 
 DISTFILES += \
+    qml/components/MainPlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
     qml/pages/FeedPage.qml \
     rpm/*.spec \

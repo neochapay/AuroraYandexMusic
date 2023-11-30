@@ -1,7 +1,7 @@
 #ifndef SearchModel_H
 #define SearchModel_H
 
-#include "playlistmodel.h"
+#include "neteworkplaylistmodel.h"
 #include <QAbstractListModel>
 #include <QJsonValue>
 #include <QObject>

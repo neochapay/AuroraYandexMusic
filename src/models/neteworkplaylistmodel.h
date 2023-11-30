@@ -1,19 +1,19 @@
-#ifndef PLAYLISTMODEL_H
-#define PLAYLISTMODEL_H
+#ifndef NETEWORKPLAYLISTMODEL_H
+#define NETEWORKPLAYLISTMODEL_H
 
 #include "../trackobject.h"
 #include <QAbstractListModel>
 #include <QJsonValue>
 #include <QObject>
 
-class PlaylistModel : public QAbstractListModel {
+class NetworkPlaylistModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
     Q_PROPERTY(int rowCount READ rowCount NOTIFY rowCountChanged)
 
 public:
-    explicit PlaylistModel(QObject* parent = 0);
-    virtual ~PlaylistModel() {};
+    explicit NetworkPlaylistModel(QObject* parent = 0);
+    virtual ~NetworkPlaylistModel() {};
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     virtual QVariant data(const QModelIndex& index, int role) const;
@@ -55,4 +55,4 @@ private:
     QJsonValue m_oldValue;
 };
 
-#endif // PLAYLISTMODEL_H
+#endif // NETEWORKPLAYLISTMODEL_H

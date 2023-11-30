@@ -1,7 +1,7 @@
 #ifndef CACHER_H
 #define CACHER_H
 
-#include "models/playlistmodel.h"
+#include "models/neteworkplaylistmodel.h"
 #include "downloader.h"
 #include "trackobject.h"
 #include <QObject>

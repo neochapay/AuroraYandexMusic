@@ -17,9 +17,9 @@
 
 #include "../api/request.h"
 #include "../cacher.h"
-#include "playlistmodel.h"
+#include "neteworkplaylistmodel.h"
 
-PlaylistModel::PlaylistModel(QObject* parent)
+NetworkPlaylistModel::NetworkPlaylistModel(QObject* parent)
     : QAbstractListModel(parent)
     , m_loading(false)
     , m_currentIndex(-1)
@@ -37,17 +37,17 @@ PlaylistModel::PlaylistModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 10, QByteArray("storageDir"));
     m_hash.insert(Qt::UserRole + 11, QByteArray("liked"));
 
-    connect(this, &QAbstractListModel::rowsInserted, this, &PlaylistModel::rowCountChanged);
-    connect(this, &QAbstractListModel::rowsRemoved, this, &PlaylistModel::rowCountChanged);
+    connect(this, &QAbstractListModel::rowsInserted, this, &NetworkPlaylistModel::rowCountChanged);
+    connect(this, &QAbstractListModel::rowsRemoved, this, &NetworkPlaylistModel::rowCountChanged);
 }
 
-int PlaylistModel::rowCount(const QModelIndex& parent) const
+int NetworkPlaylistModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
     return m_playList.size();
 }
 
-void PlaylistModel::setNewData()
+void NetworkPlaylistModel::setNewData()
 {
 }
 
@@ -60,7 +60,7 @@ inline void delayy(int millisecondsWait)
     loop.exec();
 }
 
-QVariant PlaylistModel::data(const QModelIndex& index, int role) const
+QVariant NetworkPlaylistModel::data(const QModelIndex& index, int role) const
 {
     Q_UNUSED(role);
     if (!index.isValid())
@@ -98,7 +98,7 @@ QVariant PlaylistModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-bool PlaylistModel::insertRows(int position, int rows, TrackObject* item, const QModelIndex& index)
+bool NetworkPlaylistModel::insertRows(int position, int rows, TrackObject* item, const QModelIndex& index)
 {
     Q_UNUSED(index);
     if (!(m_playList.contains(item))) {
@@ -113,7 +113,7 @@ bool PlaylistModel::insertRows(int position, int rows, TrackObject* item, const 
     return true;
 }
 
-bool PlaylistModel::removeRows(int position, int rows, const QModelIndex& index)
+bool NetworkPlaylistModel::removeRows(int position, int rows, const QModelIndex& index)
 {
     Q_UNUSED(index);
     if ((position + rows) > m_playList.size()) {
@@ -128,7 +128,7 @@ bool PlaylistModel::removeRows(int position, int rows, const QModelIndex& index)
     return true;
 }
 
-void PlaylistModel::setCurrentIndex(int currentIndex)
+void NetworkPlaylistModel::setCurrentIndex(int currentIndex)
 {
     if (currentIndex >= 0 && currentIndex < m_playList.size() && currentIndex != m_currentIndex) {
         m_currentIndex = currentIndex;
@@ -143,7 +143,7 @@ void PlaylistModel::setCurrentIndex(int currentIndex)
     }
 }
 
-QVariant PlaylistModel::get(int idx)
+QVariant NetworkPlaylistModel::get(int idx)
 {
     if (idx >= m_playList.size()) {
         return QVariant();
@@ -169,7 +169,7 @@ QVariant PlaylistModel::get(int idx)
     return QVariant(itemData);
 }
 
-void PlaylistModel::playTrack()
+void NetworkPlaylistModel::playTrack()
 {
     QUrlQuery query;
     QDateTime current = QDateTime::currentDateTime();
@@ -189,7 +189,7 @@ void PlaylistModel::playTrack()
     playTrackRequest->post(QString(""));
 }
 
-void PlaylistModel::sendFeedback(QString type)
+void NetworkPlaylistModel::sendFeedback(QString type)
 {
     QDateTime current = QDateTime::currentDateTime();
     QString curdt = current.toString("yyyy-MM-ddThh:mm:ss.zzzZ");
@@ -216,7 +216,7 @@ void PlaylistModel::sendFeedback(QString type)
     sendFeedbackRequest->post(strFromObj);
 }
 
-void PlaylistModel::loadMyWave()
+void NetworkPlaylistModel::loadMyWave()
 {
     if (m_loading) {
         return;
@@ -230,10 +230,10 @@ void PlaylistModel::loadMyWave()
     }
     Request* loadWaveRequest = new Request("/rotor/station/user:onyourwave/tracks");
     loadWaveRequest->get(query);
-    connect(loadWaveRequest, &Request::dataReady, this, &PlaylistModel::getWaveFinished);
+    connect(loadWaveRequest, &Request::dataReady, this, &NetworkPlaylistModel::getWaveFinished);
 }
 
-void PlaylistModel::getWaveFinished(const QJsonValue& value)
+void NetworkPlaylistModel::getWaveFinished(const QJsonValue& value)
 {
     if (value == m_oldValue) {
         /*Sometimes Yandex return data twice*/

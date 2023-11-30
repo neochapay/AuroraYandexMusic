@@ -9,7 +9,6 @@
 #include "types/playlist.h"
 
 #include "cacher.h"
-#include "models/playlistmodel.h"
 #include "models/searchmodel.h"
 #include "trackobject.h"
 #include "user.h"
@@ -45,7 +44,6 @@ int main(int argc, char* argv[])
     qRegisterMetaType<Playlist>("Playlist");
     qRegisterMetaType<Cover>("Cover");
 
-    qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
     qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
     qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
