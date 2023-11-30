@@ -35,8 +35,9 @@ ApplicationWindow {
         Component.onCompleted: if(auth.token.length > 0) {
                                    user.getAccountStatus();
                                }
-        onUserIDChanged: likes.userID = user.userID
-
+        onUserIDChanged: {
+            likes.userID = user.userID
+        }
     }
 
     MusicFetcher{

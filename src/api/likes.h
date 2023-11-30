@@ -20,8 +20,18 @@
 #ifndef LIKES_H
 #define LIKES_H
 
+#include <QDateTime>
 #include <QJsonValue>
 #include <QObject>
+
+#include "../types/track.h"
+
+struct LikedTrack {
+public:
+    QString trackId;
+    QString albumId;
+    QDateTime timestamp;
+};
 
 class Likes : public QObject {
     Q_OBJECT
@@ -31,6 +41,9 @@ public:
     explicit Likes(QObject* parent = nullptr);
     Q_INVOKABLE void like(QString type, int id, bool remove = false);
     Q_INVOKABLE void dislike(int id, bool remove = false);
+
+    Q_INVOKABLE void loadLikedTracks();
+    Q_INVOKABLE bool isTrackLiked(Track* track);
 
     int userID() const;
     void setUserID(int newUserID);
@@ -42,10 +55,13 @@ signals:
 private slots:
     void likeRequestHandler(QJsonValue value);
     void dislikeRequestHandler(QJsonValue value);
+    void likedTracksHandler(QJsonValue value);
 
 private:
     int m_userID;
     int m_actionID;
+
+    QList<LikedTrack*> m_likedTrackList;
 };
 
 #endif // LIKES_H

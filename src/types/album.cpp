@@ -64,7 +64,7 @@ Album::Album(QJsonObject object, QObject* parent)
     }
 
     d_ptr->genere = object.take("genere").toString();
-    d_ptr->albumId = object.take("albumId").toInt();
+    d_ptr->albumId = object.take("albumId").toString();
     // QList<Label> labels;
     d_ptr->likesConut = object.take("likesConut").toInt();
     d_ptr->metaType = object.take("metaType").toString();
@@ -144,7 +144,7 @@ const QString& Album::genere() const
     return d_ptr->genere;
 }
 
-int Album::albumId() const
+QString Album::albumId() const
 {
     return d_ptr->albumId;
 }
