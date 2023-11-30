@@ -66,8 +66,6 @@ void Request::post(const QString& query)
     m_type = "post";
     if (query.contains("{")) {
         m_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    } else {
-        m_request.setHeader(QNetworkRequest::ContentLengthHeader, 0);
     }
     m_manager->post(m_request, query.toUtf8());
 }

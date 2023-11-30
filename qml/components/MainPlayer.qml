@@ -16,6 +16,14 @@ Item {
     }
     z: 99
 
+    MouseArea{
+        enabled: littlePlayer.visible
+        anchors.fill: parent
+        onClicked: {
+            mainPlayer.height = mainPlayer.parent.height
+        }
+    }
+
     Item{
         id: littlePlayer
         width: parent.width
@@ -34,7 +42,7 @@ Item {
             icon.source: "image://theme/icon-m-like?" + (pressed
                                                          ? Theme.highlightColor
                                                          : Theme.primaryColor)
-            onClicked: console.log("Like clicked!")
+            onClicked: likes.like("track", currentPlayListModel.getTrack(0).trackId)
         }
 
 
@@ -87,13 +95,6 @@ Item {
         visible: !littlePlayer.visible
     }
 
-    MouseArea{
-        enabled: littlePlayer.visible
-        anchors.fill: parent
-        onClicked: {
-            mainPlayer.height = mainPlayer.parent.height
-        }
-    }
 
     Behavior on height {
         NumberAnimation { duration: 500 }
