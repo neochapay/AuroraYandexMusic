@@ -30,14 +30,20 @@ void User::getFeed()
 
 void User::getAccountStatusHandler(QJsonObject object)
 {
-    QJsonObject accountObject = object.take("account").toObject();
-    QString dName = accountObject.take("displayName").toString();
+    QJsonObject accountObject = object.value("account").toObject();
+    QString dName = accountObject.value("displayName").toString();
     if (dName != m_displayName) {
         m_displayName = dName;
         emit displayNameChanged();
     }
 
-    int userId = accountObject.take("uid").toInt();
+    int userId = accountObject.value("uid").toInt();
+
+    if (userId == 0) {
+        qWarning() << "uer ID is null";
+        emit wrongUser();
+    }
+
     if (userId != m_userID) {
         m_userID = userId;
         emit userIDChanged();

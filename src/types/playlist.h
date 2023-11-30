@@ -81,6 +81,7 @@ class Playlist : public QObject {
     // TODO: add tracks
 
 public:
+    explicit Playlist(QObject* parent = nullptr);
     explicit Playlist(const Playlist& other, QObject* parent = nullptr);
     explicit Playlist(QJsonObject object, QObject* parent = nullptr);
     virtual ~Playlist();
@@ -113,5 +114,7 @@ public:
 private:
     PlaylistPrivate* d_ptr;
 };
+
+Q_DECLARE_METATYPE(Playlist)
 
 #endif // PLAYLIST_H

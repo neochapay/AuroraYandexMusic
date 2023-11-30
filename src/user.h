@@ -28,6 +28,7 @@ private slots:
 signals:
     void userIDChanged();
     void displayNameChanged();
+    void wrongUser();
 };
 
 #endif // USER_H

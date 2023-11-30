@@ -76,15 +76,15 @@ void Request::replyHandler(QNetworkReply* reply)
         emit errorReady(reply->errorString());
     }
 
-    qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
+    // qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
 
-    if (!ansObject.take("result").isNull()) {
-        emit dataReady(ansObject.take("result").toObject());
+    if (!ansObject.value("result").isNull()) {
+        emit dataReady(ansObject.value("result").toObject());
         return;
     }
 
-    if (!ansObject.take("error").isNull()) {
-        emit errorReady(ansObject.take("error").toObject());
+    if (!ansObject.value("error").isNull()) {
+        emit errorReady(ansObject.value("error").toObject());
         return;
     }
 }

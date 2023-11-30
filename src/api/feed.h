@@ -17,47 +17,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef COVER_H
-#define COVER_H
+#ifndef FEED_H
+#define FEED_H
+
+#include "../types/playlist.h"
+#include "request.h"
 
 #include <QJsonObject>
 #include <QObject>
 
-class CoverPrivate {
-public:
-    CoverPrivate() {};
-    bool custom;
-    QString dir;
-    QString type;
-    QString uri;
-    int version;
-};
-
-class Cover : public QObject {
+class Feed : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool custom READ custom)
-    Q_PROPERTY(QString dir READ dir)
-    Q_PROPERTY(QString type READ type)
-    Q_PROPERTY(QString uri READ uri)
-    Q_PROPERTY(int version READ version)
+    Q_PROPERTY(QList<QObject*> generatedPlaylists READ generatedPlaylists NOTIFY generatedPlaylistsChanged)
 
 public:
-    explicit Cover(QObject* parent = nullptr);
-    explicit Cover(const Cover& other, QObject* parent = nullptr);
-    explicit Cover(QJsonObject object, QObject* parent = nullptr);
-    virtual ~Cover();
-    Cover& operator=(const Cover& other);
-    bool operator==(const Cover& other);
+    explicit Feed(QObject* parent = nullptr);
+    Q_INVOKABLE void get();
 
-    bool custom() const;
-    const QString& dir() const;
-    const QString& type() const;
-    const QString& uri() const;
-    int version() const;
+    const QList<QObject*>& generatedPlaylists() const;
+
+private slots:
+    void getFeedHandler(QJsonObject object);
+
+signals:
+    void feedReady();
+    void generatedPlaylistsChanged();
 
 private:
-    CoverPrivate* d_ptr;
+    Request* m_getFeedApiRequest;
+    QList<Playlist*> m_generatedPlaylists;
 };
 
-Q_DECLARE_METATYPE(Cover)
-#endif // COVER_H
+#endif // FEED_H

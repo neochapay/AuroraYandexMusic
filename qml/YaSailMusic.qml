@@ -12,7 +12,7 @@ ApplicationWindow {
     id: root
     initialPage: {
         if (auth.token.length > 0) {
-            return Qt.createComponent(Qt.resolvedUrl("pages/MainPage.qml"))
+            return Qt.createComponent(Qt.resolvedUrl("pages/FeedPage.qml"))
         } else {
             return Qt.createComponent(Qt.resolvedUrl("pages/LoginPage.qml"))
         }

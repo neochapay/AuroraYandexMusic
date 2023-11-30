@@ -2,7 +2,12 @@
 #include <QtQuick>
 #endif
 
+#include "api/feed.h"
 #include "api/oauth.h"
+
+#include "types/cover.h"
+#include "types/playlist.h"
+
 #include "cacher.h"
 #include "models/playlistmodel.h"
 #include "models/searchmodel.h"
@@ -37,11 +42,15 @@ int main(int argc, char* argv[])
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
 
+    qRegisterMetaType<Playlist>("Playlist");
+    qRegisterMetaType<Cover>("Cover");
+
     qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
     qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
     qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
     qmlRegisterType<OAuth>("org.ilyavysotsky.yasailmusic", 1, 0, "Auth");
+    qmlRegisterType<Feed>("org.ilyavysotsky.yasailmusic", 1, 0, "Feed");
 
     view->setSource(SailfishApp::pathTo("qml/YaSailMusic.qml"));
     view->show();

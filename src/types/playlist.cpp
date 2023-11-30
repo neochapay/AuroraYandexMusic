@@ -19,6 +19,12 @@
 
 #include "playlist.h"
 
+Playlist::Playlist(QObject* parent)
+    : QObject(parent)
+    , d_ptr(new PlaylistPrivate())
+{
+}
+
 Playlist::Playlist(const Playlist& other, QObject* parent)
     : QObject(parent)
     , d_ptr(other.d_ptr)
@@ -29,29 +35,29 @@ Playlist::Playlist(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new PlaylistPrivate())
 {
-    d_ptr->available = object.take("available").toBool();
-    d_ptr->backgroundImageUrl = object.take("backgroundImageUrl").toString();
-    d_ptr->backgroundVideoUrl = object.take("backgroundVideoUrl").toString();
-    d_ptr->cover = Cover(object.take("cover").toObject());
-    d_ptr->coverWithoutText = Cover(object.take("coverWithoutText").toObject());
-    d_ptr->created = QDateTime::fromString(object.take("created").toString());
-    d_ptr->description = object.take("description").toString();
-    d_ptr->descriptionFormatted = object.take("descriptionFormatted").toString();
-    d_ptr->durationMs = object.take("durationMs").toInt();
-    d_ptr->everPlayed = object.take("everPlayed").toBool();
-    d_ptr->generatedPlaylistType = object.take("generatedPlaylistType").toString();
-    d_ptr->idForFrom = object.take("idForFrom").toString();
-    d_ptr->isBanner = object.take("isBanner").toBool();
-    d_ptr->isPremiere = object.take("isPremiere").toBool();
-    d_ptr->kind = object.take("kind").toInt();
-    d_ptr->modified = QDateTime::fromString(object.take("modified").toString());
-    d_ptr->ogImage = object.take("ogImage").toString();
-    d_ptr->playlistUuid = object.take("playlistUuid").toString();
-    d_ptr->revision = object.take("revision").toInt();
-    d_ptr->snapshot = object.take("snapshot").toInt();
-    // d_ptr->tags = object.take("tags").toArray();
-    d_ptr->title = object.take("title").toString();
-    d_ptr->trackCount = object.take("trackCount").toInt();
+    d_ptr->available = object.value("available").toBool();
+    d_ptr->backgroundImageUrl = object.value("backgroundImageUrl").toString();
+    d_ptr->backgroundVideoUrl = object.value("backgroundVideoUrl").toString();
+    d_ptr->cover = Cover(object.value("cover").toObject());
+    d_ptr->coverWithoutText = Cover(object.value("coverWithoutText").toObject());
+    d_ptr->created = QDateTime::fromString(object.value("created").toString());
+    d_ptr->description = object.value("description").toString();
+    d_ptr->descriptionFormatted = object.value("descriptionFormatted").toString();
+    d_ptr->durationMs = object.value("durationMs").toInt();
+    d_ptr->everPlayed = object.value("everPlayed").toBool();
+    d_ptr->generatedPlaylistType = object.value("generatedPlaylistType").toString();
+    d_ptr->idForFrom = object.value("idForFrom").toString();
+    d_ptr->isBanner = object.value("isBanner").toBool();
+    d_ptr->isPremiere = object.value("isPremiere").toBool();
+    d_ptr->kind = object.value("kind").toInt();
+    d_ptr->modified = QDateTime::fromString(object.value("modified").toString());
+    d_ptr->ogImage = object.value("ogImage").toString();
+    d_ptr->playlistUuid = object.value("playlistUuid").toString();
+    d_ptr->revision = object.value("revision").toInt();
+    d_ptr->snapshot = object.value("snapshot").toInt();
+    // d_ptr->tags = object.value("tags").toArray();
+    d_ptr->title = object.value("title").toString();
+    d_ptr->trackCount = object.value("trackCount").toInt();
 }
 
 Playlist::~Playlist()

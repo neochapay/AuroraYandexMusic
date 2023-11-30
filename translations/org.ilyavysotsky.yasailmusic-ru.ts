@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU" sourcelanguage="en_US">
 <context>
+    <name>FeedPage</name>
+    <message>
+        <location filename="../qml/pages/FeedPage.qml" line="48"/>
+        <source>You feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/FeedPage.qml" line="75"/>
+        <source>Collect for you</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainPage</name>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="25"/>

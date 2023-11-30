@@ -6,6 +6,7 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/api/feed.cpp \
     src/api/oauth.cpp \
     src/api/request.cpp \
     src/cacher.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
     src/user.cpp
 
 HEADERS += \
+    src/api/feed.h \
     src/api/oauth.h \
     src/api/request.h \
     src/cacher.h \
@@ -37,6 +39,8 @@ HEADERS += \
     src/user.h
 
 DISTFILES += \
+    qml/components/PlaylistCoverFeed.qml \
+    qml/pages/FeedPage.qml \
     rpm/*.spec \
     qml/* \
     qml/pages/* \

@@ -35,11 +35,11 @@ Cover::Cover(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new CoverPrivate)
 {
-    d_ptr->custom = object.take("custom").toBool();
-    d_ptr->dir = object.take("dir").toString();
-    d_ptr->type = object.take("type").toString();
-    d_ptr->uri = object.take("uri").toString();
-    d_ptr->version = object.take("version").toInt();
+    d_ptr->custom = object.value("custom").toBool();
+    d_ptr->dir = object.value("dir").toString();
+    d_ptr->type = object.value("type").toString();
+    d_ptr->uri = object.value("uri").toString();
+    d_ptr->version = object.value("version").toInt();
 }
 
 Cover::~Cover()
