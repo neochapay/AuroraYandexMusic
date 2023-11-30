@@ -47,9 +47,6 @@ void Feed::getFeedHandler(QJsonObject object)
     for (const QJsonValue& v : tracksToPlayArray) {
         Track* track = new Track(v.toObject());
         m_tracksToPlay.push_back(track);
-
-        Artist* art = track->artists().first();
-        qDebug() << track->title() << art->name();
     }
 
     emit feedReady();

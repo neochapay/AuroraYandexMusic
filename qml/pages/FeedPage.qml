@@ -31,6 +31,7 @@ Page {
         id: feed
         onFeedReady: {
             busyIndicator.visible = false
+            currentPlayListModel.push(tracksToPlay[0])
         }
     }
 

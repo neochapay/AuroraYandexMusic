@@ -7,8 +7,10 @@
 
 #include "types/cover.h"
 #include "types/playlist.h"
+#include "types/track.h"
 
 #include "cacher.h"
+#include "models/currentplaylistmodel.h"
 #include "models/searchmodel.h"
 #include "trackobject.h"
 #include "user.h"
@@ -41,10 +43,14 @@ int main(int argc, char* argv[])
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
 
-    qRegisterMetaType<Playlist>("Playlist");
+    qRegisterMetaType<Album>("Album");
+    qRegisterMetaType<Artist>("Artist");
     qRegisterMetaType<Cover>("Cover");
+    qRegisterMetaType<Playlist>("Playlist");
+    qRegisterMetaType<Track>("Track");
 
     qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
+    qmlRegisterType<CurrentPlayListModel>("org.ilyavysotsky.yasailmusic", 1, 0, "CurrentPlayListModel");
     qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
     qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
     qmlRegisterType<OAuth>("org.ilyavysotsky.yasailmusic", 1, 0, "Auth");

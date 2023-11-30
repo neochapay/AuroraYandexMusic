@@ -4,12 +4,12 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="48"/>
+        <location filename="../qml/pages/FeedPage.qml" line="49"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="75"/>
+        <location filename="../qml/pages/FeedPage.qml" line="76"/>
         <source>Collect for you</source>
         <translation>Собрали для Вас</translation>
     </message>
@@ -33,12 +33,12 @@
 <context>
     <name>YaSailMusic</name>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="83"/>
+        <location filename="../qml/YaSailMusic.qml" line="80"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="84"/>
+        <location filename="../qml/YaSailMusic.qml" line="81"/>
         <source>tags...</source>
         <translation>тэги...</translation>
     </message>

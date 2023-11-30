@@ -33,7 +33,7 @@ public:
 
 class AlbumPrivate {
 public:
-    QList<Artist> artists;
+    QList<Artist*> artists;
     bool available;
     bool availableForMobile;
     QStringList availableForOptions;
@@ -45,7 +45,7 @@ public:
     QStringList disclaimers;
     QString genere;
     int albumId;
-    QList<Label> labels;
+    QList<Label*> labels;
     int likesConut;
     QString metaType;
     QString orImage;
@@ -60,7 +60,7 @@ public:
 
 class Album : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QList<Artist> artists READ artists)
+    Q_PROPERTY(QList<QObject*> artists READ artists)
     Q_PROPERTY(bool available READ available)
     Q_PROPERTY(bool availableForMobile READ availableForMobile)
     Q_PROPERTY(QStringList availableForOptions READ availableForOptions)
@@ -72,7 +72,7 @@ class Album : public QObject {
     Q_PROPERTY(QStringList disclaimers READ disclaimers)
     Q_PROPERTY(QString genere READ genere)
     Q_PROPERTY(int albumId READ albumId)
-    Q_PROPERTY(QList<Label> labels READ labels)
+    Q_PROPERTY(QList<QObject*> labels READ labels)
     Q_PROPERTY(int likesConut READ likesConut)
     Q_PROPERTY(QString metaType READ metaType)
     Q_PROPERTY(QString orImage READ orImage)
@@ -91,7 +91,7 @@ public:
     virtual ~Album();
     Album& operator=(const Album& other);
 
-    const QList<Artist>& artists() const;
+    const QList<QObject*>& artists() const;
     bool available() const;
     bool availableForMobile() const;
     const QStringList& availableForOptions() const;
@@ -103,7 +103,7 @@ public:
     const QStringList& disclaimers() const;
     const QString& genere() const;
     int albumId() const;
-    const QList<Label> labels() const;
+    const QList<QObject*> labels() const;
     int likesConut() const;
     const QString& metaType() const;
     const QString& orImage() const;
@@ -118,5 +118,7 @@ public:
 private:
     AlbumPrivate* d_ptr;
 };
+
+Q_DECLARE_METATYPE(Album)
 
 #endif // ALBUH

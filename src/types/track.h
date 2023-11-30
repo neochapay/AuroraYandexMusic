@@ -56,7 +56,7 @@ public:
     int durationMs;
     Fade fade;
     int fileSize;
-    int trackId;
+    QString trackId;
     bool lyricsAvailable;
     QString ogImage;
     int previewDurationMs;
@@ -72,8 +72,8 @@ public:
 
 class Track : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QList<Album*> albums READ albums)
-    Q_PROPERTY(QList<Artist*> artists READ artists)
+    Q_PROPERTY(QList<QObject*> albums READ albums)
+    Q_PROPERTY(QList<QObject*> artists READ artists)
     Q_PROPERTY(bool available READ available)
     Q_PROPERTY(QStringList availableForOptions READ availableForOptions)
     Q_PROPERTY(bool availableForPremiumUsers READ availableForPremiumUsers)
@@ -85,7 +85,7 @@ class Track : public QObject {
     Q_PROPERTY(int durationMs READ durationMs)
     Q_PROPERTY(Fade fade READ fade)
     Q_PROPERTY(int fileSize READ fileSize)
-    Q_PROPERTY(int trackId READ trackId)
+    Q_PROPERTY(QString trackId READ trackId)
     Q_PROPERTY(bool lyricsAvailable READ lyricsAvailable)
     // TODO lyricsInfo
     // TODO major
@@ -107,8 +107,8 @@ public:
     virtual ~Track();
     Track& operator=(const Track& other);
 
-    const QList<Album*>& albums() const;
-    const QList<Artist*>& artists() const;
+    const QList<QObject*>& albums() const;
+    const QList<QObject*>& artists() const;
     bool available() const;
     const QStringList& availableForOptions() const;
     bool availableForPremiumUsers() const;
@@ -119,7 +119,7 @@ public:
     int durationMs() const;
     const Fade& fade() const;
     int fileSize() const;
-    int trackId() const;
+    QString trackId() const;
     bool lyricsAvailable() const;
     const QString& ogImage() const;
     int previewDurationMs() const;
@@ -136,5 +136,7 @@ public:
 private:
     TrackPrivate* d_ptr;
 };
+
+Q_DECLARE_METATYPE(Track)
 
 #endif // TRACK_H

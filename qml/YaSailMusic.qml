@@ -7,6 +7,7 @@ import Amber.Mpris 1.0
 import org.ilyavysotsky.yasailmusic 1.0
 
 import "pages"
+import "components"
 
 ApplicationWindow {
     id: root
@@ -33,17 +34,13 @@ ApplicationWindow {
 
     }
 
-    PlaylistModel{
-        id: playListModel
-        onCurrentIndexChanged: {
-            mprisPlayer.song = playListModel.get(currentIndex).trackName
-            mprisPlayer.artist = playListModel.get(currentIndex).artistName
-            playListModel.sendFeedback("trackFinished")
+    CurrentPlayListModel{
+        id: currentPlayListModel
+    }
 
-            fileCacher.artistId = playListModel.get(currentIndex).artistId
-            fileCacher.trackId = playListModel.get(currentIndex).trackId
-            fileCacher.saveToCache();
-        }
+    MainPlayer{
+        id: mainPlayer
+        visible: currentPlayListModel.rowCount > 0
     }
 
     SearchModel{

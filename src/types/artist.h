@@ -69,4 +69,6 @@ private:
     ArtistPrivate* d_ptr;
 };
 
+Q_DECLARE_METATYPE(Artist)
+
 #endif // ARTIST_H

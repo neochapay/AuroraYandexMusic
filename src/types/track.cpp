@@ -77,7 +77,7 @@ Track::Track(QJsonObject object, QObject* parent)
     d_ptr->fade = fade;
 
     d_ptr->fileSize = object.value("fileSize").toInt();
-    d_ptr->trackId = object.value("trackId").toInt();
+    d_ptr->trackId = object.value("id").toString();
     d_ptr->lyricsAvailable = object.value("lyricsAvailable").toBool();
     d_ptr->ogImage = object.value("ogImage").toString();
     d_ptr->previewDurationMs = object.value("previewDurationMs").toInt();
@@ -102,14 +102,14 @@ Track& Track::operator=(const Track& other)
     return *this;
 }
 
-const QList<Album*>& Track::albums() const
+const QList<QObject*>& Track::albums() const
 {
-    return d_ptr->albums;
+    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->albums);
 }
 
-const QList<Artist*>& Track::artists() const
+const QList<QObject*>& Track::artists() const
 {
-    return d_ptr->artists;
+    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->artists);
 }
 
 bool Track::available() const
@@ -162,7 +162,7 @@ int Track::fileSize() const
     return d_ptr->fileSize;
 }
 
-int Track::trackId() const
+QString Track::trackId() const
 {
     return d_ptr->trackId;
 }

@@ -39,7 +39,7 @@ Album::Album(QJsonObject object, QObject* parent)
     , d_ptr(new AlbumPrivate())
 {
     for (const QJsonValue& v : object.take("artists").toArray()) {
-        d_ptr->artists.push_back(Artist(v.toObject()));
+        d_ptr->artists.push_back(new Artist(v.toObject()));
     }
 
     d_ptr->available = object.take("available").toBool();
@@ -89,9 +89,9 @@ Album& Album::operator=(const Album& other)
     return *this;
 }
 
-const QList<Artist>& Album::artists() const
+const QList<QObject*>& Album::artists() const
 {
-    return d_ptr->artists;
+    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->artists);
 }
 
 bool Album::available() const
@@ -149,9 +149,9 @@ int Album::albumId() const
     return d_ptr->albumId;
 }
 
-const QList<Label> Album::labels() const
+const QList<QObject*> Album::labels() const
 {
-    return d_ptr->labels;
+    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->labels);
 }
 
 int Album::likesConut() const
