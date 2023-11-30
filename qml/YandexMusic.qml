@@ -4,34 +4,47 @@ import QtMultimedia 5.5
 import Sailfish.Silica 1.0
 
 import Amber.Mpris 1.0
-import org.ilyavysotsky.yasailmusic 1.0
+import ru.neochapay.yandexmusic 1.0
 
 import "pages"
+import "components"
 
 ApplicationWindow {
     id: root
     initialPage: {
-        if (auth.checkToken()) {
-            return Qt.createComponent(Qt.resolvedUrl("pages/MainPage.qml"))
+        if (auth.token.length > 0) {
+            return Qt.createComponent(Qt.resolvedUrl("pages/FeedPage.qml"))
         } else {
             return Qt.createComponent(Qt.resolvedUrl("pages/LoginPage.qml"))
         }
     }
 
+    Auth{
+        id: auth
+    }
+
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 
-    PlaylistModel{
-        id: playListModel
-        onCurrentIndexChanged: {
-            mprisPlayer.song = playListModel.get(currentIndex).trackName
-            mprisPlayer.artist = playListModel.get(currentIndex).artistName
-            playListModel.sendFeedback("trackFinished")
+    User{
+        id: user
+        Component.onCompleted: if(auth.token.length > 0) {
+                                   user.getAccountStatus();
+                               }
 
-            fileCacher.artistId = playListModel.get(currentIndex).artistId
-            fileCacher.trackId = playListModel.get(currentIndex).trackId
-            fileCacher.saveToCache();
-        }
+    }
+
+    MusicFetcher{
+        id: musicFetcher
+    }
+
+    CurrentPlayListModel{
+        id: currentPlayListModel
+    }
+
+    MainPlayer{
+        id: mainPlayer
+        visible: currentPlayListModel.rowCount > 0
     }
 
     SearchModel{

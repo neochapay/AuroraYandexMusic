@@ -6,14 +6,12 @@ CoverBackground {
 
     Image{
         id: bgCover
-        width: parent.width
+        width: parent.width * 0.8
         height: width
-        anchors{
-            top: parent.top
-        }
+        anchors.centerIn: parent
 
         fillMode: Image.PreserveAspectFit
-        source: "/usr/share/icons/hicolor/172x172/apps/org.ilyavysotsky.yasailmusic.png"
+        source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.yandexmusic.png"
     }
 
     Column {
@@ -68,18 +66,6 @@ CoverBackground {
             onTriggered: {
                 ++playListModel.currentIndex
             }
-        }
-    }
-
-    Connections{
-        target: playListModel
-        onCurrentIndexChanged: {
-            song.text = playListModel.get(currentIndex).trackName
-            artist.text = playListModel.get(currentIndex).artistName
-            var cover = "https://"+playListModel.get(currentIndex).albumCover;
-            //cover string always end on %25%25 in must to replace to 100x100
-            //or other multiple of one hundred
-            bgCover.source = cover.slice(0,-2)+"100x100"
         }
     }
 }

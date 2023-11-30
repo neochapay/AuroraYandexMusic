@@ -17,32 +17,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-import QtQuick 2.0
-import Sailfish.Silica 1.0
-import Nemo.Notifications 1.0
-import Sailfish.WebView 1.0
+#ifndef FEED_H
+#define FEED_H
 
-import "../components/"
+#include "../types/playlist.h"
+#include "../types/track.h"
+#include "request.h"
 
-WebViewPage {
-    id: loginPage
-    WebView {
-        id: loginView
-        anchors.fill: parent
-        url: "https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d"
+#include <QJsonObject>
+#include <QObject>
 
-        onUrlChanged: {
-            auth.parseUrl(loginView.url.toString());
-        }
-    }
+class Feed : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QList<QObject*> generatedPlaylists READ generatedPlaylists NOTIFY feedReady)
+    Q_PROPERTY(QList<QObject*> tracksToPlay READ tracksToPlay NOTIFY feedReady)
 
-    Connections {
-        target: auth
-        onTokenChanged: {
-            if(auth.token.length > 0 ) {
-                pageContainer.replace(Qt.resolvedUrl("MainPage.qml"))
-            }
-        }
-    }
-}
+public:
+    explicit Feed(QObject* parent = nullptr);
+    Q_INVOKABLE void get();
 
+    const QList<QObject*>& generatedPlaylists() const;
+    const QList<QObject*>& tracksToPlay() const;
+
+private slots:
+    void getFeedHandler(QJsonValue value);
+
+signals:
+    void feedReady();
+
+private:
+    Request* m_getFeedApiRequest;
+    QList<Playlist*> m_generatedPlaylists;
+    QList<Track*> m_tracksToPlay;
+};
+
+#endif // FEED_H

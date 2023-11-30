@@ -2,13 +2,17 @@
 #include <QtQuick>
 #endif
 
-#include "YaSailMusic.h"
-#include "authorization.h"
-#include "models/playlistmodel.h"
-#include "models/searchmodel.h"
-#include "settings.h"
-#include "cacher.h"
-#include "track.h"
+#include "api/feed.h"
+#include "api/musicfetcher.h"
+#include "api/oauth.h"
+
+#include "types/cover.h"
+#include "types/playlist.h"
+#include "types/track.h"
+
+#include "models/currentplaylistmodel.h"
+#include "user.h"
+
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQuickView>
@@ -18,12 +22,6 @@
 #include <sailfishapp.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-BaseValues* baseValues_;
-
-BaseValues::BaseValues()
-{
-}
 
 int main(int argc, char* argv[])
 {
@@ -43,15 +41,19 @@ int main(int argc, char* argv[])
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
 
-    baseValues_ = new BaseValues();
+    qRegisterMetaType<Album>("Album");
+    qRegisterMetaType<Artist>("Artist");
+    qRegisterMetaType<Cover>("Cover");
+    qRegisterMetaType<Playlist>("Playlist");
+    qRegisterMetaType<Track>("Track");
 
-    qmlRegisterType<PlaylistModel>("org.ilyavysotsky.yasailmusic", 1, 0, "PlaylistModel");
-    qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
-    qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
+    qmlRegisterType<CurrentPlayListModel>("ru.neochapay.yandexmusic", 1, 0, "CurrentPlayListModel");
+    qmlRegisterType<User>("ru.neochapay.yandexmusic", 1, 0, "User");
+    qmlRegisterType<OAuth>("ru.neochapay.yandexmusic", 1, 0, "Auth");
+    qmlRegisterType<Feed>("ru.neochapay.yandexmusic", 1, 0, "Feed");
+    qmlRegisterType<MusicFetcher>("ru.neochapay.yandexmusic", 1, 0, "MusicFetcher");
 
-    Authorization* auth = new Authorization();
-    view->rootContext()->setContextProperty("auth", auth);
-    view->setSource(SailfishApp::pathTo("qml/YaSailMusic.qml"));
+    view->setSource(SailfishApp::pathTo("qml/YandexMusic.qml"));
     view->show();
 
     return application->exec();
