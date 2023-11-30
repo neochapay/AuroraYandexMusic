@@ -10,10 +10,7 @@
 #include "types/playlist.h"
 #include "types/track.h"
 
-#include "cacher.h"
 #include "models/currentplaylistmodel.h"
-#include "models/searchmodel.h"
-#include "trackobject.h"
 #include "user.h"
 
 #include <QGuiApplication>
@@ -50,15 +47,13 @@ int main(int argc, char* argv[])
     qRegisterMetaType<Playlist>("Playlist");
     qRegisterMetaType<Track>("Track");
 
-    qmlRegisterType<SearchModel>("org.ilyavysotsky.yasailmusic", 1, 0, "SearchModel");
-    qmlRegisterType<CurrentPlayListModel>("org.ilyavysotsky.yasailmusic", 1, 0, "CurrentPlayListModel");
-    qmlRegisterType<Cacher>("org.ilyavysotsky.yasailmusic", 1, 0, "Cacher");
-    qmlRegisterType<User>("org.ilyavysotsky.yasailmusic", 1, 0, "User");
-    qmlRegisterType<OAuth>("org.ilyavysotsky.yasailmusic", 1, 0, "Auth");
-    qmlRegisterType<Feed>("org.ilyavysotsky.yasailmusic", 1, 0, "Feed");
-    qmlRegisterType<MusicFetcher>("org.ilyavysotsky.yasailmusic", 1, 0, "MusicFetcher");
+    qmlRegisterType<CurrentPlayListModel>("ru.neochapay.yandexmusic", 1, 0, "CurrentPlayListModel");
+    qmlRegisterType<User>("ru.neochapay.yandexmusic", 1, 0, "User");
+    qmlRegisterType<OAuth>("ru.neochapay.yandexmusic", 1, 0, "Auth");
+    qmlRegisterType<Feed>("ru.neochapay.yandexmusic", 1, 0, "Feed");
+    qmlRegisterType<MusicFetcher>("ru.neochapay.yandexmusic", 1, 0, "MusicFetcher");
 
-    view->setSource(SailfishApp::pathTo("qml/YaSailMusic.qml"));
+    view->setSource(SailfishApp::pathTo("qml/YandexMusic.qml"));
     view->show();
 
     return application->exec();

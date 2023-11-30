@@ -1,4 +1,4 @@
-TARGET = org.ilyavysotsky.yasailmusic
+TARGET = ru.neochapay.yandexmusic
 
 CONFIG += \
     sailfishapp
@@ -10,13 +10,8 @@ SOURCES += \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
     src/api/request.cpp \
-    src/cacher.cpp \
-    src/downloader.cpp \
     src/models/currentplaylistmodel.cpp \
-    src/models/neteworkplaylistmodel.cpp \
-    src/models/searchmodel.cpp \
     src/main.cpp \
-    src/trackobject.cpp \
     src/types/album.cpp \
     src/types/artist.cpp \
     src/types/cover.cpp \
@@ -29,12 +24,7 @@ HEADERS += \
     src/api/musicfetcher.h \
     src/api/oauth.h \
     src/api/request.h \
-    src/cacher.h \
-    src/downloader.h \
     src/models/currentplaylistmodel.h \
-    src/models/neteworkplaylistmodel.h \
-    src/models/searchmodel.h \
-    src/trackobject.h \
     src/types/album.h \
     src/types/artist.h \
     src/types/cover.h \
@@ -59,4 +49,4 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172
 CONFIG += sailfishapp_i18n
 
 TRANSLATIONS += \
-    translations/org.ilyavysotsky.yasailmusic-ru.ts \
+    translations/ru.neochapay.yandexmusic-ru.ts \

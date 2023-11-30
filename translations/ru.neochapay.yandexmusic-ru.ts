@@ -31,16 +31,16 @@
     </message>
 </context>
 <context>
-    <name>YaSailMusic</name>
+    <name>YandexMusic</name>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="84"/>
+        <location filename="../qml/YandexMusic.qml" line="84"/>
         <source>Loading</source>
-        <translation>Загрузка</translation>
+        <translation type="unfinished">Загрузка</translation>
     </message>
     <message>
-        <location filename="../qml/YaSailMusic.qml" line="85"/>
+        <location filename="../qml/YandexMusic.qml" line="85"/>
         <source>tags...</source>
-        <translation>тэги...</translation>
+        <translation type="unfinished">тэги...</translation>
     </message>
 </context>
 </TS>

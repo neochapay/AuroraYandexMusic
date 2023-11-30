@@ -11,7 +11,7 @@ CoverBackground {
         anchors.centerIn: parent
 
         fillMode: Image.PreserveAspectFit
-        source: "/usr/share/icons/hicolor/172x172/apps/org.ilyavysotsky.yasailmusic.png"
+        source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.yandexmusic.png"
     }
 
     Column {

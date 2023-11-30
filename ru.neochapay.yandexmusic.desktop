@@ -1,12 +1,12 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=org.ilyavysotsky.yasailmusic
-Exec=/usr/bin/org.ilyavysotsky.yasailmusic
+Icon=ru.neochapay.yandexmusic
+Exec=/usr/bin/ru.neochapay.yandexmusic
 Name=Yandex Music
 Name[ru]=Яндекс Музыка
 
 [X-Sailjail]
 Permissions=Audio;Internet
-OrganizationName=org.ilyavysotsky
-ApplicationName=yasailmusic
+OrganizationName=ru.neochapay
+ApplicationName=yandexmusic
