@@ -53,31 +53,31 @@ public:
 
 class Playlist : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool available READ available)
-    Q_PROPERTY(QString backgroundImageUrl READ backgroundImageUrl)
-    Q_PROPERTY(QString backgroundVideoUrl READ backgroundVideoUrl)
-    Q_PROPERTY(QObject* cover READ cover)
-    Q_PROPERTY(QObject* coverWithoutText READ coverWithoutText)
-    Q_PROPERTY(QDateTime created READ created)
-    Q_PROPERTY(QString description READ description)
-    Q_PROPERTY(QString descriptionFormatted READ descriptionFormatted)
-    Q_PROPERTY(int durationMs READ durationMs)
-    Q_PROPERTY(bool everPlayed READ everPlayed)
-    Q_PROPERTY(QString generatedPlaylistType READ generatedPlaylistType)
-    Q_PROPERTY(QString idForFrom READ idForFrom)
-    Q_PROPERTY(bool isBanner READ isBanner)
-    Q_PROPERTY(bool isPremiere READ isPremiere)
-    Q_PROPERTY(int kind READ kind)
+    Q_PROPERTY(bool available READ available NOTIFY playlistChanged)
+    Q_PROPERTY(QString backgroundImageUrl READ backgroundImageUrl NOTIFY playlistChanged)
+    Q_PROPERTY(QString backgroundVideoUrl READ backgroundVideoUrl NOTIFY playlistChanged)
+    Q_PROPERTY(QObject* cover READ cover NOTIFY playlistChanged)
+    Q_PROPERTY(QObject* coverWithoutText READ coverWithoutText NOTIFY playlistChanged)
+    Q_PROPERTY(QDateTime created READ created NOTIFY playlistChanged)
+    Q_PROPERTY(QString description READ description NOTIFY playlistChanged)
+    Q_PROPERTY(QString descriptionFormatted READ descriptionFormatted NOTIFY playlistChanged)
+    Q_PROPERTY(int durationMs READ durationMs NOTIFY playlistChanged)
+    Q_PROPERTY(bool everPlayed READ everPlayed NOTIFY playlistChanged)
+    Q_PROPERTY(QString generatedPlaylistType READ generatedPlaylistType NOTIFY playlistChanged)
+    Q_PROPERTY(QString idForFrom READ idForFrom NOTIFY playlistChanged)
+    Q_PROPERTY(bool isBanner READ isBanner NOTIFY playlistChanged)
+    Q_PROPERTY(bool isPremiere READ isPremiere NOTIFY playlistChanged)
+    Q_PROPERTY(int kind READ kind NOTIFY playlistChanged)
     // TODO: add madeFor
-    Q_PROPERTY(QDateTime modified READ modified)
-    Q_PROPERTY(QString ogImage READ ogImage)
+    Q_PROPERTY(QDateTime modified READ modified NOTIFY playlistChanged)
+    Q_PROPERTY(QString ogImage READ ogImage NOTIFY playlistChanged)
     // TODO: add owner
-    Q_PROPERTY(QString playlistUuid READ playlistUuid)
-    Q_PROPERTY(int revision READ revision)
-    Q_PROPERTY(int snapshot READ snapshot)
-    Q_PROPERTY(QStringList tags READ tags)
-    Q_PROPERTY(QString title READ title)
-    Q_PROPERTY(int trackCount READ trackCount)
+    Q_PROPERTY(QString playlistUuid READ playlistUuid NOTIFY playlistChanged)
+    Q_PROPERTY(int revision READ revision NOTIFY playlistChanged)
+    Q_PROPERTY(int snapshot READ snapshot NOTIFY playlistChanged)
+    Q_PROPERTY(QStringList tags READ tags NOTIFY playlistChanged)
+    Q_PROPERTY(QString title READ title NOTIFY playlistChanged)
+    Q_PROPERTY(int trackCount READ trackCount NOTIFY playlistChanged)
     // TODO: add tracks
 
 public:
@@ -110,6 +110,9 @@ public:
     const QStringList& tags() const;
     const QString& title() const;
     int trackCount() const;
+
+signals:
+    void playlistChanged();
 
 private:
     PlaylistPrivate* d_ptr;
