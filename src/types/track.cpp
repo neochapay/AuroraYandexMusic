@@ -37,7 +37,7 @@ Track::Track(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new TrackPrivate())
 {
-    for (const QJsonValue& v : object.value("albuns").toArray()) {
+    for (const QJsonValue& v : object.value("albums").toArray()) {
         Album* album = new Album(v.toObject());
         d_ptr->albums.push_back(album);
     }
