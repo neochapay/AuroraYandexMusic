@@ -6,7 +6,7 @@ Exec=/usr/bin/ru.neochapay.yandexmusic
 Name=Yandex Music
 Name[ru]=Яндекс Музыка
 
-[X-Sailjail]
-Permissions=Audio;Internet
+[X-Application]
+Permissions=Audio;Internet;WebView
 OrganizationName=ru.neochapay
 ApplicationName=yandexmusic
