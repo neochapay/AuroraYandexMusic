@@ -40,7 +40,7 @@ WebViewPage {
         target: auth
         onTokenChanged: {
             if(auth.token.length > 0 ) {
-                pageContainer.replace(Qt.resolvedUrl("MainPage.qml"))
+                pageContainer.replace(Qt.resolvedUrl("FeedPage.qml"))
             }
         }
     }
