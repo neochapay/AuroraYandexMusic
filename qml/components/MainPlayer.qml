@@ -19,7 +19,7 @@ Item {
 
     onCoverChanged: {
         if(mainPlayer.cover.length != 0) {
-            littlePlayerTrackCover.source = "https://"+mainPlayer.cover.replace("%%", "50x50")
+            littlePlayer.cover = "https://"+mainPlayer.cover.replace("%%", "50x50")
         }
     }
 
@@ -31,99 +31,36 @@ Item {
         }
     }
 
-    Item{
+
+    LittlePlayer{
         id: littlePlayer
         width: parent.width
         height: Theme.itemSizeLarge
         visible: littlePlayer.height == mainPlayer.height
-
-        Rectangle{
-            id: background
-            anchors.fill: parent
-            color: "white"
-            opacity: 0.2
-        }
-
-        Image{
-            id: littlePlayerTrackCover
-            height: parent.height - Theme.paddingSmall*2
-            width: height
-
-            anchors{
-                top: parent.top
-                topMargin: Theme.paddingSmall
-                left: parent.left
-                leftMargin: Theme.paddingSmall
-            }
-
-            fillMode: Image.PreserveAspectCrop
-        }
-
-
-        Label{
-            id: littlePlayerTitleLabel
-            anchors{
-                left: littlePlayerTrackCover.right
-                leftMargin: Theme.paddingSmall
-                bottom: parent.verticalCenter
-            }
-            width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width - littlePlayerTrackCover.width - Theme.paddingSmall*2
-            height: parent.height / 2
-            text: mainPlayer.title
-            color: Theme.highlightColor
-            verticalAlignment: Text.AlignVCenter
-        }
-
-        Label{
-            id: littlePlayerArtistLabel
-            anchors{
-                left: littlePlayerTrackCover.right
-                leftMargin: Theme.paddingSmall
-                top: parent.verticalCenter
-            }
-            width: littlePlayerTitleLabel.width
-            height: parent.height / 2
-            text: mainPlayer.artist
-            color: Theme.primaryColor
-            verticalAlignment: Text.AlignTop
-        }
-
-        IconButton {
-            id: littlePlayerLikeButton
-            width: parent.height
-            height: width
-
-            anchors{
-                right: littlePlayerPlayButton.left
-            }
-
-            icon.source: "image://theme/icon-m-like?" + (pressed
-                                                         ? Theme.highlightColor
-                                                         : Theme.primaryColor)
-            onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
-        }
-
-
-        IconButton {
-            id: littlePlayerPlayButton
-            width: parent.height
-            height: width
-
-            anchors.right: parent.right
-
-            icon.source: "image://theme/icon-m-play?" + (pressed
-                                                         ? Theme.highlightColor
-                                                         : Theme.primaryColor)
-            onClicked: console.log("Play clicked!")
-        }
     }
 
     Rectangle{
         id: bigPlayer
         width: parent.width
         height: mainPlayer.parent.height
-        color: "green"
+        color: "black"
         visible: !littlePlayer.visible
+
+        IconButton {
+            id: bigPlayerCloseButton
+            width: Theme.itemSizeMedium
+            height: width
+
+            anchors{
+                top: parent.top
+                topMargin: Theme.paddingLarge
+                left: parent.left
+                leftMargin: Theme.paddingLarge
+            }
+
+            icon.source: "image://theme/icon-m-cancel?#FFFFFF"
+            onClicked: mainPlayer.height = Theme.itemSizeLarge
+        }
     }
 
 
@@ -132,11 +69,17 @@ Item {
     }
 
     onVisibleChanged: {
+        loadCurrentData()
+    }
+
+    function loadCurrentData() {
         if(currentPlayListModel.rowCount > 0) {
             mainPlayer.title = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).title
             mainPlayer.artist = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).artists[0].name
             mainPlayer.cover = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).albums[0].coverUri
             musicFetcher.load(currentPlayListModel.getTrack(currentPlayListModel.currentIndex))
+
+            littlePlayer.bgColor = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).derivedColors.miniPlayer
         }
     }
 }

@@ -26,6 +26,10 @@
 #include <QObject>
 struct DerivedColors {
     Q_GADGET
+    Q_PROPERTY(QString accent MEMBER accent)
+    Q_PROPERTY(QString average MEMBER average)
+    Q_PROPERTY(QString miniPlayer MEMBER miniPlayer)
+    Q_PROPERTY(QString waveText MEMBER waveText)
 public:
     QString accent;
     QString average;
@@ -138,5 +142,6 @@ private:
 };
 
 Q_DECLARE_METATYPE(Track)
+Q_DECLARE_METATYPE(DerivedColors)
 
 #endif // TRACK_H

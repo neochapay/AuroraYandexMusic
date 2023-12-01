@@ -18,6 +18,7 @@
  */
 
 #include "track.h"
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonValue>
 
@@ -62,6 +63,7 @@ Track::Track(QJsonObject object, QObject* parent)
     derivedColors.average = object.value("derivedColors").toObject().take("average").toString();
     derivedColors.miniPlayer = object.value("derivedColors").toObject().take("miniPlayer").toString();
     derivedColors.waveText = object.value("derivedColors").toObject().take("waveText").toString();
+    d_ptr->derivedColors = derivedColors;
 
     for (const QJsonValue& v : object.value("disclaimers").toArray()) {
         d_ptr->disclaimers.push_back(v.toString());

@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
     qRegisterMetaType<Cover>("Cover");
     qRegisterMetaType<Playlist>("Playlist");
     qRegisterMetaType<Track>("Track");
+    qRegisterMetaType<DerivedColors>("DerivedColors");
 
     qmlRegisterType<CurrentPlayListModel>("ru.neochapay.yandexmusic", 1, 0, "CurrentPlayListModel");
     qmlRegisterType<User>("ru.neochapay.yandexmusic", 1, 0, "User");

@@ -34,6 +34,7 @@ HEADERS += \
 
 
 DISTFILES += \
+    qml/components/LittlePlayer.qml \
     qml/components/MainPlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
     qml/pages/FeedPage.qml \
