@@ -43,6 +43,7 @@ public:
 
     Q_INVOKABLE void push(Track* track);
     Q_INVOKABLE Track* getTrack(int index);
+    Q_INVOKABLE Track* getCurrentTrack();
 
 signals:
     void rowCountChanged();

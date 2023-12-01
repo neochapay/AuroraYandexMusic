@@ -1,11 +1,47 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import QtMultimedia 5.5
+
 Item{
     id: littlePlayer
 
     property alias cover: littlePlayerTrackCover.source
     property alias bgColor: background.color
+
+
+    Connections{
+        target: rootAudio
+        onStatusChanged: {
+            if(rootAudio.status == MediaPlayer.NoMedia) {
+                littlePlayerPlayButton.iconName = "icon-m-cancel"
+            }
+
+            if(rootAudio.status == MediaPlayer.Loaded) {
+                littlePlayerPlayButton.iconName = "icon-m-play"
+            }
+        }
+
+        onPlaybackStateChanged: {
+            if(rootAudio.playbackState == MediaPlayer.PlayingState) {
+                littlePlayerPlayButton.iconName = "icon-m-pause"
+            } else {
+                littlePlayerPlayButton.iconName = "icon-m-play"
+            }
+        }
+    }
+
+    Rectangle{
+        id: payingStatus
+        width: parent.width*rootAudio.position/rootAudio.duration
+        height: Theme.paddingSmall
+        anchors{
+            top: parent.top
+            left: parent.left
+        }
+        color: Theme.highlightColor
+
+    }
 
     Rectangle{
         id: background
@@ -76,14 +112,19 @@ Item{
 
     IconButton {
         id: littlePlayerPlayButton
+
+        property string iconName: "icon-m-play"
+
         width: parent.height
         height: width
-
         anchors.right: parent.right
-
-        icon.source: "image://theme/icon-m-play?" + (pressed
+        icon.source: "image://theme/"+iconName+"?" + (pressed
                                                      ? Theme.highlightColor
                                                      : Theme.primaryColor)
-        onClicked: console.log("Play clicked!")
+        onClicked: if(rootAudio.playbackState == MediaPlayer.PlayingState) {
+                       rootAudio.pause()
+                   } else {
+                       rootAudio.play()
+                   }
     }
 }

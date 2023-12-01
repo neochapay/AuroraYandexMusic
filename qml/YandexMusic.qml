@@ -35,10 +35,16 @@ ApplicationWindow {
 
     MusicFetcher{
         id: musicFetcher
+        onTrackReady: {
+            rootAudio.source = path
+        }
     }
 
     CurrentPlayListModel{
         id: currentPlayListModel
+        onCurrentIndexChanged: {
+            musicFetcher.load(currentPlayListModel.getCurrentTrack())
+        }
     }
 
     MainPlayer{
@@ -48,12 +54,6 @@ ApplicationWindow {
 
     MediaPlayer{
         id: rootAudio
-        onStopped: {
-            if (rootAudio.status == MediaPlayer.EndOfMedia) {
-                console.log("Track finished")
-                ++playListModel.currentIndex
-            }
-        }
     }
 
     MprisPlayer {

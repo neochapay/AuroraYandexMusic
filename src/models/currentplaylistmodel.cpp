@@ -100,3 +100,11 @@ Track* CurrentPlayListModel::getTrack(int index)
     }
     return nullptr;
 }
+
+Track* CurrentPlayListModel::getCurrentTrack()
+{
+    if (m_currentIndex != -1 && m_currentIndex < m_currentTracks.count()) {
+        return m_currentTracks.at(m_currentIndex);
+    }
+    return nullptr;
+}

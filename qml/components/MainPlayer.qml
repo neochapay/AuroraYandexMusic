@@ -74,12 +74,13 @@ Item {
 
     function loadCurrentData() {
         if(currentPlayListModel.rowCount > 0) {
-            mainPlayer.title = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).title
-            mainPlayer.artist = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).artists[0].name
-            mainPlayer.cover = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).albums[0].coverUri
-            musicFetcher.load(currentPlayListModel.getTrack(currentPlayListModel.currentIndex))
+            var track = currentPlayListModel.getCurrentTrack();
+            mainPlayer.title = track.title
+            mainPlayer.artist = track.artists[0].name
+            mainPlayer.cover = track.albums[0].coverUri
+            musicFetcher.load(track)
 
-            littlePlayer.bgColor = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).derivedColors.miniPlayer
+            littlePlayer.bgColor = track.derivedColors.miniPlayer
         }
     }
 }

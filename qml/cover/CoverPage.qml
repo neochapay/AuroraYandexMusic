@@ -22,7 +22,6 @@ CoverBackground {
             id: artist
             width: contentWidth>cover.width ? cover.width : contentWidth
             anchors.horizontalCenter: parent.horizontalCenter
-            text: (rootAudio.playbackState === MediaPlayer.PlayingState || rootAudio.playbackState === MediaPlayer.PausedState) ? playListModel.get(playListModel.currentIndex).artistName : "Idle"
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
@@ -33,7 +32,6 @@ CoverBackground {
             id: song
             width: contentWidth>cover.width ? cover.width : contentWidth
             anchors.horizontalCenter: parent.horizontalCenter
-            text: (rootAudio.playbackState === MediaPlayer.PlayingState || rootAudio.playbackState === MediaPlayer.PausedState) ? playListModel.get(playListModel.currentIndex).trackName : "Idle"
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
