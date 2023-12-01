@@ -23,10 +23,6 @@ ApplicationWindow {
         id: auth
     }
 
-    Likes{
-        id: likes
-    }
-
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 
@@ -35,9 +31,6 @@ ApplicationWindow {
         Component.onCompleted: if(auth.token.length > 0) {
                                    user.getAccountStatus();
                                }
-        onUserIDChanged: {
-            likes.userID = user.userID
-        }
     }
 
     MusicFetcher{

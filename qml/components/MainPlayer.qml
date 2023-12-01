@@ -42,7 +42,7 @@ Item {
             icon.source: "image://theme/icon-m-like?" + (pressed
                                                          ? Theme.highlightColor
                                                          : Theme.primaryColor)
-            onClicked: likes.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
+            onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
 

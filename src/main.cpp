@@ -3,7 +3,6 @@
 #endif
 
 #include "api/feed.h"
-#include "api/likes.h"
 #include "api/musicfetcher.h"
 #include "api/oauth.h"
 #include "api/user.h"
@@ -53,7 +52,6 @@ int main(int argc, char* argv[])
     qmlRegisterType<OAuth>("ru.neochapay.yandexmusic", 1, 0, "Auth");
     qmlRegisterType<Feed>("ru.neochapay.yandexmusic", 1, 0, "Feed");
     qmlRegisterType<MusicFetcher>("ru.neochapay.yandexmusic", 1, 0, "MusicFetcher");
-    qmlRegisterType<Likes>("ru.neochapay.yandexmusic", 1, 0, "Likes");
 
     view->setSource(SailfishApp::pathTo("qml/YandexMusic.qml"));
     view->show();
