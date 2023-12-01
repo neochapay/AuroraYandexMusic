@@ -17,6 +17,12 @@ Item {
     }
     z: 99
 
+    onCoverChanged: {
+        if(mainPlayer.cover.length != 0) {
+            littlePlayerTrackCover.source = "https://"+mainPlayer.cover.replace("%%", "50x50")
+        }
+    }
+
     MouseArea{
         enabled: littlePlayer.visible
         anchors.fill: parent
@@ -51,7 +57,6 @@ Item {
             }
 
             fillMode: Image.PreserveAspectCrop
-            source: "https://"+mainPlayer.cover.replace("%%", "50x50")
         }
 
 
