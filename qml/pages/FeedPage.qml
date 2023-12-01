@@ -60,15 +60,15 @@ Page {
             id: feedColumn
             anchors{
                 top: header.bottom
-                topMargin: Theme.paddingSmall
+                topMargin: Theme.paddingLarge
                 left: parent.left
-                leftMargin: Theme.paddingSmall
+                leftMargin: Theme.paddingLarge
             }
-            width: parent.width-Theme.paddingSmall*2
-            height: parent.height-header.height-Theme.paddingSmall*2
+            width: parent.width-Theme.paddingLarge*2
+            height: parent.height-header.height-Theme.paddingLarge*2
 
             visible: !busyIndicator.visible
-            spacing: Theme.paddingMedium
+            spacing: Theme.paddingLarge
 
             Label{
                 width: parent.width
@@ -84,12 +84,12 @@ Page {
                 height: Theme.itemSizeHuge
                 model: feed.generatedPlaylists
                 orientation: ListView.Horizontal
-                spacing: Theme.paddingMedium
+                spacing: Theme.paddingLarge
 
                 delegate: PlaylistCoverFeed{
                     title: modelData.title
                     destription: modelData.description
-                    cover: modelData.ogImage
+                    cover: modelData.cover.uri
                 }
             }
         }

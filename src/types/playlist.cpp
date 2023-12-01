@@ -86,14 +86,14 @@ const QString& Playlist::backgroundVideoUrl() const
     return d_ptr->backgroundVideoUrl;
 }
 
-const Cover& Playlist::cover() const
+QObject* Playlist::cover() const
 {
-    return d_ptr->cover;
+    return qobject_cast<QObject*>(&d_ptr->cover);
 }
 
-const Cover& Playlist::coverWithoutText() const
+QObject* Playlist::coverWithoutText() const
 {
-    return d_ptr->coverWithoutText;
+    return qobject_cast<QObject*>(&d_ptr->coverWithoutText);
 }
 
 const QDateTime& Playlist::created() const

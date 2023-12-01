@@ -56,8 +56,8 @@ class Playlist : public QObject {
     Q_PROPERTY(bool available READ available)
     Q_PROPERTY(QString backgroundImageUrl READ backgroundImageUrl)
     Q_PROPERTY(QString backgroundVideoUrl READ backgroundVideoUrl)
-    Q_PROPERTY(Cover cover READ cover)
-    Q_PROPERTY(Cover coverWithoutText READ coverWithoutText)
+    Q_PROPERTY(QObject* cover READ cover)
+    Q_PROPERTY(QObject* coverWithoutText READ coverWithoutText)
     Q_PROPERTY(QDateTime created READ created)
     Q_PROPERTY(QString description READ description)
     Q_PROPERTY(QString descriptionFormatted READ descriptionFormatted)
@@ -90,8 +90,8 @@ public:
     bool available() const;
     const QString& backgroundImageUrl() const;
     const QString& backgroundVideoUrl() const;
-    const Cover& cover() const;
-    const Cover& coverWithoutText() const;
+    QObject* cover() const;
+    QObject* coverWithoutText() const;
     const QDateTime& created() const;
     const QString& description() const;
     const QString& descriptionFormatted() const;
