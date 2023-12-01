@@ -8,6 +8,7 @@ Item {
 
     property string title: "Unknow title"
     property string artist: "Unknow artist"
+    property string cover
 
     width: parent.width
     height: Theme.itemSizeLarge
@@ -30,29 +31,38 @@ Item {
         height: Theme.itemSizeLarge
         visible: littlePlayer.height == mainPlayer.height
 
-        IconButton {
-            id: littlePlayerLikeButton
-            width: parent.height
-            height: width
+        Rectangle{
+            id: background
+            anchors.fill: parent
+            color: "white"
+            opacity: 0.2
+        }
+
+        Image{
+            id: littlePlayerTrackCover
+            height: parent.height - Theme.paddingSmall*2
+            width: height
 
             anchors{
+                top: parent.top
+                topMargin: Theme.paddingSmall
                 left: parent.left
+                leftMargin: Theme.paddingSmall
             }
 
-            icon.source: "image://theme/icon-m-like?" + (pressed
-                                                         ? Theme.highlightColor
-                                                         : Theme.primaryColor)
-            onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
+            fillMode: Image.PreserveAspectCrop
+            source: "https://"+mainPlayer.cover.replace("%%", "50x50")
         }
 
 
         Label{
             id: littlePlayerTitleLabel
             anchors{
-                left: littlePlayerLikeButton.right
+                left: littlePlayerTrackCover.right
+                leftMargin: Theme.paddingSmall
                 bottom: parent.verticalCenter
             }
-            width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width
+            width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width - littlePlayerTrackCover.width - Theme.paddingSmall*2
             height: parent.height / 2
             text: mainPlayer.title
             color: Theme.highlightColor
@@ -62,14 +72,30 @@ Item {
         Label{
             id: littlePlayerArtistLabel
             anchors{
-                left: littlePlayerLikeButton.right
+                left: littlePlayerTrackCover.right
+                leftMargin: Theme.paddingSmall
                 top: parent.verticalCenter
             }
-            width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width
+            width: littlePlayerTitleLabel.width
             height: parent.height / 2
             text: mainPlayer.artist
             color: Theme.primaryColor
             verticalAlignment: Text.AlignTop
+        }
+
+        IconButton {
+            id: littlePlayerLikeButton
+            width: parent.height
+            height: width
+
+            anchors{
+                right: littlePlayerPlayButton.left
+            }
+
+            icon.source: "image://theme/icon-m-like?" + (pressed
+                                                         ? Theme.highlightColor
+                                                         : Theme.primaryColor)
+            onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
 
@@ -104,6 +130,7 @@ Item {
         if(currentPlayListModel.rowCount > 0) {
             mainPlayer.title = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).title
             mainPlayer.artist = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).artists[0].name
+            mainPlayer.cover = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).albums[0].coverUri
             musicFetcher.load(currentPlayListModel.getTrack(currentPlayListModel.currentIndex))
         }
     }
