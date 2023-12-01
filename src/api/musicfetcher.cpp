@@ -31,7 +31,7 @@
 MusicFetcher::MusicFetcher(QObject* parent)
     : QObject(parent)
 {
-    m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "yamusic.conf", QSettings::NativeFormat);
+    m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat);
     QDir cacheDir;
     cacheDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/");
 }

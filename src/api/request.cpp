@@ -30,7 +30,7 @@ Request::Request(QString point, QObject* parent)
     , m_manager(new QNetworkAccessManager(this))
     , m_debug(false)
 {
-    m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "yamusic.conf", QSettings::NativeFormat);
+    m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat);
     m_accessToken = m_settings->value("accessToken").toString();
 
     if (m_accessToken.isEmpty()) {
