@@ -6,13 +6,13 @@
 #include "api/likes.h"
 #include "api/musicfetcher.h"
 #include "api/oauth.h"
+#include "api/user.h"
 
 #include "types/cover.h"
 #include "types/playlist.h"
 #include "types/track.h"
 
 #include "models/currentplaylistmodel.h"
-#include "user.h"
 
 #include <QGuiApplication>
 #include <QQmlContext>

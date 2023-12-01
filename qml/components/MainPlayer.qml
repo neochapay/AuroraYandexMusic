@@ -42,7 +42,7 @@ Item {
             icon.source: "image://theme/icon-m-like?" + (pressed
                                                          ? Theme.highlightColor
                                                          : Theme.primaryColor)
-            onClicked: likes.like("track", currentPlayListModel.getTrack(0).trackId)
+            onClicked: likes.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
 
@@ -102,10 +102,9 @@ Item {
 
     onVisibleChanged: {
         if(currentPlayListModel.rowCount > 0) {
-            mainPlayer.title = currentPlayListModel.getTrack(0).title
-            mainPlayer.artist = currentPlayListModel.getTrack(0).artists[0].name
-
-            musicFetcher.load(currentPlayListModel.getTrack(0))
+            mainPlayer.title = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).title
+            mainPlayer.artist = currentPlayListModel.getTrack(currentPlayListModel.currentIndex).artists[0].name
+            musicFetcher.load(currentPlayListModel.getTrack(currentPlayListModel.currentIndex))
         }
     }
 }

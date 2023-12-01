@@ -11,14 +11,14 @@ SOURCES += \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
     src/api/request.cpp \
+    src/api/user.cpp \
     src/models/currentplaylistmodel.cpp \
     src/main.cpp \
     src/types/album.cpp \
     src/types/artist.cpp \
     src/types/cover.cpp \
     src/types/playlist.cpp \
-    src/types/track.cpp \
-    src/user.cpp
+    src/types/track.cpp
 
 HEADERS += \
     src/api/feed.h \
@@ -26,13 +26,14 @@ HEADERS += \
     src/api/musicfetcher.h \
     src/api/oauth.h \
     src/api/request.h \
+    src/api/user.h \
     src/models/currentplaylistmodel.h \
     src/types/album.h \
     src/types/artist.h \
     src/types/cover.h \
     src/types/playlist.h \
-    src/types/track.h \
-    src/user.h
+    src/types/track.h
+
 
 DISTFILES += \
     qml/components/MainPlayer.qml \
