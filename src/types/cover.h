@@ -35,11 +35,11 @@ public:
 
 class Cover : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool custom READ custom)
-    Q_PROPERTY(QString dir READ dir)
-    Q_PROPERTY(QString type READ type)
-    Q_PROPERTY(QString uri READ uri)
-    Q_PROPERTY(int version READ version)
+    Q_PROPERTY(bool custom READ custom NOTIFY coverChanged)
+    Q_PROPERTY(QString dir READ dir NOTIFY coverChanged)
+    Q_PROPERTY(QString type READ type NOTIFY coverChanged)
+    Q_PROPERTY(QString uri READ uri NOTIFY coverChanged)
+    Q_PROPERTY(int version READ version NOTIFY coverChanged)
 
 public:
     explicit Cover(QObject* parent = nullptr);
@@ -54,6 +54,9 @@ public:
     const QString& type() const;
     const QString& uri() const;
     int version() const;
+
+signals:
+    void coverChanged();
 
 private:
     CoverPrivate* d_ptr;
