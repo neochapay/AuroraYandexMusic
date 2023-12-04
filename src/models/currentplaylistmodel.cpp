@@ -22,7 +22,7 @@
 
 CurrentPlayListModel::CurrentPlayListModel(QObject* parent)
     : QAbstractListModel(parent)
-    , m_currentIndex(0)
+    , m_currentIndex(-1)
 {
     connect(this, &QAbstractListModel::rowsInserted, this, &CurrentPlayListModel::rowCountChanged);
     connect(this, &QAbstractListModel::rowsRemoved, this, &CurrentPlayListModel::rowCountChanged);
