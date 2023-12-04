@@ -12,6 +12,7 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
+BuildRequires:  librsvg-tools
 
 %description
 Yandex Music (unofficial) for Aurora OS
@@ -32,6 +33,15 @@ rm -rf %{buildroot}
 desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
    %{buildroot}%{_datadir}/applications/*.desktop
+
+
+for size in 86 108 128 172
+do
+   mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/
+   rsvg-convert --width=$size --height=$size --output \
+           %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png \
+          %{_sourcedir}/../icons/svg/ru.neochapay.yandexmusic.svg
+done
 
 %files
 %defattr(-,root,root,-)
