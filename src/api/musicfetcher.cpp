@@ -38,6 +38,10 @@ MusicFetcher::MusicFetcher(QObject* parent)
 
 void MusicFetcher::load(Track* track)
 {
+    if (track == nullptr) {
+        return;
+    }
+
     m_linksList.clear();
     m_trackPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + track->trackId() + ".mp3";
 
