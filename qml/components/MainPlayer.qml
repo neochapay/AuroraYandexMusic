@@ -72,9 +72,19 @@ Item {
         loadCurrentData()
     }
 
+    Connections{
+        target: currentPlayListModel
+        onCurrentIndexChanged: loadCurrentData()
+    }
+
+
     function loadCurrentData() {
         if(currentPlayListModel.rowCount > 0) {
             var track = currentPlayListModel.getCurrentTrack();
+            if(track == null) {
+                return
+            }
+
             mainPlayer.title = track.title
             mainPlayer.artist = track.artists[0].name
             mainPlayer.cover = track.albums[0].coverUri
