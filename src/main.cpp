@@ -19,7 +19,7 @@
 #include <QScopedPointer>
 #include <QStandardPaths>
 #include <QtGlobal>
-#include <auroraapp.h>
+#include <sailfishapp.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -35,11 +35,11 @@ int main(int argc, char* argv[])
     //
     // To display the view, call "show()" (will show fullscreen on device).
 
-    QScopedPointer<QGuiApplication> application(Aurora::Application::application(argc, argv));
+    QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
     application->setOrganizationName(QStringLiteral("ru.neochapay"));
     application->setApplicationName(QStringLiteral("yandexmusic"));
 
-    QScopedPointer<QQuickView> view(Aurora::Application::createView());
+    QScopedPointer<QQuickView> view(SailfishApp::createView());
 
     qRegisterMetaType<Album>("Album");
     qRegisterMetaType<Artist>("Artist");
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Feed>("ru.neochapay.yandexmusic", 1, 0, "Feed");
     qmlRegisterType<MusicFetcher>("ru.neochapay.yandexmusic", 1, 0, "MusicFetcher");
 
-    view->setSource(Aurora::Application::pathTo("qml/YandexMusic.qml"));
+    view->setSource(SailfishApp::pathTo("qml/YandexMusic.qml"));
     view->show();
 
     return application->exec();
