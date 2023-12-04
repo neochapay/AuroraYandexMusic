@@ -32,6 +32,7 @@ Page {
         onFeedReady: {
             busyIndicator.visible = false
             currentPlayListModel.push(tracksToPlay[0])
+            currentPlayListModel.currentIndex = 0
         }
         onErrorReady: {
             feedView.visible = false
