@@ -6,22 +6,12 @@ import ru.neochapay.yandexmusic 1.0
 Item {
     id: mainPlayer
 
-    property string title: "Unknow title"
-    property string artist: "Unknow artist"
-    property string cover
-
     width: parent.width
     height: Theme.itemSizeLarge
     anchors{
         bottom: parent.bottom
     }
     z: 99
-
-    onCoverChanged: {
-        if(mainPlayer.cover.length != 0) {
-            littlePlayer.cover = "https://"+mainPlayer.cover.replace("%%", "100x100")
-        }
-    }
 
     MouseArea{
         enabled: littlePlayer.visible
@@ -39,58 +29,14 @@ Item {
         visible: littlePlayer.height == mainPlayer.height
     }
 
-    Rectangle{
+    BigPlayer{
         id: bigPlayer
         width: parent.width
         height: mainPlayer.parent.height
-        color: "black"
         visible: !littlePlayer.visible
-
-        IconButton {
-            id: bigPlayerCloseButton
-            width: Theme.itemSizeMedium
-            height: width
-
-            anchors{
-                top: parent.top
-                topMargin: Theme.paddingLarge
-                left: parent.left
-                leftMargin: Theme.paddingLarge
-            }
-
-            icon.source: "image://theme/icon-m-cancel?#FFFFFF"
-            onClicked: mainPlayer.height = Theme.itemSizeLarge
-        }
     }
-
 
     Behavior on height {
-        NumberAnimation { duration: 500 }
-    }
-
-    onVisibleChanged: {
-        loadCurrentData()
-    }
-
-    Connections{
-        target: currentPlayListModel
-        onCurrentIndexChanged: loadCurrentData()
-    }
-
-
-    function loadCurrentData() {
-        if(currentPlayListModel.rowCount > 0) {
-            var track = currentPlayListModel.getCurrentTrack();
-            if(track == null) {
-                return
-            }
-
-            mainPlayer.title = track.title
-            mainPlayer.artist = track.artists[0].name
-            mainPlayer.cover = track.albums[0].coverUri
-            musicFetcher.load(track)
-
-            littlePlayer.bgColor = track.derivedColors.miniPlayer
-        }
+        NumberAnimation { duration: 300 }
     }
 }

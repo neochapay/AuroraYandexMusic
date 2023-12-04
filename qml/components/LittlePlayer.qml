@@ -62,7 +62,7 @@ Item{
             leftMargin: Theme.paddingSmall
         }
 
-        fillMode: Image.PreserveAspectCrop
+        fillMode: Image.PreserveAspectFit
     }
 
 
@@ -75,7 +75,6 @@ Item{
         }
         width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width - littlePlayerTrackCover.width - Theme.paddingSmall*2
         height: parent.height / 2
-        text: mainPlayer.title
         color: Theme.highlightColor
         verticalAlignment: Text.AlignVCenter
     }
@@ -89,7 +88,6 @@ Item{
         }
         width: littlePlayerTitleLabel.width
         height: parent.height / 2
-        text: mainPlayer.artist
         color: Theme.primaryColor
         verticalAlignment: Text.AlignTop
     }
@@ -119,12 +117,29 @@ Item{
         height: width
         anchors.right: parent.right
         icon.source: "image://theme/"+iconName+"?" + (pressed
-                                                     ? Theme.highlightColor
-                                                     : Theme.primaryColor)
+                                                      ? Theme.highlightColor
+                                                      : Theme.primaryColor)
         onClicked: if(rootAudio.playbackState == MediaPlayer.PlayingState) {
                        rootAudio.pause()
                    } else {
                        rootAudio.play()
                    }
+    }
+
+    Connections{
+        target: currentPlayListModel
+        onCurrentIndexChanged: {
+            if(currentPlayListModel.rowCount > 0) {
+                var track = currentPlayListModel.getCurrentTrack();
+                if(track == null) {
+                    return
+                }
+
+                littlePlayerTitleLabel.text = track.title
+                littlePlayerArtistLabel.text = track.artists[0].name
+                littlePlayer.cover = "https://"+track.albums[0].coverUri.replace("%%", "100x100")
+                littlePlayer.bgColor = track.derivedColors.miniPlayer
+            }
+        }
     }
 }
