@@ -3,49 +3,74 @@ import Sailfish.Silica 1.0
 import QtMultimedia 5.0
 
 CoverBackground {
+    id: cover
+
+    Connections{
+        target: currentPlayListModel
+        onCurrentIndexChanged: {
+            var track = currentPlayListModel.getCurrentTrack();
+            if(track == null) {
+                return
+            }
+            songLabel.text = track.title
+            artistLabel.text = track.artists[0].name
+            bgCover.source = "https://"+track.albums[0].coverUri.replace("%%", "200x200")
+        }
+    }
 
     Image{
         id: bgCover
         width: parent.width * 0.8
         height: width
-        anchors.centerIn: parent
+        anchors{
+            top: parent.top
+            topMargin: parent.width*0.1
+            left: parent.left
+            leftMargin: parent.width*0.1
+        }
 
         fillMode: Image.PreserveAspectFit
         source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.yandexmusic.png"
     }
 
     Column {
-        anchors.centerIn: parent
-        spacing: Theme.paddingMedium
+        id: titleColumn
+        anchors{
+            top: bgCover.bottom
+            topMargin: parent.width*0.1
+            left: parent.left
+            leftMargin: parent.width*0.1
+        }
+
+        width: parent.width * 0.8
+        spacing: parent.width*0.1
+
         Label {
-            visible: rootAudio.playbackState === MediaPlayer.PlayingState || rootAudio.playbackState === MediaPlayer.PausedState
-            id: artist
+            id: artistLabel
             width: contentWidth>cover.width ? cover.width : contentWidth
             anchors.horizontalCenter: parent.horizontalCenter
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
+            visible: artistLabel.text != ""
         }
 
         Label {
-            visible: rootAudio.playbackState === MediaPlayer.PlayingState || rootAudio.playbackState === MediaPlayer.PausedState
-            id: song
+            id: songLabel
             width: contentWidth>cover.width ? cover.width : contentWidth
             anchors.horizontalCenter: parent.horizontalCenter
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
+            visible: songLabel.text != ""
         }
     }
 
     CoverActionList {
         id: activecover
-        enabled: rootAudio.playbackState === MediaPlayer.PlayingState || rootAudio.playbackState === MediaPlayer.PausedState
         CoverAction {
-            iconSource: "image://theme/icon-cover-previous-song"
-            onTriggered: {
-                --playListModel.currentIndex
-            }
+            iconSource: "image://theme/icon-m-like"
+            onTriggered: console.log("like pressed")
         }
 
         CoverAction {
@@ -61,9 +86,7 @@ CoverBackground {
 
         CoverAction {
             iconSource: "image://theme/icon-cover-next-song"
-            onTriggered: {
-                ++playListModel.currentIndex
-            }
+            onTriggered: console.log("next pressed")
         }
     }
 }
