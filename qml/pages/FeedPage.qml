@@ -31,7 +31,9 @@ Page {
         id: feed
         onFeedReady: {
             busyIndicator.visible = false
-            currentPlayListModel.push(tracksToPlay[0])
+            for(var i = 0; i < tracksToPlay.length; i++) {
+                currentPlayListModel.push(tracksToPlay[i])
+            }
             currentPlayListModel.currentIndex = 0
         }
         onErrorReady: {
