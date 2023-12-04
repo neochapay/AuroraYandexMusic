@@ -41,7 +41,6 @@ public:
 
 private slots:
     void getFeedHandler(QJsonValue value);
-    void getErrorHandler(QString message);
 
 signals:
     void feedReady();
