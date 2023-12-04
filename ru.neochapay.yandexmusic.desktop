@@ -3,8 +3,8 @@ Type=Application
 X-Nemo-Application-Type=silica-qt5
 Icon=ru.neochapay.yandexmusic
 Exec=/usr/bin/ru.neochapay.yandexmusic
-Name=Yandex Music
-Name[ru]=Яндекс Музыка
+Name=Ya.Music
+Name[ru]=Я.Музыка
 
 [X-Application]
 Permissions=Audio;Internet;WebView
