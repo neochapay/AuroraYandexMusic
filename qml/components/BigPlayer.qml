@@ -20,8 +20,12 @@ Rectangle{
                 }
                 bigPlayerTitleLabel.text = track.title
                 bigPlayerArtistLabel.text = track.artists[0].name
-                bigPlayerTrackCover.source = "https://"+track.albums[0].coverUri.replace("%%", "400x400")
-                bigPlayerInfoItemArtistCover.source = "https://"+track.artists[0].coverUri.replace("%%", "100x100")
+                if(track.albums[0].coverUri != "") {
+                    bigPlayerTrackCover.source = "https://"+track.albums[0].coverUri.replace("%%", "400x400")
+                }
+                if(track.artists[0].coverUri != "") {
+                    bigPlayerInfoItemArtistCover.source = "https://"+track.artists[0].coverUri.replace("%%", "100x100")
+                }
             }
         }
     }
@@ -145,6 +149,7 @@ Rectangle{
     }
 
     ProgressBar{
+        id: bigPlayerProgressBar
         height: Theme.itemSizeLarge
         width: bigPlayer.width - Theme.paddingLarge*2
 
@@ -157,6 +162,15 @@ Rectangle{
         minimumValue: 0
         maximumValue: rootAudio.duration
         value: rootAudio.position
+
+        MouseArea{
+            enabled: rootAudio.seekable
+            anchors.fill: parent
+            onClicked: {
+                var pos = (mouseX - bigPlayerProgressBar.x)/bigPlayerProgressBar.width
+                rootAudio.seek(pos * rootAudio.duration)
+            }
+        }
     }
 }
 
