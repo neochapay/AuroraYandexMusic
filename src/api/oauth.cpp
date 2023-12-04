@@ -26,7 +26,7 @@
 OAuth::OAuth(QObject* parent)
     : QObject(parent)
 {
-    m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat);
+    m_settings = new Settings();
     m_token = m_settings->value("accessToken").toString();
 }
 

@@ -21,10 +21,10 @@
 #define MUSICFETCHER_H
 
 #include "../types/track.h"
+#include "settings.h"
 
 #include <QNetworkReply>
 #include <QObject>
-#include <QSettings>
 
 struct DownloadLink {
 public:
@@ -56,7 +56,7 @@ private slots:
 
 private:
     Track* m_track;
-    QSettings* m_settings;
+    Settings* m_settings;
     QList<DownloadLink*> m_linksList;
     QString m_trackPath;
 };

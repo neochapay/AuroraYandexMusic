@@ -17,44 +17,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef REQUEST_H
-#define REQUEST_H
-
 #include "settings.h"
 
-#include <QJsonObject>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QObject>
-#include <QUrlQuery>
+#include <QStandardPaths>
 
-const QString API_URL = "https://api.music.yandex.net";
-
-class Request : public QObject {
-    Q_OBJECT
-
-public:
-    explicit Request(QString point, QObject* parent = nullptr);
-    void setDebug(bool debug);
-    void get(const QUrlQuery& query = QUrlQuery());
-    void post(const QString& query = "");
-
-signals:
-    void dataReady(QJsonValue object);
-    void errorReady(QString message);
-
-private slots:
-    void replyHandler(QNetworkReply* reply);
-
-private:
-    QString m_point;
-    QNetworkRequest m_request;
-    QNetworkAccessManager* m_manager;
-    Settings* m_settings;
-    QString m_accessToken;
-    QString m_type;
-
-    bool m_debug;
-};
-
-#endif // REQUEST_H
+Settings::Settings(QSettings* parent)
+    : QSettings { QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat, parent }
+{
+    QFileSystemWatcher* settingsFileWatcher = new QFileSystemWatcher(this);
+    settingsFileWatcher->addPath(this->fileName());
+    connect(settingsFileWatcher, &QFileSystemWatcher::fileChanged, this, &Settings::settingsUpdated);
+}

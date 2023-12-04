@@ -19,8 +19,9 @@
 #ifndef OAUTH_H
 #define OAUTH_H
 
+#include "settings.h"
+
 #include <QObject>
-#include <QSettings>
 
 class OAuth : public QObject {
     Q_OBJECT
@@ -46,7 +47,7 @@ signals:
 private:
     bool m_isLogined;
     QString m_token;
-    QSettings* m_settings;
+    Settings* m_settings;
     QString m_clientID;
 };
 

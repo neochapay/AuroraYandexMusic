@@ -17,44 +17,20 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef REQUEST_H
-#define REQUEST_H
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-#include "settings.h"
-
-#include <QJsonObject>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
+#include <QFileSystemWatcher>
 #include <QObject>
-#include <QUrlQuery>
+#include <QSettings>
 
-const QString API_URL = "https://api.music.yandex.net";
-
-class Request : public QObject {
+class Settings : public QSettings {
     Q_OBJECT
-
 public:
-    explicit Request(QString point, QObject* parent = nullptr);
-    void setDebug(bool debug);
-    void get(const QUrlQuery& query = QUrlQuery());
-    void post(const QString& query = "");
+    Settings(QSettings* parent = nullptr);
 
 signals:
-    void dataReady(QJsonValue object);
-    void errorReady(QString message);
-
-private slots:
-    void replyHandler(QNetworkReply* reply);
-
-private:
-    QString m_point;
-    QNetworkRequest m_request;
-    QNetworkAccessManager* m_manager;
-    Settings* m_settings;
-    QString m_accessToken;
-    QString m_type;
-
-    bool m_debug;
+    void settingsUpdated();
 };
 
-#endif // REQUEST_H
+#endif // SETTINGS_H

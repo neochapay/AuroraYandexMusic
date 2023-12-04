@@ -30,12 +30,16 @@ Request::Request(QString point, QObject* parent)
     , m_manager(new QNetworkAccessManager(this))
     , m_debug(false)
 {
-    m_settings = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat);
+    m_settings = new Settings();
     m_accessToken = m_settings->value("accessToken").toString();
 
     if (m_accessToken.isEmpty()) {
         qFatal("Token is empty APP is broken!");
     }
+
+    connect(m_settings, &Settings::settingsUpdated, this, [=] {
+        m_accessToken = m_settings->value("accessToken").toString();
+    });
 
     m_request = QNetworkRequest(QUrl(API_URL + m_point));
     m_request.setRawHeader("Authorization", "OAuth " + m_accessToken.toUtf8());

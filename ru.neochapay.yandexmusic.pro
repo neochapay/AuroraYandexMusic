@@ -10,6 +10,7 @@ SOURCES += \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
     src/api/request.cpp \
+    src/api/settings.cpp \
     src/api/user.cpp \
     src/models/currentplaylistmodel.cpp \
     src/main.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     src/api/musicfetcher.h \
     src/api/oauth.h \
     src/api/request.h \
+    src/api/settings.h \
     src/api/user.h \
     src/models/currentplaylistmodel.h \
     src/types/album.h \
