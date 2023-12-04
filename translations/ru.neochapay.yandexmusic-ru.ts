@@ -4,17 +4,17 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="52"/>
+        <location filename="../qml/pages/FeedPage.qml" line="51"/>
         <source>Oops. We have a problem.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="61"/>
+        <location filename="../qml/pages/FeedPage.qml" line="60"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="88"/>
+        <location filename="../qml/pages/FeedPage.qml" line="87"/>
         <source>Collect for you</source>
         <translation>Собрали для Вас</translation>
     </message>

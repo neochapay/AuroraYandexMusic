@@ -19,7 +19,7 @@ Item {
 
     onCoverChanged: {
         if(mainPlayer.cover.length != 0) {
-            littlePlayer.cover = "https://"+mainPlayer.cover.replace("%%", "50x50")
+            littlePlayer.cover = "https://"+mainPlayer.cover.replace("%%", "100x100")
         }
     }
 
