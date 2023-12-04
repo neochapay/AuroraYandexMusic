@@ -4,12 +4,17 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="49"/>
+        <location filename="../qml/pages/FeedPage.qml" line="52"/>
+        <source>Oops. We have a problem.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/FeedPage.qml" line="61"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="76"/>
+        <location filename="../qml/pages/FeedPage.qml" line="88"/>
         <source>Collect for you</source>
         <translation>Собрали для Вас</translation>
     </message>
@@ -33,12 +38,12 @@
 <context>
     <name>YandexMusic</name>
     <message>
-        <location filename="../qml/YandexMusic.qml" line="64"/>
+        <location filename="../qml/YandexMusic.qml" line="62"/>
         <source>Loading</source>
         <translation type="unfinished">Загрузка</translation>
     </message>
     <message>
-        <location filename="../qml/YandexMusic.qml" line="65"/>
+        <location filename="../qml/YandexMusic.qml" line="63"/>
         <source>tags...</source>
         <translation type="unfinished">тэги...</translation>
     </message>

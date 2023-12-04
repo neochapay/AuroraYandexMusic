@@ -33,11 +33,22 @@ Page {
             busyIndicator.visible = false
             currentPlayListModel.push(tracksToPlay[0])
         }
+        onErrorReady: {
+            feedView.visible = false
+            errorLabel.visible = true
+        }
     }
 
     Connections{
         target: user
         onUserIDChanged: feed.get()
+    }
+
+    Label{
+        id: errorLabel
+        visible: false
+        anchors.centerIn: parent
+        text: qsTr("Oops. We have a problem.")
     }
 
     SilicaFlickable {

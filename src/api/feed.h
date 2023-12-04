@@ -41,9 +41,11 @@ public:
 
 private slots:
     void getFeedHandler(QJsonValue value);
+    void getErrorHandler(QString message);
 
 signals:
     void feedReady();
+    void errorReady(QString message);
 
 private:
     Request* m_getFeedApiRequest;

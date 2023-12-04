@@ -40,7 +40,6 @@ public:
 
 signals:
     void dataReady(QJsonValue object);
-    void errorReady(QJsonValue object);
     void errorReady(QString message);
 
 private slots:

@@ -27,6 +27,7 @@ Feed::Feed(QObject* parent)
 {
     m_getFeedApiRequest = new Request("/feed");
     connect(m_getFeedApiRequest, &Request::dataReady, this, &Feed::getFeedHandler);
+    connect(m_getFeedApiRequest, &Request::errorReady, this, &Feed::errorReady);
 }
 
 void Feed::get()

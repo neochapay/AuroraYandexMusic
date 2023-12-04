@@ -72,13 +72,13 @@ void Request::post(const QString& query)
 
 void Request::replyHandler(QNetworkReply* reply)
 {
+    if (reply->error()) {
+        emit errorReady(reply->errorString());
+        return;
+    }
+
     QString rawAnswer = reply->readAll();
     QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
-
-    if (reply->error()) {
-        qWarning() << reply->errorString();
-        emit errorReady(reply->errorString());
-    }
 
     if (m_debug) {
         qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
@@ -90,7 +90,7 @@ void Request::replyHandler(QNetworkReply* reply)
     }
 
     if (!ansObject.value("error").isNull()) {
-        emit errorReady(ansObject.value("error"));
+        emit errorReady(ansObject.value("error").toString());
         return;
     }
 
