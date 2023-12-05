@@ -7,6 +7,7 @@ PKGCONFIG += \
 
 SOURCES += \
     src/api/feed.cpp \
+    src/api/feedbacksender.cpp \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
     src/api/request.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 
 HEADERS += \
     src/api/feed.h \
+    src/api/feedbacksender.h \
     src/api/musicfetcher.h \
     src/api/oauth.h \
     src/api/request.h \
