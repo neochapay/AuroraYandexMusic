@@ -10,6 +10,7 @@ SOURCES += \
     src/api/feedbacksender.cpp \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
+    src/api/playlists.cpp \
     src/api/request.cpp \
     src/api/settings.cpp \
     src/api/user.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     src/api/feedbacksender.h \
     src/api/musicfetcher.h \
     src/api/oauth.h \
+    src/api/playlists.h \
     src/api/request.h \
     src/api/settings.h \
     src/api/user.h \

@@ -6,6 +6,7 @@
 #include "api/feedbacksender.h"
 #include "api/musicfetcher.h"
 #include "api/oauth.h"
+#include "api/playlists.h"
 #include "api/user.h"
 
 #include "types/cover.h"
@@ -38,6 +39,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Feed>("ru.neochapay.yandexmusic", 1, 0, "Feed");
     qmlRegisterType<MusicFetcher>("ru.neochapay.yandexmusic", 1, 0, "MusicFetcher");
     qmlRegisterType<FeedbackSender>("ru.neochapay.yandexmusic", 1, 0, "FeedbackSender");
+    qmlRegisterType<Playlists>("ru.neochapay.yandexmusic", 1, 0, "Playlists");
 
     view->setSource(SailfishApp::pathTo("qml/YandexMusic.qml"));
     view->show();
