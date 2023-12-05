@@ -38,44 +38,45 @@ Album::Album(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new AlbumPrivate())
 {
-    for (const QJsonValue& v : object.take("artists").toArray()) {
+    for (const QJsonValue& v : object.value("artists").toArray()) {
         d_ptr->artists.push_back(new Artist(v.toObject()));
     }
 
-    d_ptr->available = object.take("available").toBool();
-    d_ptr->availableForMobile = object.take("availableForMobile").toBool();
+    d_ptr->available = object.value("available").toBool();
+    d_ptr->availableForMobile = object.value("availableForMobile").toBool();
 
-    for (const QJsonValue& v : object.take("availableForOptions").toArray()) {
+    for (const QJsonValue& v : object.value("availableForOptions").toArray()) {
         d_ptr->availableForOptions.push_back(v.toString());
     }
 
-    d_ptr->availableForPremiumUsers = object.take("availableForPremiumUsers").toBool();
-    d_ptr->availablePartially = object.take("availablePartially").toBool();
+    d_ptr->availableForPremiumUsers = object.value("availableForPremiumUsers").toBool();
+    d_ptr->availablePartially = object.value("availablePartially").toBool();
 
-    for (const QJsonValue& v : object.take("bests").toArray()) {
+    for (const QJsonValue& v : object.value("bests").toArray()) {
         d_ptr->bests.push_back(v.toInt());
     }
 
-    d_ptr->contentWarning = object.take("contentWarning").toString();
-    d_ptr->coverUri = object.take("coverUri").toString();
+    d_ptr->contentWarning = object.value("contentWarning").toString();
+    d_ptr->coverUri = object.value("coverUri").toString();
 
-    for (const QJsonValue& v : object.take("disclaimers").toArray()) {
+    for (const QJsonValue& v : object.value("disclaimers").toArray()) {
         d_ptr->disclaimers.push_back(v.toString());
     }
 
-    d_ptr->genere = object.take("genere").toString();
-    d_ptr->albumId = object.take("albumId").toString();
+    d_ptr->genere = object.value("genere").toString();
+    d_ptr->albumId = object.value("id").toInt();
+
     // QList<Label> labels;
-    d_ptr->likesConut = object.take("likesConut").toInt();
-    d_ptr->metaType = object.take("metaType").toString();
-    d_ptr->orImage = object.take("orImage").toString();
-    d_ptr->recent = object.take("recent").toBool();
-    d_ptr->releaseDate = QDateTime::fromString(object.take("releaseDate").toString());
-    d_ptr->title = object.take("title").toString();
-    d_ptr->trackCount = object.take("trackCount").toInt();
-    d_ptr->trackPositionIndex = object.take("trackPosition").toObject().take("index").toInt();
-    d_ptr->trackPositionVolume = object.take("trackPosition").toObject().take("volume").toInt();
-    d_ptr->year = object.take("year").toInt();
+    d_ptr->likesConut = object.value("likesConut").toInt();
+    d_ptr->metaType = object.value("metaType").toString();
+    d_ptr->orImage = object.value("orImage").toString();
+    d_ptr->recent = object.value("recent").toBool();
+    d_ptr->releaseDate = QDateTime::fromString(object.value("releaseDate").toString());
+    d_ptr->title = object.value("title").toString();
+    d_ptr->trackCount = object.value("trackCount").toInt();
+    d_ptr->trackPositionIndex = object.value("trackPosition").toObject().value("index").toInt();
+    d_ptr->trackPositionVolume = object.value("trackPosition").toObject().value("volume").toInt();
+    d_ptr->year = object.value("year").toInt();
 }
 
 Album::~Album()
@@ -144,7 +145,7 @@ const QString& Album::genere() const
     return d_ptr->genere;
 }
 
-QString Album::albumId() const
+int Album::albumId() const
 {
     return d_ptr->albumId;
 }
