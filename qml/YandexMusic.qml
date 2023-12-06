@@ -31,12 +31,21 @@ ApplicationWindow {
         Component.onCompleted: if(auth.token.length > 0) {
                                    user.getAccountStatus();
                                }
+        onUserIDChanged: feedbackSender.userID = user.userID
+    }
+
+    FeedbackSender{
+        id: feedbackSender
+
     }
 
     MusicFetcher{
         id: musicFetcher
         onTrackReady: {
             rootAudio.source = path
+            if(currentPlayListModel.currentIndex > 0) {
+                rootAudio.play()
+            }
         }
     }
 
@@ -54,6 +63,12 @@ ApplicationWindow {
 
     MediaPlayer{
         id: rootAudio
+        onStopped: {
+            if (rootAudio.status == MediaPlayer.EndOfMedia) {
+                feedbackSender.sendFeedback(currentPlayListModel.getCurrentTrack(), rootAudio.duration, rootAudio.position)
+                ++currentPlayListModel.currentIndex
+            }
+        }
     }
 
     MprisPlayer {

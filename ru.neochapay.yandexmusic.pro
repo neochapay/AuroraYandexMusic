@@ -7,8 +7,10 @@ PKGCONFIG += \
 
 SOURCES += \
     src/api/feed.cpp \
+    src/api/feedbacksender.cpp \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
+    src/api/playlists.cpp \
     src/api/request.cpp \
     src/api/settings.cpp \
     src/api/user.cpp \
@@ -22,8 +24,10 @@ SOURCES += \
 
 HEADERS += \
     src/api/feed.h \
+    src/api/feedbacksender.h \
     src/api/musicfetcher.h \
     src/api/oauth.h \
+    src/api/playlists.h \
     src/api/request.h \
     src/api/settings.h \
     src/api/user.h \
@@ -36,6 +40,7 @@ HEADERS += \
 
 
 DISTFILES += \
+    qml/components/BigPlayer.qml \
     qml/components/LittlePlayer.qml \
     qml/components/MainPlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
@@ -48,7 +53,7 @@ DISTFILES += \
     LICENSE \
     README.md \
 
-SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
 CONFIG += sailfishapp_i18n
 

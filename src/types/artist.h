@@ -32,7 +32,7 @@ public:
     QStringList disclaimers;
     QStringList genres;
     QString name;
-    int artistId;
+    QString artistId;
     bool various;
 };
 
@@ -45,7 +45,7 @@ class Artist : public QObject {
     Q_PROPERTY(QStringList disclaimers READ disclaimers)
     Q_PROPERTY(QStringList genres READ genres)
     Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(int artistId READ artistId)
+    Q_PROPERTY(QString artistId READ artistId)
     Q_PROPERTY(bool various READ various)
 
 public:
@@ -62,7 +62,7 @@ public:
     const QStringList& disclaimers() const;
     const QStringList& genres() const;
     const QString& name() const;
-    int artistId() const;
+    QString artistId() const;
     bool various() const;
 
 private:

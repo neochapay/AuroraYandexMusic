@@ -42,7 +42,7 @@ Artist::Artist(QJsonObject object, QObject* parent)
     // m_disclaimers = object.value("disclaimers").toArray();
     // m_genres = object.value("genres").toArray();
     d_ptr->name = object.value("name").toString();
-    d_ptr->artistId = object.value("artistId").toInt();
+    d_ptr->artistId = object.value("artistId").toString();
     d_ptr->various = object.value("various").toBool();
 }
 
@@ -92,7 +92,7 @@ const QString& Artist::name() const
     return d_ptr->name;
 }
 
-int Artist::artistId() const
+QString Artist::artistId() const
 {
     return d_ptr->artistId;
 }

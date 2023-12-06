@@ -70,13 +70,22 @@ void Request::post(const QString& query)
     m_type = "post";
     if (query.contains("{")) {
         m_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    } else {
+        m_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     }
     m_manager->post(m_request, query.toUtf8());
 }
 
 void Request::replyHandler(QNetworkReply* reply)
 {
+    if (!reply) {
+        return;
+    }
+
     if (reply->error()) {
+        if (m_debug) {
+            qDebug() << reply->errorString();
+        }
         emit errorReady(reply->errorString());
         return;
     }
