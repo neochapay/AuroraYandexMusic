@@ -15,6 +15,11 @@
 
 #include "models/currentplaylistmodel.h"
 
+#include <QGuiApplication>
+#include <QQmlContext>
+#include <QQuickView>
+#include <QScopedPointer>
+
 #include <sailfishapp.h>
 
 int main(int argc, char* argv[])
