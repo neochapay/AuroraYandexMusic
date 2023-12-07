@@ -120,8 +120,6 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
         return;
     }
 
-    qDebug() << downloadInfoUrl;
-
     QNetworkAccessManager* downloadInfoManager = new QNetworkAccessManager(this);
     QNetworkRequest downloadInfoUrlRequest(downloadInfoUrl);
     QNetworkReply* reply = downloadInfoManager->get(downloadInfoUrlRequest);
@@ -163,8 +161,6 @@ void MusicFetcher::downloadInfoUrlHandler()
 
     QString sign = QString(QCryptographicHash::hash((("XGRlBW9FXlekgbPrRHuSiA" + path.mid(1) + s).toUtf8()), QCryptographicHash::Md5).toHex());
     QString finalUrl = "https://" + host + "/get-mp3/" + sign + "/" + ts + path;
-
-    qDebug() << finalUrl;
 
     QNetworkAccessManager* manager = new QNetworkAccessManager(this);
     QNetworkRequest request(finalUrl);
