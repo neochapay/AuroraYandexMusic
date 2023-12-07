@@ -29,22 +29,27 @@ Page {
 
     Feed{
         id: feed
-        onFeedReady: {
-            busyIndicator.visible = false
-            for(var i = 0; i < tracksToPlay.length; i++) {
-                currentPlayListModel.push(tracksToPlay[i])
-            }
-            currentPlayListModel.currentIndex = 0
-        }
         onErrorReady: {
             feedView.visible = false
             errorLabel.visible = true
         }
     }
 
+    Component.onCompleted: {
+        rotor.getStationTracks();
+    }
+
     Connections{
         target: user
         onUserIDChanged: feed.get()
+    }
+
+    Connections{
+        target: rotor
+        onStantionTrackReady: {
+            currentPlayListModel.push(track)
+            busyIndicator.visible = false
+        }
     }
 
     Label{
@@ -83,6 +88,10 @@ Page {
 
             visible: !busyIndicator.visible
             spacing: Theme.paddingLarge
+
+            MyWavePlayer{
+                id: myWavePlayer
+            }
 
             Label{
                 width: parent.width

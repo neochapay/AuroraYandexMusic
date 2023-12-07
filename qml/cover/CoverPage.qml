@@ -52,7 +52,7 @@ CoverBackground {
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
-            visible: artistLabel.text != ""
+            text: qsTr("Play")
         }
 
         Label {
@@ -62,7 +62,7 @@ CoverBackground {
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
-            visible: songLabel.text != ""
+            text: qsTr("My wave")
         }
     }
 

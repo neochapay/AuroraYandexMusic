@@ -12,6 +12,7 @@ SOURCES += \
     src/api/oauth.cpp \
     src/api/playlists.cpp \
     src/api/request.cpp \
+    src/api/rotor.cpp \
     src/api/settings.cpp \
     src/api/user.cpp \
     src/models/currentplaylistmodel.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     src/api/oauth.h \
     src/api/playlists.h \
     src/api/request.h \
+    src/api/rotor.h \
     src/api/settings.h \
     src/api/user.h \
     src/models/currentplaylistmodel.h \
@@ -43,6 +45,7 @@ DISTFILES += \
     qml/components/BigPlayer.qml \
     qml/components/LittlePlayer.qml \
     qml/components/MainPlayer.qml \
+    qml/components/MyWavePlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
     qml/pages/FeedPage.qml \
     rpm/*.spec \

@@ -11,6 +11,9 @@ import "components"
 
 ApplicationWindow {
     id: root
+
+    property bool isMyWave: false
+
     initialPage: {
         if (auth.token.length > 0) {
             return Qt.createComponent(Qt.resolvedUrl("pages/FeedPage.qml"))
@@ -36,14 +39,17 @@ ApplicationWindow {
 
     FeedbackSender{
         id: feedbackSender
+    }
 
+    Rotor{
+        id: rotor
     }
 
     MusicFetcher{
         id: musicFetcher
         onTrackReady: {
             rootAudio.source = path
-            if(currentPlayListModel.currentIndex > 0) {
+            if(currentPlayListModel.currentIndex > -1) {
                 rootAudio.play()
             }
         }
@@ -53,12 +59,16 @@ ApplicationWindow {
         id: currentPlayListModel
         onCurrentIndexChanged: {
             musicFetcher.load(currentPlayListModel.getCurrentTrack())
+            if(root.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
+                var lastTrack = currentPlayListModel.getCurrentTrack()
+                rotor.getStationTracks("user:onyourwave", lastTrack.trackId)
+            }
         }
     }
 
     MainPlayer{
         id: mainPlayer
-        visible: currentPlayListModel.rowCount > 0
+        visible: currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex != -1
     }
 
     MediaPlayer{
