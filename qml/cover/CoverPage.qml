@@ -76,6 +76,10 @@ CoverBackground {
         CoverAction {
             iconSource: (rootAudio.playbackState === MediaPlayer.PlayingState) ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
             onTriggered: {
+                if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
+                    currentPlayListModel.currentIndex = 0
+                }
+
                 if (rootAudio.playbackState === MediaPlayer.PlayingState) {
                     rootAudio.pause()
                 } else {

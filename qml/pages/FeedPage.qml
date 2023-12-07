@@ -47,6 +47,7 @@ Page {
     Connections{
         target: rotor
         onStantionTrackReady: {
+            root.isMyWave = true
             currentPlayListModel.push(track)
             busyIndicator.visible = false
         }
