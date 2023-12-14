@@ -17,17 +17,17 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="59"/>
+        <location filename="../qml/pages/FeedPage.qml" line="60"/>
         <source>Oops. We have a problem.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="68"/>
+        <location filename="../qml/pages/FeedPage.qml" line="69"/>
         <source>You feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="99"/>
+        <location filename="../qml/pages/FeedPage.qml" line="100"/>
         <source>Collect for you</source>
         <translation type="unfinished"></translation>
     </message>
@@ -35,8 +35,16 @@
 <context>
     <name>MyWavePlayer</name>
     <message>
-        <location filename="../qml/components/MyWavePlayer.qml" line="14"/>
+        <location filename="../qml/components/MyWavePlayer.qml" line="18"/>
         <source>My wave</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PlaylistPage</name>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="49"/>
+        <source>Playlist</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

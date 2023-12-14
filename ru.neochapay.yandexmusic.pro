@@ -47,6 +47,7 @@ DISTFILES += \
     qml/components/MainPlayer.qml \
     qml/components/MyWavePlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
+    qml/components/SvgIcon.qml \
     qml/pages/FeedPage.qml \
     rpm/*.spec \
     qml/* \
