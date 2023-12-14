@@ -28,6 +28,8 @@ Item {
     property string cover
     clip: true
 
+    signal clicked()
+
     width: Theme.itemSizeHuge*1.5
     height: coverImage.height + coverTitle.height + coverDescription.height + Theme.paddingMedium*3
 
@@ -61,5 +63,10 @@ Item {
         color: Theme.secondaryColor
         font.pixelSize: Theme.fontSizeSmall
         wrapMode: Text.WordWrap
+    }
+
+    MouseArea{
+        anchors.fill: parent
+        onClicked: playlistCoverFeed.clicked()
     }
 }

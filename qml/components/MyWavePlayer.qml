@@ -10,26 +10,23 @@ Item {
 
     Label{
         id: myWaveLabel
-        anchors.centerIn: parent
+        anchors{
+            horizontalCenter: parent.horizontalCenter
+            bottom: myWavePlayButton.top
+            bottomMargin: Theme.paddingLarge
+        }
         text: qsTr("My wave")
     }
 
-    IconButton {
+    SvgIcon {
         id: myWavePlayButton
 
-        property string iconName: "icon-m-play"
-
-        width: myWaveLabel.height
+        width: parent.height/3
         height: width
-        anchors{
-            top: myWaveLabel.bottom
-            topMargin: Theme.paddingLarge
-            horizontalCenter: myWave.horizontalCenter
-        }
+        anchors.centerIn: parent
 
-        icon.source: "image://theme/"+iconName+"?" + (pressed
-                                                      ? Theme.highlightColor
-                                                      : Theme.primaryColor)
+        source: "../img/play.svg"
+
         onClicked: {
             if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
                 currentPlayListModel.currentIndex = 0
@@ -47,19 +44,19 @@ Item {
         target: rootAudio
         onStatusChanged: {
             if(rootAudio.status == MediaPlayer.NoMedia) {
-                myWavePlayButton.iconName = "icon-m-cancel"
+                myWavePlayButton.source = "../img/ban.svg"
             }
 
             if(rootAudio.status == MediaPlayer.Loaded) {
-                myWavePlayButton.iconName = "icon-m-play"
+                myWavePlayButton.source = "../img/play.svg"
             }
         }
 
         onPlaybackStateChanged: {
             if(rootAudio.playbackState == MediaPlayer.PlayingState) {
-                myWavePlayButton.iconName = "icon-m-pause"
+                myWavePlayButton.source = "../img/pause.svg"
             } else {
-                myWavePlayButton.iconName = "icon-m-play"
+                myWavePlayButton.source = "../img/play.svg"
             }
         }
     }

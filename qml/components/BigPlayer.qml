@@ -172,5 +172,84 @@ Rectangle{
             }
         }
     }
+
+    Item {
+        id: bigPlayerControlsItem
+        height: Theme.itemSizeLarge
+        width: bigPlayer.width - Theme.paddingLarge*2
+
+        anchors{
+            top: bigPlayerProgressBar.bottom
+            topMargin: Theme.paddingLarge
+            left: parent.left
+            leftMargin: Theme.paddingLarge
+        }
+
+        SvgIcon{
+            id: bigPlayerDislikeButton
+            width: parent.height*0.6
+            height: width
+
+            source: "../img/heart-crack.svg"
+
+            anchors{
+                right: bigPlayerBackwardButton.left
+                rightMargin: Theme.paddingSmall
+                verticalCenter: parent.verticalCenter
+            }
+        }
+
+        SvgIcon{
+            id: bigPlayerBackwardButton
+            width: parent.height*0.6
+            height: width
+
+            source: "../img/backward.svg"
+
+            anchors{
+                right: bigPlayerPlayButton.left
+                rightMargin: Theme.paddingSmall
+                verticalCenter: parent.verticalCenter
+            }
+        }
+
+        SvgIcon{
+            id: bigPlayerPlayButton
+            width: parent.height
+            height: width
+
+            source: "../img/play.svg"
+
+            anchors.centerIn: parent
+        }
+
+        SvgIcon{
+            id: bigPlayerForwardButton
+            width: parent.height*0.6
+            height: width
+
+            source: "../img/forward.svg"
+
+            anchors{
+                left: bigPlayerPlayButton.right
+                leftMargin: Theme.paddingSmall
+                verticalCenter: parent.verticalCenter
+            }
+        }
+
+        SvgIcon{
+            id: bigPlayerLikeButton
+            width: parent.height*0.6
+            height: width
+
+            source: "../img/heart.svg"
+
+            anchors{
+                left: bigPlayerForwardButton.right
+                leftMargin: Theme.paddingSmall
+                verticalCenter: parent.verticalCenter
+            }
+        }
+    }
 }
 

@@ -114,6 +114,11 @@ Page {
                     title: modelData.title
                     destription: modelData.description
                     cover: modelData.cover.uri
+
+                    onClicked: pageStack.push(Qt.resolvedUrl("PlaylistPage.qml"), {
+                                                  title: modelData.title,
+                                                  kind: modelData.kind,
+                                                  uid: modelData.ownerUid});
                 }
             }
         }
