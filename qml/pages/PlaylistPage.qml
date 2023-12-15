@@ -57,6 +57,10 @@ Page {
             width: parent.width
             height: Theme.itemSizeLarge
 
+            anchors{
+                top: header.bottom
+            }
+
             SvgIcon{
                 id: playPlaylistButtonIcon
                 width: height
@@ -82,6 +86,7 @@ Page {
             id: tracksListView
             width: parent.width
             height: parent.height - header.height - playPlaylistButton.height -  Theme.paddingMedium
+            clip: true
             anchors{
                 top: playPlaylistButton.bottom
                 topMargin: Theme.paddingMedium
