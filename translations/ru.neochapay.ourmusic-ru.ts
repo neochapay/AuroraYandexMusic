@@ -17,17 +17,17 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="60"/>
+        <location filename="../qml/pages/FeedPage.qml" line="59"/>
         <source>Oops. We have a problem.</source>
         <translation>Упс. У нас проблема.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="69"/>
+        <location filename="../qml/pages/FeedPage.qml" line="68"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="100"/>
+        <location filename="../qml/pages/FeedPage.qml" line="99"/>
         <source>Collect for you</source>
         <translation>Собрали для Вас</translation>
     </message>
@@ -41,24 +41,24 @@
     </message>
 </context>
 <context>
+    <name>OurMusic</name>
+    <message>
+        <location filename="../qml/OurMusic.qml" line="87"/>
+        <source>Loading</source>
+        <translation type="unfinished">Загрузка</translation>
+    </message>
+    <message>
+        <location filename="../qml/OurMusic.qml" line="88"/>
+        <source>tags...</source>
+        <translation type="unfinished">тэги...</translation>
+    </message>
+</context>
+<context>
     <name>PlaylistPage</name>
     <message>
         <location filename="../qml/pages/PlaylistPage.qml" line="49"/>
         <source>Playlist</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>YandexMusic</name>
-    <message>
-        <location filename="../qml/YandexMusic.qml" line="87"/>
-        <source>Loading</source>
-        <translation>Загрузка</translation>
-    </message>
-    <message>
-        <location filename="../qml/YandexMusic.qml" line="88"/>
-        <source>tags...</source>
-        <translation type="unfinished">тэги...</translation>
     </message>
 </context>
 </TS>

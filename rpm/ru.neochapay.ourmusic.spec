@@ -1,4 +1,4 @@
-Name:       ru.neochapay.yandexmusic
+Name:       ru.neochapay.ourmusic
 Summary:    The unofficial client for Yandex Music
 Version:    0.3
 Release:    0
@@ -40,7 +40,7 @@ do
    mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/
    rsvg-convert --width=$size --height=$size --output \
            %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png \
-          %{_sourcedir}/../icons/svg/ru.neochapay.yandexmusic.svg
+          %{_sourcedir}/../icons/svg/ru.neochapay.ourmusic.svg
 done
 
 %files

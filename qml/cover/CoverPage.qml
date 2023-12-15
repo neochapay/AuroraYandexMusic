@@ -30,7 +30,7 @@ CoverBackground {
         }
 
         fillMode: Image.PreserveAspectFit
-        source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.yandexmusic.png"
+        source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.ourmusic.png"
     }
 
     Column {

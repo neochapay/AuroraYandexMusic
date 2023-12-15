@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 {
     QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
     application->setOrganizationName(QStringLiteral("ru.neochapay"));
-    application->setApplicationName(QStringLiteral("yandexmusic"));
+    application->setApplicationName(QStringLiteral("ourmusic"));
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
 
@@ -39,16 +39,16 @@ int main(int argc, char* argv[])
     qmlRegisterType<Track>();
     qmlRegisterType<Album>();
 
-    qmlRegisterType<CurrentPlayListModel>("ru.neochapay.yandexmusic", 1, 0, "CurrentPlayListModel");
-    qmlRegisterType<User>("ru.neochapay.yandexmusic", 1, 0, "User");
-    qmlRegisterType<OAuth>("ru.neochapay.yandexmusic", 1, 0, "Auth");
-    qmlRegisterType<Feed>("ru.neochapay.yandexmusic", 1, 0, "Feed");
-    qmlRegisterType<MusicFetcher>("ru.neochapay.yandexmusic", 1, 0, "MusicFetcher");
-    qmlRegisterType<FeedbackSender>("ru.neochapay.yandexmusic", 1, 0, "FeedbackSender");
-    qmlRegisterType<Playlists>("ru.neochapay.yandexmusic", 1, 0, "Playlists");
-    qmlRegisterType<Rotor>("ru.neochapay.yandexmusic", 1, 0, "Rotor");
+    qmlRegisterType<CurrentPlayListModel>("ru.neochapay.ourmusic", 1, 0, "CurrentPlayListModel");
+    qmlRegisterType<User>("ru.neochapay.ourmusic", 1, 0, "User");
+    qmlRegisterType<OAuth>("ru.neochapay.ourmusic", 1, 0, "Auth");
+    qmlRegisterType<Feed>("ru.neochapay.ourmusic", 1, 0, "Feed");
+    qmlRegisterType<MusicFetcher>("ru.neochapay.ourmusic", 1, 0, "MusicFetcher");
+    qmlRegisterType<FeedbackSender>("ru.neochapay.ourmusic", 1, 0, "FeedbackSender");
+    qmlRegisterType<Playlists>("ru.neochapay.ourmusic", 1, 0, "Playlists");
+    qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");
 
-    view->setSource(SailfishApp::pathTo("qml/YandexMusic.qml"));
+    view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
     view->show();
 
     return application->exec();

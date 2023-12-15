@@ -4,7 +4,7 @@ import QtMultimedia 5.5
 import Sailfish.Silica 1.0
 
 import Amber.Mpris 1.0
-import ru.neochapay.yandexmusic 1.0
+import ru.neochapay.ourmusic 1.0
 
 import "pages"
 import "components"
@@ -88,7 +88,7 @@ ApplicationWindow {
         property string song: qsTr("tags...")
 
         serviceName: "yandex-music"
-        identity: "AuroraYandexMusic"
+        identity: "AuroraOurMusic"
         supportedUriSchemes: ["file"]
         supportedMimeTypes: ["audio/x-wav", "audio/x-vorbis+ogg", "audio/mpeg"]
 

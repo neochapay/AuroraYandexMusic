@@ -1,4 +1,4 @@
-TARGET = ru.neochapay.yandexmusic
+TARGET = ru.neochapay.ourmusic
 
 CONFIG += \
     sailfishapp
@@ -62,4 +62,4 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 CONFIG += sailfishapp_i18n
 
 TRANSLATIONS += \
-    translations/ru.neochapay.yandexmusic-ru.ts \
+    translations/ru.neochapay.ourmusic-ru.ts \
