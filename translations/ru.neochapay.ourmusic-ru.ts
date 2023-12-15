@@ -33,6 +33,14 @@
     </message>
 </context>
 <context>
+    <name>MprisController</name>
+    <message>
+        <location filename="../qml/components/MprisController.qml" line="30"/>
+        <source>Own Music</source>
+        <translation>Наша Музыка</translation>
+    </message>
+</context>
+<context>
     <name>MyWavePlayer</name>
     <message>
         <location filename="../qml/components/MyWavePlayer.qml" line="18"/>
@@ -41,24 +49,11 @@
     </message>
 </context>
 <context>
-    <name>OurMusic</name>
-    <message>
-        <location filename="../qml/OurMusic.qml" line="87"/>
-        <source>Loading</source>
-        <translation type="unfinished">Загрузка</translation>
-    </message>
-    <message>
-        <location filename="../qml/OurMusic.qml" line="88"/>
-        <source>tags...</source>
-        <translation type="unfinished">тэги...</translation>
-    </message>
-</context>
-<context>
     <name>PlaylistPage</name>
     <message>
         <location filename="../qml/pages/PlaylistPage.qml" line="52"/>
         <source>Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Плейлист</translation>
     </message>
 </context>
 </TS>

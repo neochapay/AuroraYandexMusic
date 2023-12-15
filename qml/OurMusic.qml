@@ -1,9 +1,6 @@
 import QtQuick 2.0
 import QtMultimedia 5.5
-
 import Sailfish.Silica 1.0
-
-import Amber.Mpris 1.0
 import ru.neochapay.ourmusic 1.0
 
 import "pages"
@@ -81,63 +78,14 @@ ApplicationWindow {
         }
     }
 
-    MprisPlayer {
-        id: mprisPlayer
+    MprisController{
+        id: mprisController
+    }
 
-        property string artist: qsTr("Loading")
-        property string song: qsTr("tags...")
-
-        serviceName: "yandex-music"
-        identity: "AuroraOurMusic"
-        supportedUriSchemes: ["file"]
-        supportedMimeTypes: ["audio/x-wav", "audio/x-vorbis+ogg", "audio/mpeg"]
-
-
-        canSeek: true
-
-        canControl: true
-
-        canGoNext: true
-        canGoPrevious: true
-        canPause: true
-        canPlay: true
-
-        playbackStatus: (rootAudio.playbackState === MediaPlayer.PlayingState) ? Mpris.Playing : Mpris.Paused
-
-        onArtistChanged: {
-            var metadata = mprisPlayer.metadata
-            metadata[Mpris.metadataToString(Mpris.Artist)] = [artist] // List of strings
-            mprisPlayer.metadata = metadata
-        }
-
-        onSongChanged: {
-            var metadata = mprisPlayer.metadata
-            metadata[Mpris.metadataToString(Mpris.Title)] = song // String
-            mprisPlayer.metadata = metadata
-        }
-
-        onPauseRequested: {
-            rootAudio.pause()
-        }
-        onPlayRequested: {
-            rootAudio.play()
-        }
-        onPlayPauseRequested: {
-            if (rootAudio.playbackState === MediaPlayer.PlayingState) {
-                rootAudio.pause()
-            } else {
-                rootAudio.play()
-            }
-        }
-        onStopRequested: {
-            rootAudio.stop()
-        }
-
-        onNextRequested: {
-            ++playListModel.currentIndex
-        }
-        onPreviousRequested: {
-            --playListModel.currentIndex
+    Connections{
+        target: currentPlayListModel
+        onCurrentIndexChanged: {
+            mprisController.track = currentPlayListModel.getCurrentTrack();
         }
     }
 }

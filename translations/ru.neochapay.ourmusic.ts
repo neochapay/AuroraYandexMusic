@@ -33,23 +33,18 @@
     </message>
 </context>
 <context>
-    <name>MyWavePlayer</name>
+    <name>MprisController</name>
     <message>
-        <location filename="../qml/components/MyWavePlayer.qml" line="18"/>
-        <source>My wave</source>
+        <location filename="../qml/components/MprisController.qml" line="30"/>
+        <source>Own Music</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>OurMusic</name>
+    <name>MyWavePlayer</name>
     <message>
-        <location filename="../qml/OurMusic.qml" line="87"/>
-        <source>Loading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/OurMusic.qml" line="88"/>
-        <source>tags...</source>
+        <location filename="../qml/components/MyWavePlayer.qml" line="18"/>
+        <source>My wave</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

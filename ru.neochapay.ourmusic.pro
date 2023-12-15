@@ -45,6 +45,7 @@ DISTFILES += \
     qml/components/BigPlayer.qml \
     qml/components/LittlePlayer.qml \
     qml/components/MainPlayer.qml \
+    qml/components/MprisController.qml \
     qml/components/MyWavePlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
     qml/components/PlaylistTrackDelegate.qml \
