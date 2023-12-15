@@ -56,7 +56,7 @@
 <context>
     <name>PlaylistPage</name>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="49"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="52"/>
         <source>Playlist</source>
         <translation type="unfinished"></translation>
     </message>

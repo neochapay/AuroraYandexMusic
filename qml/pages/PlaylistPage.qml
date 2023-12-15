@@ -30,11 +30,14 @@ Page {
     property int kind: -1
     property alias uid: playlists.userID
 
+    property var playlist
+
     Playlists{
         id: playlists
         onPlaylistChanged: {
             busyIndicator.visible = false
-            console.log(playlist.tracks[0].title)
+            playlistPage.playlist = playlist
+            tracksListView.model = playlist.tracks
         }
     }
 
@@ -49,11 +52,44 @@ Page {
             title: qsTr("Playlist")
         }
 
+        Item{
+            id: playPlaylistButton
+            width: parent.width
+            height: Theme.itemSizeLarge
+
+            SvgIcon{
+                id: playPlaylistButtonIcon
+                width: height
+                height: parent.height
+                source: "../img/play.svg"
+                anchors.centerIn: parent
+
+                onClicked: {
+                    currentPlayListModel.setPlaylist(playlistPage.playlist)
+                    currentPlayListModel.currentIndex = 0
+                }
+            }
+        }
+
         BusyIndicator {
             id: busyIndicator
             running: visible
             visible: true
             anchors.centerIn: parent
+        }
+
+        ListView{
+            id: tracksListView
+            width: parent.width
+            height: parent.height - header.height - playPlaylistButton.height -  Theme.paddingMedium
+            anchors{
+                top: playPlaylistButton.bottom
+                topMargin: Theme.paddingMedium
+            }
+
+            delegate: PlaylistTrackDelegate{
+                track: modelData
+            }
         }
     }
 }

@@ -38,15 +38,15 @@ public:
 
 class Artist : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool composer READ composer)
-    Q_PROPERTY(QString coverPrefix READ coverPrefix)
-    Q_PROPERTY(QString coverType READ coverType)
-    Q_PROPERTY(QString coverUri READ coverUri)
-    Q_PROPERTY(QStringList disclaimers READ disclaimers)
-    Q_PROPERTY(QStringList genres READ genres)
-    Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(QString artistId READ artistId)
-    Q_PROPERTY(bool various READ various)
+    Q_PROPERTY(bool composer READ composer NOTIFY artistChanged)
+    Q_PROPERTY(QString coverPrefix READ coverPrefix NOTIFY artistChanged)
+    Q_PROPERTY(QString coverType READ coverType NOTIFY artistChanged)
+    Q_PROPERTY(QString coverUri READ coverUri NOTIFY artistChanged)
+    Q_PROPERTY(QStringList disclaimers READ disclaimers NOTIFY artistChanged)
+    Q_PROPERTY(QStringList genres READ genres NOTIFY artistChanged)
+    Q_PROPERTY(QString name READ name NOTIFY artistChanged)
+    Q_PROPERTY(QString artistId READ artistId NOTIFY artistChanged)
+    Q_PROPERTY(bool various READ various NOTIFY artistChanged)
 
 public:
     explicit Artist(QObject* parent = nullptr);
@@ -64,6 +64,9 @@ public:
     const QString& name() const;
     QString artistId() const;
     bool various() const;
+
+signals:
+    void artistChanged();
 
 private:
     ArtistPrivate* d_ptr;

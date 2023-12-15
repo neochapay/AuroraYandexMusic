@@ -93,6 +93,22 @@ void CurrentPlayListModel::push(Track* track)
     }
 }
 
+void CurrentPlayListModel::setPlaylist(Playlist *playlist)
+{
+    if(playlist == nullptr) {
+        return;
+    }
+    clear();
+    beginInsertRows(QModelIndex(), 0, playlist->tracks().count());
+    for(QObject* trackObject: playlist->tracks()) {
+        Track* track = reinterpret_cast<Track*>(trackObject);
+        if(track != nullptr) {
+            m_currentTracks.push_back(track);
+        }
+    }
+    endInsertRows();
+}
+
 Track* CurrentPlayListModel::getTrack(int index)
 {
     if (index < m_currentTracks.count()) {
@@ -107,4 +123,11 @@ Track* CurrentPlayListModel::getCurrentTrack()
         return m_currentTracks.at(m_currentIndex);
     }
     return nullptr;
+}
+
+void CurrentPlayListModel::clear()
+{
+    beginResetModel();
+    m_currentTracks.clear();
+    endResetModel();
 }

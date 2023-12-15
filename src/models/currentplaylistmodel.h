@@ -21,6 +21,8 @@
 #define CURRENTPLAYLISTMODEL_H
 
 #include "../types/track.h"
+#include "../types/playlist.h"
+
 #include <QAbstractListModel>
 
 class CurrentPlayListModel : public QAbstractListModel {
@@ -42,8 +44,10 @@ public:
     bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex());
 
     Q_INVOKABLE void push(Track* track);
+    Q_INVOKABLE void setPlaylist(Playlist* playlist);
     Q_INVOKABLE Track* getTrack(int index);
     Q_INVOKABLE Track* getCurrentTrack();
+    Q_INVOKABLE void clear();
 
 signals:
     void rowCountChanged();
