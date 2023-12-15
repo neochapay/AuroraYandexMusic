@@ -189,6 +189,8 @@ Rectangle{
             id: bigPlayerDislikeButton
             width: parent.height*0.6
             height: width
+            defaultColor: "white"
+            activeColor: "deepskyblue"
 
             source: "../img/heart-crack.svg"
 
@@ -197,12 +199,15 @@ Rectangle{
                 rightMargin: Theme.paddingSmall
                 verticalCenter: parent.verticalCenter
             }
+            onClicked: user.dislike(currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
         SvgIcon{
             id: bigPlayerBackwardButton
             width: parent.height*0.6
             height: width
+            defaultColor: "white"
+            activeColor: "deepskyblue"
 
             source: "../img/backward.svg"
 
@@ -211,22 +216,30 @@ Rectangle{
                 rightMargin: Theme.paddingSmall
                 verticalCenter: parent.verticalCenter
             }
+            onClicked: currentPlayListModel.currentIndex--
         }
 
         SvgIcon{
             id: bigPlayerPlayButton
             width: parent.height
             height: width
-
-            source: "../img/play.svg"
-
+            defaultColor: "white"
+            activeColor: "deepskyblue"
+            source: rootAudio.playbackState == MediaPlayer.PlayingState ? "../img/pause.svg" : "../img/play.svg"
             anchors.centerIn: parent
+            onClicked: if(rootAudio.playbackState == MediaPlayer.PlayingState) {
+                           rootAudio.pause()
+                       } else {
+                           rootAudio.play()
+                       }
         }
 
         SvgIcon{
             id: bigPlayerForwardButton
             width: parent.height*0.6
             height: width
+            defaultColor: "white"
+            activeColor: "deepskyblue"
 
             source: "../img/forward.svg"
 
@@ -235,12 +248,19 @@ Rectangle{
                 leftMargin: Theme.paddingSmall
                 verticalCenter: parent.verticalCenter
             }
+
+            onClicked:{
+                rootAudio.stop()
+                currentPlayListModel.currentIndex++
+            }
         }
 
         SvgIcon{
             id: bigPlayerLikeButton
             width: parent.height*0.6
             height: width
+            defaultColor: "white"
+            activeColor: "deepskyblue"
 
             source: "../img/heart.svg"
 
@@ -249,6 +269,7 @@ Rectangle{
                 leftMargin: Theme.paddingSmall
                 verticalCenter: parent.verticalCenter
             }
+            onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
     }
 }
