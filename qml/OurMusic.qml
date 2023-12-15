@@ -32,6 +32,14 @@ ApplicationWindow {
                                    user.getAccountStatus();
                                }
         onUserIDChanged: feedbackSender.userID = user.userID
+        onLikeActionFinished: {
+            console.log(actionId)
+            console.log(currentPlayListModel.getCurrentTrack().trackId)
+            if(actionId == currentPlayListModel.getCurrentTrack().trackId && action == "remove") {
+                rootAudio.stop()
+                currentPlayListModel.currentIndex++
+            }
+        }
     }
 
     FeedbackSender{

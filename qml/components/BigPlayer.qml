@@ -199,7 +199,7 @@ Rectangle{
                 rightMargin: Theme.paddingSmall
                 verticalCenter: parent.verticalCenter
             }
-            onClicked: user.dislike(currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
+            onClicked: user.dislike("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
         SvgIcon{
