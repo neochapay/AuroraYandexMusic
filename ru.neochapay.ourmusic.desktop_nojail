@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=ru.neochapay.ourmusic
+Exec=/usr/bin/ru.neochapay.ourmusic
+Name=Our Music
+Name[ru]=Наша Музыка
+
+[X-Sailjail]
+Sandboxing=Disabled
+OrganizationName=ru.neochapay
+ApplicationName=ourmusic

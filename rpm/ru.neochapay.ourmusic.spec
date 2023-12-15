@@ -1,6 +1,6 @@
 Name:       ru.neochapay.ourmusic
 Summary:    The unofficial client for Yandex Music
-Version:    0.3
+Version:    0.3.1
 Release:    0
 Group:      Qt/Qt
 License:    GNU GPLv3
@@ -40,8 +40,13 @@ do
    mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/
    rsvg-convert --width=$size --height=$size --output \
            %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png \
-          %{_sourcedir}/../icons/svg/ru.neochapay.ourmusic.svg
+           %{_sourcedir}/../icons/svg/ru.neochapay.ourmusic.svg
 done
+
+if grep "Sailfish" /etc/os-release; then
+    rm %{buildroot}%{_datadir}/applications/ru.neochapay.ourmusic.desktop
+    cp  %{_sourcedir}/../ru.neochapay.ourmusic.desktop_nojail %{buildroot}%{_datadir}/applications/ru.neochapay.ourmusic.desktop
+fi
 
 %files
 %defattr(-,root,root,-)
