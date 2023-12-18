@@ -8,6 +8,7 @@ PKGCONFIG += \
 SOURCES += \
     src/api/feed.cpp \
     src/api/feedbacksender.cpp \
+    src/api/landing3.cpp \
     src/api/musicfetcher.cpp \
     src/api/oauth.cpp \
     src/api/playlists.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
 HEADERS += \
     src/api/feed.h \
     src/api/feedbacksender.h \
+    src/api/landing3.h \
     src/api/musicfetcher.h \
     src/api/oauth.h \
     src/api/playlists.h \
@@ -43,6 +45,7 @@ HEADERS += \
 
 DISTFILES += \
     qml/components/BigPlayer.qml \
+    qml/components/FeedPage/PersonalPlaylistsBlock.qml \
     qml/components/LittlePlayer.qml \
     qml/components/MainPlayer.qml \
     qml/components/MprisController.qml \

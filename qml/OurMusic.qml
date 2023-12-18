@@ -31,10 +31,10 @@ ApplicationWindow {
         Component.onCompleted: if(auth.token.length > 0) {
                                    user.getAccountStatus();
                                }
-        onUserIDChanged: feedbackSender.userID = user.userID
+        onUserIDChanged: {
+            feedbackSender.userID = user.userID
+        }
         onLikeActionFinished: {
-            console.log(actionId)
-            console.log(currentPlayListModel.getCurrentTrack().trackId)
             if(actionId == currentPlayListModel.getCurrentTrack().trackId && action == "remove") {
                 rootAudio.stop()
                 currentPlayListModel.currentIndex++

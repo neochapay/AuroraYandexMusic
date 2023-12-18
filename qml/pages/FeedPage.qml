@@ -23,6 +23,7 @@ import Sailfish.Silica 1.0
 import ru.neochapay.ourmusic 1.0
 
 import "../components"
+import "../components/FeedPage"
 
 Page {
     id: mainPage
@@ -93,32 +94,9 @@ Page {
                 id: myWavePlayer
             }
 
-            Label{
+            PersonalPlaylistsBlock{
+                id: personalPlaylistsBlock
                 width: parent.width
-                color: Theme.highlightColor
-                text: qsTr("Collect for you")
-                font.pixelSize: Theme.fontSizeExtraLarge
-                horizontalAlignment: Text.AlignHCenter
-            }
-
-            ListView{
-                id: generatedPlayListView
-                width: parent.width
-                height: Theme.itemSizeHuge
-                model: feed.generatedPlaylists
-                orientation: ListView.Horizontal
-                spacing: Theme.paddingLarge
-
-                delegate: PlaylistCoverFeed{
-                    title: modelData.title
-                    destription: modelData.description
-                    cover: modelData.cover.uri
-
-                    onClicked: pageStack.push(Qt.resolvedUrl("PlaylistPage.qml"), {
-                                                  title: modelData.title,
-                                                  kind: modelData.kind,
-                                                  uid: modelData.ownerUid});
-                }
             }
         }
     }

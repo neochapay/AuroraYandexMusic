@@ -17,18 +17,13 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="59"/>
+        <location filename="../qml/pages/FeedPage.qml" line="60"/>
         <source>Oops. We have a problem.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="68"/>
+        <location filename="../qml/pages/FeedPage.qml" line="69"/>
         <source>You feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/FeedPage.qml" line="99"/>
-        <source>Collect for you</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

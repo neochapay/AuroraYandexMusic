@@ -9,6 +9,7 @@
 #include "api/playlists.h"
 #include "api/rotor.h"
 #include "api/user.h"
+#include "api/landing3.h"
 
 #include "types/cover.h"
 #include "types/playlist.h"
@@ -47,6 +48,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<FeedbackSender>("ru.neochapay.ourmusic", 1, 0, "FeedbackSender");
     qmlRegisterType<Playlists>("ru.neochapay.ourmusic", 1, 0, "Playlists");
     qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");
+    qmlRegisterType<Landing3>("ru.neochapay.ourmusic", 1, 0, "Landing");
 
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
     view->show();
