@@ -26,6 +26,11 @@
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
+    <message>
+        <location filename="../qml/pages/FeedPage.qml" line="79"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MprisController</name>
@@ -49,6 +54,15 @@
         <location filename="../qml/pages/PlaylistPage.qml" line="52"/>
         <source>Playlist</source>
         <translation>Плейлист</translation>
+    </message>
+</context>
+<context>
+    <name>SearchPage</name>
+    <message>
+        <location filename="../qml/pages/SearchPage.qml" line="55"/>
+        <location filename="../qml/pages/SearchPage.qml" line="63"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

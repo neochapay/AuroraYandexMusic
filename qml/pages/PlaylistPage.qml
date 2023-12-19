@@ -92,7 +92,7 @@ Page {
                 topMargin: Theme.paddingMedium
             }
 
-            delegate: PlaylistTrackDelegate{
+            delegate: TrackListItemDelegate{
                 track: modelData
             }
         }

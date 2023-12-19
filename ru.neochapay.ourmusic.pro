@@ -14,6 +14,7 @@ SOURCES += \
     src/api/playlists.cpp \
     src/api/request.cpp \
     src/api/rotor.cpp \
+    src/api/search.cpp \
     src/api/settings.cpp \
     src/api/user.cpp \
     src/models/currentplaylistmodel.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     src/api/playlists.h \
     src/api/request.h \
     src/api/rotor.h \
+    src/api/search.h \
     src/api/settings.h \
     src/api/user.h \
     src/models/currentplaylistmodel.h \
@@ -44,6 +46,7 @@ HEADERS += \
 
 
 DISTFILES += \
+    qml/components/ArtistListItemDelegate.qml \
     qml/components/BigPlayer.qml \
     qml/components/FeedPage/PersonalPlaylistsBlock.qml \
     qml/components/LittlePlayer.qml \
@@ -51,9 +54,10 @@ DISTFILES += \
     qml/components/MprisController.qml \
     qml/components/MyWavePlayer.qml \
     qml/components/PlaylistCoverFeed.qml \
-    qml/components/PlaylistTrackDelegate.qml \
     qml/components/SvgIcon.qml \
+    qml/components/TrackListItemDelegate.qml \
     qml/pages/FeedPage.qml \
+    qml/pages/SearchPage.qml \
     rpm/*.spec \
     qml/* \
     qml/pages/* \

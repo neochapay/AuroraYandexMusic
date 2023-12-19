@@ -69,6 +69,19 @@ Page {
             title: qsTr("You feed")
         }
 
+        VerticalScrollDecorator {
+            id: scroll
+        }
+
+        PullDownMenu {
+            id: feedPullMenu
+            MenuItem {
+                text: qsTr("Search")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SearchPage.qml"));
+                }
+            }
+        }
         BusyIndicator {
             id: busyIndicator
             running: visible

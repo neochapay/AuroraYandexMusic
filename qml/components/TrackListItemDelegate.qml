@@ -23,7 +23,7 @@ import Sailfish.Silica 1.0
 import ru.neochapay.ourmusic 1.0
 
 Item {
-    id: playlistTrack
+    id: trackListItemDelegate
     width: parent.width
     height: Theme.itemSizeLarge
 
