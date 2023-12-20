@@ -76,6 +76,6 @@ Item {
 
     MouseArea{
         anchors.fill: parent
-        onClicked: playlistTrack.clicked()
+        onClicked: trackListItemDelegate.clicked()
     }
 }
