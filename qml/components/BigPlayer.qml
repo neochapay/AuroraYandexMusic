@@ -103,7 +103,7 @@ Rectangle{
 
             MouseArea{
                 anchors.fill: parent
-                //onClicked: pageStack.push(Qt.resolvedUrl("pages/ArtistPage.qml", { artistId : track.artists[0].artistId }))
+                onClicked: pageStack.push(Qt.resolvedUrl("../pages/ArtistPage.qml", { artist : track.artists[0] }))
             }
         }
 
