@@ -10,6 +10,7 @@ ApplicationWindow {
     id: root
 
     property bool isMyWave: false
+    property bool saveToFile: false
 
     initialPage: {
         if (auth.token.length > 0) {
@@ -53,9 +54,19 @@ ApplicationWindow {
     MusicFetcher{
         id: musicFetcher
         onTrackReady: {
-            rootAudio.source = path
-            if(currentPlayListModel.currentIndex > -1) {
-                rootAudio.play()
+            if(saveToFile) {
+                rootAudio.source = path
+                if(currentPlayListModel.currentIndex > -1) {
+                    rootAudio.play()
+                }
+            }
+        }
+        onFinalUrlReady: {
+            if(!saveToFile) {
+                rootAudio.source = url
+                if(currentPlayListModel.currentIndex > -1) {
+                    rootAudio.play()
+                }
             }
         }
     }
