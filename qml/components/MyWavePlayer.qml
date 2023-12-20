@@ -28,6 +28,7 @@ Item {
         source: "../img/play.svg"
 
         onClicked: {
+            root.isMyWave = true
             if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
                 currentPlayListModel.currentIndex = 0
             }

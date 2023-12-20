@@ -42,6 +42,10 @@ MprisPlayer {
 
     onTrackChanged: {
         var metadata = mprisPlayer.metadata
+        if(metaData == null) {
+            return
+        }
+
         metaData.title = track.title
         metaData.contributingArtist = track.artists[0].name
         metaData.artUrl = "https://"+track.albums[0].coverUri.replace("%%", "100x100")
