@@ -29,7 +29,6 @@ Page {
 
     Search{
         id: search
-        Component.onCompleted: search.query = "Король"
         onSearchReady: busyIndicator.visible = false
         onSearchStarted: busyIndicator.visible = true
     }
@@ -37,7 +36,7 @@ Page {
     BusyIndicator {
         id: busyIndicator
         running: visible
-        visible: true
+        visible: false
         anchors.centerIn: parent
     }
 
@@ -58,7 +57,6 @@ Page {
             onTextChanged: search.query = searchQuery.text
             anchors.top: header.bottom
             placeholderText: qsTr("Search")
-            text: "Король"
         }
 
         //ARTISTS
@@ -79,7 +77,11 @@ Page {
 
                 model: search.artistSearchResult
                 delegate: ArtistListItemDelegate{
+                    id: artistDelegate
                     artist: modelData
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("ArtistPage.qml"), { artistId : artistDelegate.artist.artistId })
+                    }
                 }
             }
 
@@ -91,6 +93,7 @@ Page {
                 model: search.albumsSearchResult
                 delegate: AlbumListItemDelegate{
                     album: modelData
+                    onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { album : modelData })
                 }
             }
         }
