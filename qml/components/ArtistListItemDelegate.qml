@@ -61,4 +61,9 @@ Item {
             leftMargin: parent.height*0.1
         }
     }
+
+    MouseArea{
+        anchors.fill: parent
+        onClicked: artistListItemDelegate.clicked()
+    }
 }
