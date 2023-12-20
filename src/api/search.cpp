@@ -42,7 +42,7 @@ const QString &Search::query() const
 
 void Search::setQuery(const QString &newQuery)
 {
-    if (m_query == newQuery)
+    if (m_query == newQuery.trimmed())
         return;
     m_query = newQuery;
     emit queryChanged();
@@ -92,6 +92,8 @@ void Search::makeQuery()
     if(m_query.length() < 3) {
         return;
     }
+
+    emit searchStarted();
 
     Request* searchRequest = new Request("/search");
     connect(searchRequest, &Request::dataReady, this, &Search::searchRequestHandler);

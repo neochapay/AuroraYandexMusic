@@ -30,9 +30,8 @@ Page {
     Search{
         id: search
         Component.onCompleted: search.query = "Король"
-        onSearchReady: {
-            busyIndicator.visible = false
-        }
+        onSearchReady: busyIndicator.visible = false
+        onSearchStarted: busyIndicator.visible = true
     }
 
     BusyIndicator {

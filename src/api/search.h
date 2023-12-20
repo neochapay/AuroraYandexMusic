@@ -75,6 +75,7 @@ signals:
     void pageChanged();
     void typeChanged();
 
+    void searchStarted();
     void searchReady();
 
 private slots:
