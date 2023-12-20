@@ -18,6 +18,7 @@
  */
 
 #include "artist.h"
+#include <QJsonArray>
 
 Artist::Artist(QObject* parent)
     : QObject(parent)
@@ -39,10 +40,24 @@ Artist::Artist(QJsonObject object, QObject* parent)
     d_ptr->coverPrefix = object.value("cover").toObject().take("prefix").toString();
     d_ptr->coverType = object.value("cover").toObject().take("type").toString();
     d_ptr->coverUri = object.value("cover").toObject().take("uri").toString();
-    // m_disclaimers = object.value("disclaimers").toArray();
-    // m_genres = object.value("genres").toArray();
+
+    for(const QJsonValue &v : object.value("disclaimers").toArray()) {
+        d_ptr->disclaimers.push_back(v.toString());
+    }
+
+    for(const QJsonValue &v : object.value("genres").toArray()) {
+        d_ptr->genres.push_back(v.toString());
+    }
+
+    d_ptr->countsTracks = object.value("counts").toObject().take("tracks").toInt();
+    d_ptr->countsDirectAlbums = object.value("counts").toObject().take("directAlbums").toInt();
+    d_ptr->countsAlsoAlbums = object.value("counts").toObject().take("alsoAlbums").toInt();
+    d_ptr->countsAlsoTracks = object.value("counts").toObject().take("alsoTracks").toInt();
+    d_ptr->likesCount = object.value("likesCount").toInt();
+    d_ptr->ogImage = object.value("ogImage").toString();
+
     d_ptr->name = object.value("name").toString();
-    d_ptr->artistId = object.value("artistId").toString();
+    d_ptr->artistId = object.value("id").toInt();
     d_ptr->various = object.value("various").toBool();
 }
 
@@ -55,6 +70,11 @@ Artist& Artist::operator=(const Artist& other)
 {
     *d_ptr = *other.d_ptr;
     return *this;
+}
+
+bool Artist::operator !=(const Artist &other)
+{
+    return d_ptr->artistId != other.artistId();
 }
 
 bool Artist::composer() const
@@ -92,7 +112,7 @@ const QString& Artist::name() const
     return d_ptr->name;
 }
 
-QString Artist::artistId() const
+int Artist::artistId() const
 {
     return d_ptr->artistId;
 }
@@ -100,4 +120,34 @@ QString Artist::artistId() const
 bool Artist::various() const
 {
     return d_ptr->various;
+}
+
+int Artist::countsTracks() const
+{
+    return d_ptr->countsTracks;
+}
+
+int Artist::countsDirectAlbums() const
+{
+    return d_ptr->countsDirectAlbums;
+}
+
+int Artist::countsAlsoAlbums() const
+{
+    return d_ptr->countsAlsoAlbums;
+}
+
+int Artist::countsAlsoTracks() const
+{
+    return d_ptr->countsAlsoTracks;
+}
+
+int Artist::likesCount() const
+{
+    return d_ptr->likesCount;
+}
+
+const QString &Artist::ogImage() const
+{
+    return d_ptr->ogImage;
 }

@@ -21,6 +21,7 @@
 #include <QtQuick>
 #endif
 
+#include "api/artistinfo.h"
 #include "api/feed.h"
 #include "api/feedbacksender.h"
 #include "api/landing3.h"
@@ -58,9 +59,6 @@ int main(int argc, char* argv[])
     qRegisterMetaType<DerivedColors>("DerivedColors");
     qRegisterMetaType<Search::SearchType>("SearchType");
 
-    qmlRegisterType<Track>();
-    qmlRegisterType<Album>();
-
     qmlRegisterType<CurrentPlayListModel>("ru.neochapay.ourmusic", 1, 0, "CurrentPlayListModel");
     qmlRegisterType<User>("ru.neochapay.ourmusic", 1, 0, "User");
     qmlRegisterType<OAuth>("ru.neochapay.ourmusic", 1, 0, "Auth");
@@ -71,6 +69,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");
     qmlRegisterType<Landing3>("ru.neochapay.ourmusic", 1, 0, "Landing");
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
+    qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
 
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
     view->show();

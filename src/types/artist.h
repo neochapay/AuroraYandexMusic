@@ -31,8 +31,14 @@ public:
     QString coverUri;
     QStringList disclaimers;
     QStringList genres;
+    int countsTracks;
+    int countsDirectAlbums;
+    int countsAlsoAlbums;
+    int countsAlsoTracks;
+    int likesCount;
+    QString ogImage;
     QString name;
-    QString artistId;
+    int artistId;
     bool various;
 };
 
@@ -44,8 +50,16 @@ class Artist : public QObject {
     Q_PROPERTY(QString coverUri READ coverUri NOTIFY artistChanged)
     Q_PROPERTY(QStringList disclaimers READ disclaimers NOTIFY artistChanged)
     Q_PROPERTY(QStringList genres READ genres NOTIFY artistChanged)
+
+    Q_PROPERTY(int countsTracks READ countsTracks NOTIFY artistChanged)
+    Q_PROPERTY(int countsDirectAlbums READ countsDirectAlbums NOTIFY artistChanged)
+    Q_PROPERTY(int countsAlsoAlbums READ countsAlsoAlbums NOTIFY artistChanged)
+    Q_PROPERTY(int countsAlsoTracks READ countsAlsoTracks NOTIFY artistChanged)
+    Q_PROPERTY(int likesCount READ likesCount NOTIFY artistChanged)
+    Q_PROPERTY(QString ogImage READ ogImage NOTIFY artistChanged)
+
     Q_PROPERTY(QString name READ name NOTIFY artistChanged)
-    Q_PROPERTY(QString artistId READ artistId NOTIFY artistChanged)
+    Q_PROPERTY(int artistId READ artistId NOTIFY artistChanged)
     Q_PROPERTY(bool various READ various NOTIFY artistChanged)
 
 public:
@@ -54,6 +68,7 @@ public:
     explicit Artist(QJsonObject object, QObject* parent = nullptr);
     virtual ~Artist();
     Artist& operator=(const Artist& other);
+    bool operator!=(const Artist& other);
 
     bool composer() const;
     const QString& coverPrefix() const;
@@ -62,8 +77,14 @@ public:
     const QStringList& disclaimers() const;
     const QStringList& genres() const;
     const QString& name() const;
-    QString artistId() const;
+    int artistId() const;
     bool various() const;
+    int countsTracks() const;
+    int countsDirectAlbums() const;
+    int countsAlsoAlbums() const;
+    int countsAlsoTracks() const;
+    int likesCount() const;
+    const QString& ogImage() const;
 
 signals:
     void artistChanged();

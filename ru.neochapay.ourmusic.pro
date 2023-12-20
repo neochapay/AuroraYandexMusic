@@ -6,6 +6,7 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/api/artistinfo.cpp \
     src/api/feed.cpp \
     src/api/feedbacksender.cpp \
     src/api/landing3.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     src/types/track.cpp
 
 HEADERS += \
+    src/api/artistinfo.h \
     src/api/feed.h \
     src/api/feedbacksender.h \
     src/api/landing3.h \
@@ -57,6 +59,7 @@ DISTFILES += \
     qml/components/PlaylistCoverFeed.qml \
     qml/components/SvgIcon.qml \
     qml/components/TrackListItemDelegate.qml \
+    qml/pages/ArtistPage.qml \
     qml/pages/FeedPage.qml \
     qml/pages/SearchPage.qml \
     rpm/*.spec \
