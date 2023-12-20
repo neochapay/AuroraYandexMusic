@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>ArtistPage</name>
+    <message>
+        <location filename="../qml/pages/ArtistPage.qml" line="102"/>
+        <source>Popular tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistPage.qml" line="114"/>
+        <source>Albums</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="55"/>
@@ -59,8 +72,8 @@
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="52"/>
-        <location filename="../qml/pages/SearchPage.qml" line="60"/>
+        <location filename="../qml/pages/SearchPage.qml" line="51"/>
+        <location filename="../qml/pages/SearchPage.qml" line="59"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>

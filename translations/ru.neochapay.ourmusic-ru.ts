@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU" sourcelanguage="en_US">
 <context>
+    <name>ArtistPage</name>
+    <message>
+        <location filename="../qml/pages/ArtistPage.qml" line="102"/>
+        <source>Popular tracks</source>
+        <translation>Популярные треки</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistPage.qml" line="114"/>
+        <source>Albums</source>
+        <translation>Альбомы</translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="55"/>
@@ -29,7 +42,7 @@
     <message>
         <location filename="../qml/pages/FeedPage.qml" line="79"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -59,10 +72,10 @@
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="52"/>
-        <location filename="../qml/pages/SearchPage.qml" line="60"/>
+        <location filename="../qml/pages/SearchPage.qml" line="51"/>
+        <location filename="../qml/pages/SearchPage.qml" line="59"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 </TS>
