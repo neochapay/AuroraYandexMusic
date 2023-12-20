@@ -126,12 +126,32 @@ void Search::searchRequestHandler(QJsonValue value)
     m_playlistSearchResult.clear();
     m_tracksSearchResult.clear();
 
-    QJsonArray artistsResult = value.toObject()["artists"].toObject().value("results").toArray();
 
-    for(const QJsonValue& v : artistsResult) {
-        Artist* artist = new Artist(v.toObject());
-        if(!artist->name().isEmpty()) {
+    //Artists
+    QJsonArray artistsResult = value.toObject()["artists"].toObject().value("results").toArray();
+    int artistConut = artistsResult.count();
+    if(artistsResult.count() > 3) {
+        artistConut = 3;
+    }
+
+    for(int i=0; i < artistConut; i++) {
+        Artist* artist = new Artist(artistsResult[i].toObject());
+        if(!artist->coverUri().isEmpty()) {
             m_artistSearchResult.push_back(artist);
+        }
+    }
+
+    //Albums
+    QJsonArray albumsResult = value.toObject()["albums"].toObject().value("results").toArray();
+    int albumsConut = albumsResult.count();
+    if(albumsResult.count() > 3) {
+        albumsConut = 3;
+    }
+
+    for(int i=0; i < albumsConut; i++) {
+        Album* album = new Album(albumsResult[i].toObject());
+        if(!album->coverUri().isEmpty()) {
+            m_albumsSearchResult.push_back(album);
         }
     }
 

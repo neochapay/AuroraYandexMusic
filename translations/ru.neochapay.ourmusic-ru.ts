@@ -59,8 +59,8 @@
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="55"/>
-        <location filename="../qml/pages/SearchPage.qml" line="63"/>
+        <location filename="../qml/pages/SearchPage.qml" line="53"/>
+        <location filename="../qml/pages/SearchPage.qml" line="61"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>

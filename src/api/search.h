@@ -36,9 +36,9 @@ class Search : public QObject {
     Q_PROPERTY(SearchType type READ type WRITE setType NOTIFY typeChanged)
     //    Q_PROPERTY(QList<QObject*> topSearchResult READ artistSearchResult NOTIFY searchReady) TODO
     Q_PROPERTY(QList<QObject*> artistSearchResult READ artistSearchResult NOTIFY searchReady)
-    Q_PROPERTY(QList<QObject*> albumsSearchResult READ artistSearchResult NOTIFY searchReady)
-    Q_PROPERTY(QList<QObject*> playlistSearchResult READ artistSearchResult NOTIFY searchReady)
-    Q_PROPERTY(QList<QObject*> tracksSearchResult READ artistSearchResult NOTIFY searchReady)
+    Q_PROPERTY(QList<QObject*> albumsSearchResult READ albumsSearchResult NOTIFY searchReady)
+    Q_PROPERTY(QList<QObject*> playlistSearchResult READ playlistSearchResult NOTIFY searchReady)
+    Q_PROPERTY(QList<QObject*> tracksSearchResult READ tracksSearchResult NOTIFY searchReady)
 
 public:
     enum SearchType {

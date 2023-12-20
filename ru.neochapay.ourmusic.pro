@@ -46,6 +46,7 @@ HEADERS += \
 
 
 DISTFILES += \
+    qml/components/AlbumListItemDelegate.qml \
     qml/components/ArtistListItemDelegate.qml \
     qml/components/BigPlayer.qml \
     qml/components/FeedPage/PersonalPlaylistsBlock.qml \

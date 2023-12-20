@@ -23,16 +23,16 @@ import Sailfish.Silica 1.0
 import ru.neochapay.ourmusic 1.0
 
 Item {
-    id: artistListItemDelegate
+    id: albumListItemDelegate
     width: parent.width
     height: Theme.itemSizeLarge
 
     signal clicked();
 
-    property var artist
+    property var album
 
     Image{
-        id: artistCover
+        id: albumCover
         width: parent.height*0.8
         height: width
 
@@ -43,13 +43,13 @@ Item {
             topMargin: parent.height*0.1
         }
 
-        source: artist.coverUri ? "https://"+artist.coverUri.replace("%%", "100x100") : "../img/person.svg"
+        source: album.coverUri ? "https://"+album.coverUri.replace("%%", "100x100") : "../img/person.svg"
         fillMode: Image.PreserveAspectFit
     }
 
     Label{
-        id: artistTitle
-        text: artist.name
+        id: albumTitle
+        text: album.title
 
         color: Theme.highlightColor
         font.bold: true
@@ -57,7 +57,7 @@ Item {
         anchors{
             bottom: parent.verticalCenter
             bottomMargin: parent.height*0.1
-            left: artistCover.right
+            left: albumCover.right
             leftMargin: parent.height*0.1
         }
     }

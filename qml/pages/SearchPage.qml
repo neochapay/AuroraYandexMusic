@@ -67,18 +67,32 @@ Page {
         //PLAYLISTS
         //TRACKS
 
-        ListView{
-            id: artistsListView
+        Column{
             width: parent.width
-            height: Theme.itemSizeLarge * search.artistSearchResult.length
-
             anchors{
                 top: searchQuery.bottom
             }
 
-            model: search.albumsSearchResult
-            delegate: ArtistListItemDelegate{
-                artist: modelData
+            Repeater{
+                id: artistsListView
+                width: parent.width
+                height: Theme.itemSizeLarge * search.artistSearchResult.length
+
+                model: search.artistSearchResult
+                delegate: ArtistListItemDelegate{
+                    artist: modelData
+                }
+            }
+
+            Repeater{
+                id: albumListView
+                width: parent.width
+                height: Theme.itemSizeLarge * search.albumsSearchResult.length
+
+                model: search.albumsSearchResult
+                delegate: AlbumListItemDelegate{
+                    album: modelData
+                }
             }
         }
     }

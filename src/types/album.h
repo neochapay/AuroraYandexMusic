@@ -60,29 +60,29 @@ public:
 
 class Album : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QList<QObject*> artists READ artists)
-    Q_PROPERTY(bool available READ available)
-    Q_PROPERTY(bool availableForMobile READ availableForMobile)
-    Q_PROPERTY(QStringList availableForOptions READ availableForOptions)
-    Q_PROPERTY(bool availableForPremiumUsers READ availableForPremiumUsers)
-    Q_PROPERTY(bool availablePartially READ availablePartially)
-    Q_PROPERTY(QList<int> bests READ bests)
-    Q_PROPERTY(QString contentWarning READ contentWarning)
-    Q_PROPERTY(QString coverUri READ coverUri)
-    Q_PROPERTY(QStringList disclaimers READ disclaimers)
-    Q_PROPERTY(QString genere READ genere)
-    Q_PROPERTY(int albumId READ albumId)
-    Q_PROPERTY(QList<QObject*> labels READ labels)
-    Q_PROPERTY(int likesConut READ likesConut)
-    Q_PROPERTY(QString metaType READ metaType)
-    Q_PROPERTY(QString orImage READ orImage)
-    Q_PROPERTY(bool recent READ recent)
-    Q_PROPERTY(QDateTime releaseDate READ releaseDate)
-    Q_PROPERTY(QString title READ title)
-    Q_PROPERTY(int trackCount READ trackCount)
-    Q_PROPERTY(int trackPositionIndex READ trackPositionIndex)
-    Q_PROPERTY(int trackPositionVolume READ trackPositionVolume)
-    Q_PROPERTY(int year READ year)
+    Q_PROPERTY(QList<QObject*> artists READ artists NOTIFY albumChanged)
+    Q_PROPERTY(bool available READ available NOTIFY albumChanged)
+    Q_PROPERTY(bool availableForMobile READ availableForMobile NOTIFY albumChanged)
+    Q_PROPERTY(QStringList availableForOptions READ availableForOptions NOTIFY albumChanged)
+    Q_PROPERTY(bool availableForPremiumUsers READ availableForPremiumUsers NOTIFY albumChanged)
+    Q_PROPERTY(bool availablePartially READ availablePartially NOTIFY albumChanged)
+    Q_PROPERTY(QList<int> bests READ bests NOTIFY albumChanged)
+    Q_PROPERTY(QString contentWarning READ contentWarning NOTIFY albumChanged)
+    Q_PROPERTY(QString coverUri READ coverUri NOTIFY albumChanged)
+    Q_PROPERTY(QStringList disclaimers READ disclaimers NOTIFY albumChanged)
+    Q_PROPERTY(QString genere READ genere NOTIFY albumChanged)
+    Q_PROPERTY(int albumId READ albumId NOTIFY albumChanged)
+    Q_PROPERTY(QList<QObject*> labels READ labels NOTIFY albumChanged)
+    Q_PROPERTY(int likesConut READ likesConut NOTIFY albumChanged)
+    Q_PROPERTY(QString metaType READ metaType NOTIFY albumChanged)
+    Q_PROPERTY(QString orImage READ orImage NOTIFY albumChanged)
+    Q_PROPERTY(bool recent READ recent NOTIFY albumChanged)
+    Q_PROPERTY(QDateTime releaseDate READ releaseDate NOTIFY albumChanged)
+    Q_PROPERTY(QString title READ title NOTIFY albumChanged)
+    Q_PROPERTY(int trackCount READ trackCount NOTIFY albumChanged)
+    Q_PROPERTY(int trackPositionIndex READ trackPositionIndex NOTIFY albumChanged)
+    Q_PROPERTY(int trackPositionVolume READ trackPositionVolume NOTIFY albumChanged)
+    Q_PROPERTY(int year READ year NOTIFY albumChanged)
 
 public:
     explicit Album(QObject* parent = nullptr);
@@ -114,6 +114,9 @@ public:
     int trackPositionIndex() const;
     int trackPositionVolume() const;
     int year() const;
+
+signals:
+    void albumChanged();
 
 private:
     AlbumPrivate* d_ptr;
