@@ -196,7 +196,7 @@ Rectangle{
 
             anchors{
                 right: bigPlayerBackwardButton.left
-                rightMargin: Theme.paddingSmall
+                rightMargin: Theme.paddingLarge
                 verticalCenter: parent.verticalCenter
             }
             onClicked: user.dislike("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
@@ -213,7 +213,7 @@ Rectangle{
 
             anchors{
                 right: bigPlayerPlayButton.left
-                rightMargin: Theme.paddingSmall
+                rightMargin: Theme.paddingLarge
                 verticalCenter: parent.verticalCenter
             }
             onClicked: currentPlayListModel.currentIndex--
@@ -245,7 +245,7 @@ Rectangle{
 
             anchors{
                 left: bigPlayerPlayButton.right
-                leftMargin: Theme.paddingSmall
+                leftMargin: Theme.paddingLarge
                 verticalCenter: parent.verticalCenter
             }
 
@@ -266,7 +266,7 @@ Rectangle{
 
             anchors{
                 left: bigPlayerForwardButton.right
-                leftMargin: Theme.paddingSmall
+                leftMargin: Theme.paddingLarge
                 verticalCenter: parent.verticalCenter
             }
             onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
