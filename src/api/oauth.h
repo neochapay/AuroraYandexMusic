@@ -27,16 +27,14 @@ class OAuth : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool isLogined READ isLogined NOTIFY isLoginedChanged)
     Q_PROPERTY(QString token READ token NOTIFY tokenChanged)
-    Q_PROPERTY(QString clientID READ clientID)
 
 public:
     explicit OAuth(QObject* parent = nullptr);
     Q_INVOKABLE void parseUrl(QString url);
+    Q_INVOKABLE void logout();
 
     bool isLogined() const;
     const QString& token() const;
-
-    const QString clientID() const;
 
 signals:
     void isLoginedChanged();

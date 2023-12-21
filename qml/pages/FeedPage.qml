@@ -76,6 +76,12 @@ Page {
         PullDownMenu {
             id: feedPullMenu
             MenuItem {
+                text: qsTr("Profile")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("UserPage.qml"));
+                }
+            }
+            MenuItem {
                 text: qsTr("Search")
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("SearchPage.qml"));

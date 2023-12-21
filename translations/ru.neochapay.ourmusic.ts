@@ -41,6 +41,11 @@
     </message>
     <message>
         <location filename="../qml/pages/FeedPage.qml" line="79"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/FeedPage.qml" line="85"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,6 +80,19 @@
         <location filename="../qml/pages/SearchPage.qml" line="54"/>
         <location filename="../qml/pages/SearchPage.qml" line="62"/>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UserPage</name>
+    <message>
+        <location filename="../qml/pages/UserPage.qml" line="37"/>
+        <source>You profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/UserPage.qml" line="45"/>
+        <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

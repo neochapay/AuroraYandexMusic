@@ -62,6 +62,7 @@ DISTFILES += \
     qml/pages/ArtistPage.qml \
     qml/pages/FeedPage.qml \
     qml/pages/SearchPage.qml \
+    qml/pages/UserPage.qml \
     rpm/*.spec \
     qml/* \
     qml/pages/* \
