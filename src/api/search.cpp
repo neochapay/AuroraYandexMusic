@@ -123,11 +123,7 @@ void Search::makeQuery()
 
 void Search::searchRequestHandler(QJsonValue value)
 {
-    m_artistSearchResult.clear();
-    m_albumsSearchResult.clear();
-    m_playlistSearchResult.clear();
-    m_tracksSearchResult.clear();
-
+    SearchResultData* searchResult = new SearchResultData();
 
     //Artists
     QJsonArray artistsResult = value.toObject()["artists"].toObject().value("results").toArray();
@@ -139,7 +135,7 @@ void Search::searchRequestHandler(QJsonValue value)
     for(int i=0; i < artistConut; i++) {
         Artist* artist = new Artist(artistsResult[i].toObject());
         if(!artist->coverUri().isEmpty()) {
-            m_artistSearchResult.push_back(artist);
+            searchResult->artists.push_back(artist);
         }
     }
 
@@ -153,29 +149,9 @@ void Search::searchRequestHandler(QJsonValue value)
     for(int i=0; i < albumsConut; i++) {
         Album* album = new Album(albumsResult[i].toObject());
         if(!album->coverUri().isEmpty()) {
-            m_albumsSearchResult.push_back(album);
+            searchResult->albums.push_back(album);
         }
     }
 
-    emit searchReady();
-}
-
-const QList<QObject *> &Search::artistSearchResult() const
-{
-    return *reinterpret_cast<const QList<QObject*>*>(&m_artistSearchResult);
-}
-
-const QList<QObject *> &Search::albumsSearchResult() const
-{
-    return *reinterpret_cast<const QList<QObject*>*>(&m_albumsSearchResult);
-}
-
-const QList<QObject *> &Search::playlistSearchResult() const
-{
-    return *reinterpret_cast<const QList<QObject*>*>(&m_playlistSearchResult);
-}
-
-const QList<QObject *> &Search::tracksSearchResult() const
-{
-    return *reinterpret_cast<const QList<QObject*>*>(&m_tracksSearchResult);
+    emit searchReady(searchResult);
 }

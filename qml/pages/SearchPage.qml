@@ -29,7 +29,11 @@ Page {
 
     Search{
         id: search
-        onSearchReady: busyIndicator.visible = false
+        onSearchReady: {
+            busyIndicator.visible = false
+            artistsListView.model = result.artists
+            albumListView.model = result.albums
+        }
         onSearchStarted: busyIndicator.visible = true
     }
 
@@ -43,7 +47,6 @@ Page {
     SilicaFlickable {
         id: feedView
         anchors.fill: parent
-        visible: !busyIndicator.visible
         clip: true
 
         PageHeader {
@@ -65,6 +68,8 @@ Page {
         //TRACKS
 
         Column{
+            id: mainColumn
+            visible: !busyIndicator.visible
             width: parent.width
             anchors{
                 top: searchQuery.bottom
@@ -73,9 +78,7 @@ Page {
             Repeater{
                 id: artistsListView
                 width: parent.width
-                height: Theme.itemSizeLarge * search.artistSearchResult.length
 
-                model: search.artistSearchResult
                 delegate: ArtistListItemDelegate{
                     id: artistDelegate
                     artist: modelData
@@ -88,9 +91,7 @@ Page {
             Repeater{
                 id: albumListView
                 width: parent.width
-                height: Theme.itemSizeLarge * search.albumsSearchResult.length
 
-                model: search.albumsSearchResult
                 delegate: AlbumListItemDelegate{
                     album: modelData
                     onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { album : modelData })

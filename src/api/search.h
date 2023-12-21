@@ -28,17 +28,24 @@
 #include "../types/playlist.h"
 #include "../types/track.h"
 
+class SearchResultData : public QObject{
+    Q_OBJECT
+    Q_PROPERTY(QList<QObject*> artists MEMBER artists)
+    Q_PROPERTY(QList<QObject*> albums MEMBER albums)
+    Q_PROPERTY(QList<QObject*> tracks MEMBER tracks)
+
+public:
+    QList<QObject*> artists;
+    QList<QObject*> albums;
+    QList<QObject*> tracks;
+};
+
 class Search : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
     Q_PROPERTY(int perPage READ perPage WRITE setPerPage NOTIFY perPageChanged)
     Q_PROPERTY(int page READ page WRITE setPage NOTIFY pageChanged)
     Q_PROPERTY(SearchType type READ type WRITE setType NOTIFY typeChanged)
-    //    Q_PROPERTY(QList<QObject*> topSearchResult READ artistSearchResult NOTIFY searchReady) TODO
-    Q_PROPERTY(QList<QObject*> artistSearchResult READ artistSearchResult NOTIFY searchReady)
-    Q_PROPERTY(QList<QObject*> albumsSearchResult READ albumsSearchResult NOTIFY searchReady)
-    Q_PROPERTY(QList<QObject*> playlistSearchResult READ playlistSearchResult NOTIFY searchReady)
-    Q_PROPERTY(QList<QObject*> tracksSearchResult READ tracksSearchResult NOTIFY searchReady)
 
 public:
     enum SearchType {
@@ -64,11 +71,6 @@ public:
     const SearchType& type() const;
     void setType(const SearchType& newType);
 
-    const QList<QObject*>& artistSearchResult() const;
-    const QList<QObject*>& albumsSearchResult() const;
-    const QList<QObject*>& playlistSearchResult() const;
-    const QList<QObject*>& tracksSearchResult() const;
-
 signals:
     void queryChanged();
     void perPageChanged();
@@ -76,7 +78,7 @@ signals:
     void typeChanged();
 
     void searchStarted();
-    void searchReady();
+    void searchReady(SearchResultData* result);
 
 private slots:
     void makeQuery();
@@ -87,10 +89,6 @@ private:
     int m_perPage;
     int m_page;
     SearchType m_type;
-    QList<Artist*> m_artistSearchResult;
-    QList<Album*> m_albumsSearchResult;
-    QList<Playlist*> m_playlistSearchResult;
-    QList<Track*> m_tracksSearchResult;
 };
 
 #endif // SEARCH_H
