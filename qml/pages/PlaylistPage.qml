@@ -69,7 +69,7 @@ Page {
                 anchors.centerIn: parent
 
                 onClicked: {
-                    root.isMyWave = false
+                    ourMusic.isMyWave = false
                     currentPlayListModel.setPlaylist(playlistPage.playlist)
                     currentPlayListModel.currentIndex = 0
                 }

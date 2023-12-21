@@ -74,8 +74,37 @@ Item {
         }
     }
 
+    SvgIcon{
+        id: playButton
+        width: parent.height*0.6
+        height: width
+
+        source: "../img/play.svg"
+
+        anchors{
+            right: parent.right
+            rightMargin: parent.height*0.2
+            top: parent.top
+            topMargin: parent.height*0.2
+        }
+
+        onClicked: {
+            ourMusic.isMyWave = false
+            rootAudio.stop()
+            currentPlayListModel.clear();
+            currentPlayListModel.push(track)
+            currentPlayListModel.currentIndex = 0
+        }
+    }
+
     MouseArea{
-        anchors.fill: parent
+        height: parent.height
+        width: parent.width - playButton.width
+        anchors{
+            top: parent.top
+            left: parent.left
+        }
+
         onClicked: trackListItemDelegate.clicked()
     }
 }

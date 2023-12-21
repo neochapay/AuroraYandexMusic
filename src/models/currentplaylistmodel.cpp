@@ -129,5 +129,7 @@ void CurrentPlayListModel::clear()
 {
     beginResetModel();
     m_currentTracks.clear();
+    m_currentIndex = -1;
     endResetModel();
+    currentIndexChanged();
 }

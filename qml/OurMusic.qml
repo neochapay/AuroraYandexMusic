@@ -7,7 +7,7 @@ import "pages"
 import "components"
 
 ApplicationWindow {
-    id: root
+    id: ourMusic
 
     property bool isMyWave: false
     property bool saveToFile: false
@@ -75,7 +75,7 @@ ApplicationWindow {
         id: currentPlayListModel
         onCurrentIndexChanged: {
             musicFetcher.load(currentPlayListModel.getCurrentTrack())
-            if(root.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
+            if(ourMusic.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
                 var lastTrack = currentPlayListModel.getCurrentTrack()
                 rotor.getStationTracks("user:onyourwave", lastTrack.trackId)
             }

@@ -96,6 +96,7 @@ void Search::makeQuery()
     emit searchStarted();
 
     Request* searchRequest = new Request("/search");
+    searchRequest->setDebug(true);
     connect(searchRequest, &Request::dataReady, this, &Search::searchRequestHandler);
 
     QUrlQuery query;

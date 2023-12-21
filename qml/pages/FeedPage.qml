@@ -82,6 +82,7 @@ Page {
                 }
             }
         }
+
         BusyIndicator {
             id: busyIndicator
             running: visible

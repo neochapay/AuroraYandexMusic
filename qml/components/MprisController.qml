@@ -42,7 +42,7 @@ MprisPlayer {
 
     onTrackChanged: {
         var metadata = mprisPlayer.metadata
-        if(metaData == null) {
+        if(metaData == null || track == null) {
             return
         }
 
