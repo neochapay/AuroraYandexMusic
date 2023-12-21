@@ -73,7 +73,7 @@ const QString& OAuth::token() const
     return m_token;
 }
 
-const QString& OAuth::clientID() const
+const QString OAuth::clientID() const
 {
     return "23cabbbdc6cd418abb4b39c32c41195d";
 }

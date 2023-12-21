@@ -44,17 +44,19 @@ void Landing3::get(QString blocks)
 
 void Landing3::loadingBlock(QString blockName)
 {
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << blockName;
 }
 
 void Landing3::chart(QString charType)
 {
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << charType;
 }
 
 void Landing3::getLandingRequestHandler(QJsonValue value)
 {
     if(m_gettingBlocks == "personalplaylists") {
         QString blockTitle = value.toObject().value("blocks").toArray().first().toObject().value("title").toString();
-        QList<Playlist*> blocks;
+        QList<QObject*> blocks;
         QJsonArray entities = value.toObject().value("blocks").toArray().first().toObject().value("entities").toArray();
 
         for(const QJsonValue &v: entities) {
@@ -64,7 +66,7 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
             }
         }
 
-        emit playlistBlockReady(blockTitle, *reinterpret_cast<const QList<QObject*>*>(&blocks));
+        emit playlistBlockReady(blockTitle, blocks);
     }
 }
 

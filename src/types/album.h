@@ -33,7 +33,7 @@ public:
 
 class AlbumPrivate {
 public:
-    QList<Artist*> artists;
+    QList<QObject*> artists;
     bool available;
     bool availableForMobile;
     QStringList availableForOptions;
@@ -45,7 +45,7 @@ public:
     QStringList disclaimers;
     QString genere;
     int albumId;
-    QList<Label*> labels;
+    QList<QObject*> labels;
     int likesConut;
     QString metaType;
     QString orImage;

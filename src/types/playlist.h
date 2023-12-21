@@ -53,7 +53,7 @@ public:
     QStringList tags;
     QString title;
     int trackCount;
-    QList<Track*> tracks;
+    QList<QObject*> tracks;
 };
 
 class Playlist : public QObject {

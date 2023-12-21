@@ -43,6 +43,8 @@ void CurrentPlayListModel::setCurrentIndex(int newCurrentIndex)
 
 QVariant CurrentPlayListModel::data(const QModelIndex& index, int role) const
 {
+    Q_UNUSED(index);
+    Q_UNUSED(role);
     return QVariant();
 }
 

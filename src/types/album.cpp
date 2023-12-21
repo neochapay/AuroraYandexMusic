@@ -92,7 +92,7 @@ Album& Album::operator=(const Album& other)
 
 const QList<QObject*>& Album::artists() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->artists);
+    return d_ptr->artists;
 }
 
 bool Album::available() const
@@ -152,7 +152,7 @@ int Album::albumId() const
 
 const QList<QObject*> Album::labels() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->labels);
+    return d_ptr->labels;
 }
 
 int Album::likesConut() const

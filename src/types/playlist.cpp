@@ -214,5 +214,5 @@ const QString &Playlist::ownerLogin() const
 
 const QList<QObject *> &Playlist::tracks() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->tracks);
+    return d_ptr->tracks;
 }

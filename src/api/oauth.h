@@ -36,7 +36,7 @@ public:
     bool isLogined() const;
     const QString& token() const;
 
-    const QString& clientID() const;
+    const QString clientID() const;
 
 signals:
     void isLoginedChanged();

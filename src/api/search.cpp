@@ -154,5 +154,19 @@ void Search::searchRequestHandler(QJsonValue value)
         }
     }
 
+    //tracks
+    QJsonArray tracksResult = value.toObject()["tracks"].toObject().value("results").toArray();
+    int tracksConut = albumsResult.count();
+    if(albumsResult.count() > 3) {
+        albumsConut = 3;
+    }
+
+    for(int i=0; i < tracksConut; i++) {
+        Track* track = new Track(albumsResult[i].toObject());
+        if(!track->trackId().isEmpty()) {
+            searchResult->tracks.push_back(track);
+        }
+    }
+
     emit searchReady(searchResult);
 }
