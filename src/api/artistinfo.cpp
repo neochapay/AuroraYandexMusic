@@ -79,24 +79,20 @@ void ArtistInfo::getBriefInfoRequestHandler(QJsonValue value)
     aData->artist = reinterpret_cast<QObject*>(artist);
 
     QJsonArray popularTracks = value.toObject().value("popularTracks").toArray();
-    QList<Track*> artistPopularTracks;
     for(const QJsonValue &v: popularTracks) {
         Track *track = new Track(v.toObject());
         if(!track->title().isEmpty()) {
-            artistPopularTracks.push_back(track);
+            aData->popularTracks.push_back(track);
         }
     }
-    aData->popularTracks = *reinterpret_cast<const QList<QObject*>*>(&artistPopularTracks);
 
     QJsonArray albums = value.toObject().value("albums").toArray();
-    QList<Album*> artistAlbum;
     for(const QJsonValue &v: albums) {
         Album* album = new Album(v.toObject());
         if(!album->title().isEmpty()) {
-            artistAlbum.push_back(album);
+            aData->albums.push_back(album);
         }
     }
-    aData->albums = *reinterpret_cast<const QList<QObject*>*>(&artistAlbum);
 
     emit getBriefInfoArtistInfoReady(aData);
 }
