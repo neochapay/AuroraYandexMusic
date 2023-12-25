@@ -25,19 +25,19 @@ import ru.neochapay.ourmusic 1.0
 import "../"
 
 Item {
-    id: personalPlaylistsBlock
+    id: newReleasesBlock
     height: childrenRect.height
     clip: true
     property var blockData
 
     Label{
-        id: personalPlaylistsBlockTitle
+        id: newReleasesBlockTitle
         width: parent.width
         color: Theme.primaryColor
         font.pixelSize: Theme.fontSizeLarge
         font.bold: true
         horizontalAlignment: Text.AlignLeft
-        text: personalPlaylistsBlock.blockData.title
+        text: blockData.title
 
         anchors{
             top: parent.top
@@ -46,27 +46,22 @@ Item {
     }
 
     ListView{
-        id: generatedPlayListView
+        id: newReleasesListView
         width: parent.width
 
         anchors{
-            top: personalPlaylistsBlockTitle.bottom
+            top: newReleasesBlockTitle.bottom
             topMargin: Theme.paddingLarge
         }
-        model: personalPlaylistsBlock.blockData.entities
+        model: newReleasesBlock.blockData.entities
         orientation: ListView.Horizontal
         spacing: Theme.paddingLarge
 
-        delegate: PlaylistCoverFeed{
-            id: playlistCoverFeed
-            title: modelData.title
-            destription: modelData.description
-            cover: modelData.cover.uri
-
-            onClicked: pageStack.push(Qt.resolvedUrl("../../pages/PlaylistPage.qml"), {
-                                          title: modelData.title,
-                                          kind: modelData.kind,
-                                          uid: modelData.ownerUid});
+        delegate: AlbumCoverFeed{
+            id: newReleasesCoverFeed
+            album: modelData
+            onClicked: pageStack.push(Qt.resolvedUrl("../../pages/AlbumPage.qml"), {
+                                          album: modelData});
         }
     }
 }

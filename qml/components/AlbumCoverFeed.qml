@@ -22,23 +22,21 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 Item {
-    id: playlistCoverFeed
-    property string title: "TITLE"
-    property string destription: "Descrition"
-    property string cover
+    id: albumCoverFeed
+    property var album
     clip: true
 
     signal clicked()
 
     width: Theme.itemSizeHuge*1.5
-    height: playlistCoverFeed.width + coverTitle.height + coverDescription.height + Theme.paddingMedium*4
+    height: albumCoverFeed.width + coverTitle.height + coverDescription.height + Theme.paddingMedium*4
 
     Component.onCompleted: calcHeigh()
     onHeightChanged: calcHeigh()
 
     function calcHeigh() {
-        if(generatedPlayListView.height < playlistCoverFeed.height) {
-            generatedPlayListView.height = playlistCoverFeed.height
+        if(newReleasesListView.height < albumCoverFeed.height) {
+            newReleasesListView.height = albumCoverFeed.height
         }
     }
 
@@ -47,12 +45,12 @@ Item {
         width: parent.width
         height: width
         fillMode: Image.PreserveAspectCrop
-        source: "https://" + cover.replace("%%", "200x200")
+        source: "https://" + album.coverUri.replace("%%", "200x200")
     }
 
     Label{
         id: coverTitle
-        text: playlistCoverFeed.title
+        text: album.title
         anchors{
             top: coverImage.bottom
             topMargin: Theme.paddingMedium
@@ -63,7 +61,7 @@ Item {
 
     Label{
         id: coverDescription
-        text: playlistCoverFeed.destription
+        text: album.artists[0].name
         width: parent.width
         anchors{
             top: coverTitle.bottom
@@ -76,6 +74,6 @@ Item {
 
     MouseArea{
         anchors.fill: parent
-        onClicked: playlistCoverFeed.clicked()
+        onClicked: albumCoverFeed.clicked()
     }
 }

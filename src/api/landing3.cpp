@@ -56,19 +56,31 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
 {
     QList<QObject*> blocks;
 
-    for(const QJsonValue &v: value.toObject().value("blocks").toArray()) {
+    for(const QJsonValue &vBlock: value.toObject().value("blocks").toArray()) {
+        QJsonObject valueObject = vBlock.toObject();
+
         LandingResultBlock* block = new LandingResultBlock;
-        block->type = v.toObject().value("type").toString();
-        block->title = v.toObject().value("titile").toString();
-        block->description = v.toObject().value("description").toString();
+        block->type = valueObject.value("type").toString();
+        block->title = valueObject.value("title").toString();
+        block->description = valueObject.value("description").toString();
 
-        QJsonArray entities = value.toObject().value("blocks").toArray().first().toObject().value("entities").toArray();
+        QJsonArray entities = valueObject.value("entities").toArray();
 
-        for(const QJsonValue &v: entities) {
+        for(const QJsonValue &entitiesValue: entities) {
+            QJsonObject entitiesObject = entitiesValue.toObject();
             if(block->type == "personal-playlists") {
-                Playlist* playlist = new Playlist(v.toObject().value("data").toObject().value("data").toObject());
+                Playlist* playlist = new Playlist(entitiesObject.value("data").toObject().value("data").toObject());
                 if(playlist != nullptr && !playlist->title().isEmpty()) {
                     block->entities.push_back(playlist);
+                }
+            }
+
+            if(block->type == "new-releases") {
+                if(entitiesObject.value("type").toString() == "album") { //Now support only albums
+                    Album* album = new Album(entitiesObject.value("data").toObject());
+                    if(album->albumId() != 0) {
+                        block->entities.push_back(album);
+                    }
                 }
             }
         }

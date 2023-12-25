@@ -50,9 +50,11 @@ HEADERS += \
 
 
 DISTFILES += \
+    qml/components/AlbumCoverFeed.qml \
     qml/components/AlbumListItemDelegate.qml \
     qml/components/ArtistListItemDelegate.qml \
     qml/components/BigPlayer.qml \
+    qml/components/FeedPage/NewReleasesBlock.qml \
     qml/components/FeedPage/PersonalPlaylistsBlock.qml \
     qml/components/LittlePlayer.qml \
     qml/components/MainPlayer.qml \

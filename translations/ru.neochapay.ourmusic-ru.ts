@@ -35,17 +35,17 @@
         <translation>Упс. У нас проблема.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="64"/>
+        <location filename="../qml/pages/FeedPage.qml" line="65"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="74"/>
+        <location filename="../qml/pages/FeedPage.qml" line="75"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="80"/>
+        <location filename="../qml/pages/FeedPage.qml" line="81"/>
         <source>Search</source>
         <translation type="unfinished">Поиск</translation>
     </message>

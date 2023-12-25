@@ -58,6 +58,7 @@ Page {
     SilicaFlickable {
         id: feedView
         anchors.fill: parent
+        contentHeight: header.height + feedColumn.height
 
         PageHeader {
             id: header
@@ -100,7 +101,7 @@ Page {
                 leftMargin: Theme.paddingLarge
             }
             width: parent.width-Theme.paddingLarge*2
-            height: parent.height-header.height-Theme.paddingLarge*2
+            height: childrenRect.height-Theme.paddingLarge*2
 
             visible: !busyIndicator.visible
             spacing: Theme.paddingLarge
@@ -121,7 +122,14 @@ Page {
                         if(modelData.type == "personal-playlists") {
                             landingBlocksLoader.setSource("../components/FeedPage/PersonalPlaylistsBlock.qml",
                                                           {
-                                                              "playlists": modelData.entities
+                                                              "blockData": modelData
+                                                          })
+                        }
+
+                        if(modelData.type == "new-releases") {
+                            landingBlocksLoader.setSource("../components/FeedPage/NewReleasesBlock.qml",
+                                                          {
+                                                              "blockData": modelData
                                                           })
                         }
                     }
