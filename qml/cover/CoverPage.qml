@@ -43,7 +43,9 @@ CoverBackground {
         }
 
         width: parent.width * 0.8
-        spacing: parent.width*0.1
+        height: parent.height - bgCover.height - activecover.height
+        clip: true
+        spacing: Theme.paddingSmall
 
         Label {
             id: artistLabel
@@ -70,7 +72,7 @@ CoverBackground {
         id: activecover
         CoverAction {
             iconSource: "image://theme/icon-m-like"
-            onTriggered: console.log("like pressed")
+            onTriggered: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
         CoverAction {
@@ -90,7 +92,10 @@ CoverBackground {
 
         CoverAction {
             iconSource: "image://theme/icon-cover-next-song"
-            onTriggered: console.log("next pressed")
+            onTriggered: {
+                rootAudio.stop()
+                currentPlayListModel.currentIndex++
+            }
         }
     }
 }
