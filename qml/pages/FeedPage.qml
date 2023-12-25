@@ -28,21 +28,9 @@ import "../components/FeedPage"
 Page {
     id: mainPage
 
-    Feed{
-        id: feed
-        onErrorReady: {
-            feedView.visible = false
-            errorLabel.visible = true
-        }
-    }
-
     Component.onCompleted: {
         rotor.getStationTracks();
-    }
-
-    Connections{
-        target: user
-        onUserIDChanged: feed.get()
+        landing.get()
     }
 
     Connections{
@@ -58,6 +46,13 @@ Page {
         visible: false
         anchors.centerIn: parent
         text: qsTr("Oops. We have a problem.")
+    }
+
+    Landing{
+        id: landing
+        onLandingBlocksReady: {
+            landingBlockRepeater.model = blocks
+        }
     }
 
     SilicaFlickable {
@@ -114,9 +109,24 @@ Page {
                 id: myWavePlayer
             }
 
-            PersonalPlaylistsBlock{
-                id: personalPlaylistsBlock
+            Repeater{
+                id: landingBlockRepeater
                 width: parent.width
+
+                delegate: Loader{
+                    id: landingBlocksLoader
+                    width: parent.width
+
+                    Component.onCompleted: {
+                        if(modelData.type == "personal-playlists") {
+                            landingBlocksLoader.setSource("../components/FeedPage/PersonalPlaylistsBlock.qml",
+                                                          {
+                                                              "playlists": modelData.entities
+                                                          })
+                        }
+                    }
+
+                }
             }
         }
     }

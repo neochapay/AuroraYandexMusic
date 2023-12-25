@@ -40,6 +40,8 @@ HEADERS += \
     src/api/settings.h \
     src/api/user.h \
     src/models/currentplaylistmodel.h \
+    src/types/LandingResultBlock.h \
+    src/types/SearchResultData.h \
     src/types/album.h \
     src/types/artist.h \
     src/types/cover.h \

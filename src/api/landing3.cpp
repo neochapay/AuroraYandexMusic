@@ -54,20 +54,29 @@ void Landing3::chart(QString charType)
 
 void Landing3::getLandingRequestHandler(QJsonValue value)
 {
-    if(m_gettingBlocks == "personalplaylists") {
-        QString blockTitle = value.toObject().value("blocks").toArray().first().toObject().value("title").toString();
-        QList<QObject*> blocks;
+    QList<QObject*> blocks;
+
+    for(const QJsonValue &v: value.toObject().value("blocks").toArray()) {
+        LandingResultBlock* block = new LandingResultBlock;
+        block->type = v.toObject().value("type").toString();
+        block->title = v.toObject().value("titile").toString();
+        block->description = v.toObject().value("description").toString();
+
         QJsonArray entities = value.toObject().value("blocks").toArray().first().toObject().value("entities").toArray();
 
         for(const QJsonValue &v: entities) {
-            Playlist* playlist = new Playlist(v.toObject().value("data").toObject().value("data").toObject());
-            if(playlist != nullptr && !playlist->title().isEmpty()) {
-                blocks.push_back(playlist);
+            if(block->type == "personal-playlists") {
+                Playlist* playlist = new Playlist(v.toObject().value("data").toObject().value("data").toObject());
+                if(playlist != nullptr && !playlist->title().isEmpty()) {
+                    block->entities.push_back(playlist);
+                }
             }
         }
 
-        emit playlistBlockReady(blockTitle, blocks);
+        blocks.push_back(block);
     }
+
+    emit landingBlocksReady(blocks);
 }
 
 void Landing3::loadingBlockRequestHandler(QJsonValue value)

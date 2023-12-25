@@ -30,19 +30,6 @@ Item {
     clip: true
     property var playlists: []
 
-    Landing{
-        id: landing
-        onPlaylistBlockReady: {
-            personalPlaylistsBlockTitle.text = title
-            generatedPlayListView.model = blocks
-        }
-    }
-
-    Connections{
-        target: user
-        onUserIDChanged: landing.get("personalplaylists");
-    }
-
     Label{
         id: personalPlaylistsBlockTitle
         width: parent.width
@@ -73,6 +60,7 @@ Item {
 
         orientation: ListView.Horizontal
         spacing: Theme.paddingLarge
+        model: personalPlaylistsBlock.playlists
 
         delegate: PlaylistCoverFeed{
             title: modelData.title

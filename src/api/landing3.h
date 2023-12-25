@@ -23,18 +23,20 @@
 #include <QJsonValue>
 #include <QObject>
 
+#include "../types/LandingResultBlock.h"
+
 class Landing3 : public QObject {
     Q_OBJECT
 public:
     explicit Landing3(QObject* parent = nullptr);
-    Q_INVOKABLE void get(QString blocks = "personalplaylists");
+    Q_INVOKABLE void get(QString blocks = "personalplaylists,promotions,new-releases,new-playlists,mixes,chart,artists,albums,playlists,play_contexts,podcasts");
     // Available values :  "personalplaylists,promotions,new-releases,new-playlists,mixes,chart,artists,albums,playlists,play_contexts,podcasts"
     Q_INVOKABLE void loadingBlock(QString blockName);
     // Available values : russia, world
     Q_INVOKABLE void chart(QString charType);
 
 signals:
-    void playlistBlockReady(QString title, QList<QObject*> blocks);
+    void landingBlocksReady(QList<QObject*> blocks);
 
 private slots:
     void getLandingRequestHandler(QJsonValue value);

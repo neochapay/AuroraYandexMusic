@@ -17,12 +17,12 @@
 <context>
     <name>CoverPage</name>
     <message>
-        <location filename="../qml/cover/CoverPage.qml" line="55"/>
+        <location filename="../qml/cover/CoverPage.qml" line="57"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/cover/CoverPage.qml" line="65"/>
+        <location filename="../qml/cover/CoverPage.qml" line="67"/>
         <source>My wave</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,22 +30,22 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="60"/>
+        <location filename="../qml/pages/FeedPage.qml" line="48"/>
         <source>Oops. We have a problem.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="69"/>
+        <location filename="../qml/pages/FeedPage.qml" line="64"/>
         <source>You feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="79"/>
+        <location filename="../qml/pages/FeedPage.qml" line="74"/>
         <source>Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="85"/>
+        <location filename="../qml/pages/FeedPage.qml" line="80"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -77,8 +77,8 @@
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="54"/>
-        <location filename="../qml/pages/SearchPage.qml" line="62"/>
+        <location filename="../qml/pages/SearchPage.qml" line="55"/>
+        <location filename="../qml/pages/SearchPage.qml" line="63"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
