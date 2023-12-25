@@ -27,18 +27,7 @@
 #include "../types/artist.h"
 #include "../types/playlist.h"
 #include "../types/track.h"
-
-class SearchResultData : public QObject{
-    Q_OBJECT
-    Q_PROPERTY(QList<QObject*> artists MEMBER artists)
-    Q_PROPERTY(QList<QObject*> albums MEMBER albums)
-    Q_PROPERTY(QList<QObject*> tracks MEMBER tracks)
-
-public:
-    QList<QObject*> artists;
-    QList<QObject*> albums;
-    QList<QObject*> tracks;
-};
+#include "../types/SearchResultData.h"
 
 class Search : public QObject {
     Q_OBJECT

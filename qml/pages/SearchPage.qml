@@ -33,6 +33,7 @@ Page {
             busyIndicator.visible = false
             artistsListView.model = result.artists
             albumListView.model = result.albums
+            tracksListView.model = result.albums
         }
         onSearchStarted: busyIndicator.visible = true
     }
@@ -95,6 +96,15 @@ Page {
                 delegate: AlbumListItemDelegate{
                     album: modelData
                     onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { album : modelData })
+                }
+            }
+
+            Repeater{
+                id: tracksListView
+                width: parent.width
+
+                delegate: TrackListItemDelegate{
+                    track: modelData
                 }
             }
         }
