@@ -21,6 +21,7 @@
 #include <QtQuick>
 #endif
 
+#include "api/albuminfo.h"
 #include "api/artistinfo.h"
 #include "api/feed.h"
 #include "api/feedbacksender.h"
@@ -70,6 +71,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Landing3>("ru.neochapay.ourmusic", 1, 0, "Landing");
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
+    qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
 
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
     view->show();

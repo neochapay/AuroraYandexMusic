@@ -26,7 +26,7 @@ import "../"
 
 Item {
     id: newReleasesBlock
-    height: childrenRect.height
+    height: newReleasesBlockTitle.height + newReleasesListView.height + Theme.paddingLarge*4
     clip: true
     property var blockData
 

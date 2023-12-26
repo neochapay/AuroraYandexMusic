@@ -29,7 +29,7 @@ Item {
     signal clicked()
 
     width: Theme.itemSizeHuge*1.5
-    height: albumCoverFeed.width + coverTitle.height + coverDescription.height + Theme.paddingMedium*4
+    height: albumImage.height + albumTitle.height + albumDescription.height + Theme.paddingMedium*4
 
     Component.onCompleted: calcHeigh()
     onHeightChanged: calcHeigh()
@@ -41,7 +41,7 @@ Item {
     }
 
     Image {
-        id: coverImage
+        id: albumImage
         width: parent.width
         height: width
         fillMode: Image.PreserveAspectCrop
@@ -49,10 +49,10 @@ Item {
     }
 
     Label{
-        id: coverTitle
+        id: albumTitle
         text: album.title
         anchors{
-            top: coverImage.bottom
+            top: albumImage.bottom
             topMargin: Theme.paddingMedium
         }
         color: Theme.primaryColor
@@ -60,11 +60,11 @@ Item {
     }
 
     Label{
-        id: coverDescription
+        id: albumDescription
         text: album.artists[0].name
         width: parent.width
         anchors{
-            top: coverTitle.bottom
+            top: albumTitle.bottom
             topMargin: Theme.paddingMedium
         }
         color: Theme.secondaryColor

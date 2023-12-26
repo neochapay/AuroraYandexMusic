@@ -38,7 +38,6 @@ void Landing3::get(QString blocks)
 
     Request* getLandingRequest = new Request("/landing3");
     connect(getLandingRequest, &Request::dataReady, this, &Landing3::getLandingRequestHandler);
-
     getLandingRequest->get(query);
 }
 

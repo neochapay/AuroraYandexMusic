@@ -6,6 +6,7 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/api/albuminfo.cpp \
     src/api/artistinfo.cpp \
     src/api/feed.cpp \
     src/api/feedbacksender.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     src/types/track.cpp
 
 HEADERS += \
+    src/api/albuminfo.h \
     src/api/artistinfo.h \
     src/api/feed.h \
     src/api/feedbacksender.h \
@@ -40,6 +42,7 @@ HEADERS += \
     src/api/settings.h \
     src/api/user.h \
     src/models/currentplaylistmodel.h \
+    src/types/ArtistInfoData.h \
     src/types/LandingResultBlock.h \
     src/types/SearchResultData.h \
     src/types/album.h \
@@ -63,6 +66,7 @@ DISTFILES += \
     qml/components/PlaylistCoverFeed.qml \
     qml/components/SvgIcon.qml \
     qml/components/TrackListItemDelegate.qml \
+    qml/pages/AlbumPage.qml \
     qml/pages/ArtistPage.qml \
     qml/pages/FeedPage.qml \
     qml/pages/SearchPage.qml \

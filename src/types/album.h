@@ -34,6 +34,7 @@ public:
 class AlbumPrivate {
 public:
     QList<QObject*> artists;
+    QList<QObject*> tracks;
     bool available;
     bool availableForMobile;
     QStringList availableForOptions;
@@ -61,6 +62,7 @@ public:
 class Album : public QObject {
     Q_OBJECT
     Q_PROPERTY(QList<QObject*> artists READ artists NOTIFY albumChanged)
+    Q_PROPERTY(QList<QObject*> tracks READ tracks NOTIFY albumChanged)
     Q_PROPERTY(bool available READ available NOTIFY albumChanged)
     Q_PROPERTY(bool availableForMobile READ availableForMobile NOTIFY albumChanged)
     Q_PROPERTY(QStringList availableForOptions READ availableForOptions NOTIFY albumChanged)
@@ -114,6 +116,8 @@ public:
     int trackPositionIndex() const;
     int trackPositionVolume() const;
     int year() const;
+
+    const QList<QObject *> &tracks() const;
 
 signals:
     void albumChanged();

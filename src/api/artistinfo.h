@@ -26,23 +26,7 @@
 #include "../types/artist.h"
 #include "../types/album.h"
 #include "../types/playlist.h"
-
-class ArtistInfoData : public QObject{
-    Q_OBJECT
-    Q_PROPERTY(QObject* artist MEMBER artist)
-    Q_PROPERTY(QList<QObject*> popularTracks MEMBER popularTracks)
-    Q_PROPERTY(QList<QObject*> albums MEMBER albums)
-
-public:
-    QObject* artist;
-    QList<QObject*> popularTracks;
-    QList<QObject*> albums;
-    QList<QObject*> playlists;
-    QList<QObject*> clips; //TODO
-    QList<QObject*> similarArtists;
-    QList<QObject*> concerts; //TODO
-    QList<QObject*> urls; //TODO
-};
+#include "../types/ArtistInfoData.h"
 
 class ArtistInfo : public QObject {
     Q_OBJECT

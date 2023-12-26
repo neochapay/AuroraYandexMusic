@@ -25,41 +25,27 @@ import ru.neochapay.ourmusic 1.0
 import "../components"
 
 Page {
-    id: artistPage
-    property int artistId
-    property var artistData
+    id: albumPage
+    property var album
 
-    ArtistInfo{
-        id: artistInfo
-        artistId: artistPage.artistId
+    AlbumInfo{
+        id: albumInfo
+        albumId: album.albumId
 
         Component.onCompleted: {
-            getBriefInfo();
+            albumInfo.get();
         }
 
-        onGetBriefInfoArtistInfoReady: {
-            busyIndicator.visible = false
-
-            artistPage.artistData = artistData
-            artistCover.source = "https://"+artistData.artist.coverUri.replace("%%","1000x1000")
-            artistName.text = artistData.artist.name
-            popularTracksRepeator.model = artistData.popularTracks
-            albumsRepeator.model = artistData.albums
+        onAlbumReady: {
+            albumPage.album = album
+            tracksRepeator.model = album.tracks
         }
-    }
-
-    BusyIndicator {
-        id: busyIndicator
-        running: visible
-        visible: true
-        anchors.centerIn: parent
     }
 
     SilicaFlickable {
-        id: artistView
+        id: albumView
         anchors.fill: parent
-        visible: !busyIndicator.visible
-        contentHeight: coverWraper.height + mainData.height + Theme.paddingMedium*2
+        contentHeight: coverWraper.height + mainData.height + playButtonItem.height + Theme.paddingMedium*4
 
         Item {
             id: coverWraper
@@ -67,21 +53,53 @@ Page {
             height: width
 
             Image{
-                id: artistCover
+                id: albumCover
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
+                source: "https://"+album.coverUri.replace("%%","1000x1000")
 
                 Label{
                     id: artistName
                     width: parent.width
+                    text: album.title
 
                     anchors{
                         bottom: parent.verticalCenter
                     }
+
                     color: Theme.highlightColor
                     font.bold: true
                     font.pixelSize: Theme.fontSizeExtraLarge
                     horizontalAlignment: Text.AlignHCenter
+                }
+            }
+        }
+
+        Item {
+            id: playButtonItem
+            width: parent.width
+            height: Theme.itemSizeMedium
+
+            anchors{
+                top: coverWraper.bottom
+                topMargin: Theme.paddingMedium
+            }
+
+            SvgIcon {
+                id: littlePlayerPlayButton
+
+                width: parent.height
+                height: width
+                anchors.centerIn: parent
+                source: "../img/play.svg"
+
+                onClicked: {
+                    rootAudio.stop()
+                    currentPlayListModel.clear()
+                    for(var i = 0; i < album.tracks.length; i++) {
+                        currentPlayListModel.push(album.tracks[i])
+                    }
+                    currentPlayListModel.currentIndex = 0
                 }
             }
         }
@@ -93,63 +111,16 @@ Page {
             anchors{
                 left: parent.left
                 leftMargin: Theme.paddingMedium
-                top: coverWraper.bottom
+                top: playButtonItem.bottom
                 topMargin: Theme.paddingMedium
             }
 
-            Label{
-                id: popularTracksLabel
-                text: qsTr("Popular tracks")
-            }
-
             Repeater{
-                id: popularTracksRepeator
+                id: tracksRepeator
                 delegate: TrackListItemDelegate{
                     track: modelData
                 }
             }
-
-            Label{
-                id: albumsLabel
-                text: qsTr("Albums")
-            }
-
-            Repeater{
-                id: albumsRepeator
-                delegate: AlbumListItemDelegate{
-                    album: modelData
-                    onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { album : modelData })
-                }
-            }
-
-            /*Label{
-                id: playlistLabel
-                text: qsTr("Playlists")
-            }
-
-            Label{
-                id: clipsLabel
-                text: qsTr("Clips")
-            }
-
-            Label{
-                id: alsoArtistsLabel
-                text: qsTr("Also artists")
-            }
-
-            Label{
-                id: concertsLabel
-                text: qsTr("Concerts")
-            }*/
         }
-
-        //TRAKCS
-        //ALBUMS
-        //PLAYLISTS
-        //CLIPS
-        //LIKE ALSO
-        //CONCERTS
-        //LINKS
-
     }
 }
