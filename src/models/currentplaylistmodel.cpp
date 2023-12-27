@@ -57,6 +57,10 @@ int CurrentPlayListModel::rowCount(const QModelIndex& parent) const
 bool CurrentPlayListModel::insertRow(int position, Track* track, const QModelIndex& index)
 {
     Q_UNUSED(index);
+    if(track == nullptr) {
+        return false;
+    }
+
     if (!(m_currentTracks.contains(track))) {
         beginInsertRows(QModelIndex(), position, position);
         if (!(m_currentTracks.contains(track))) {
@@ -85,6 +89,11 @@ bool CurrentPlayListModel::removeRows(int position, int rows, const QModelIndex&
 
 void CurrentPlayListModel::push(Track* track)
 {
+    if(track == nullptr) {
+        qWarning() << "Wrong track";
+        return;
+    }
+
     if (!track->trackId().isEmpty()) {
         beginInsertRows(QModelIndex(), m_currentTracks.count(), m_currentTracks.count());
         m_currentTracks.push_back(track);
