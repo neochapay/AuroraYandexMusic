@@ -47,6 +47,7 @@ public:
     Q_INVOKABLE void setPlaylist(Playlist* playlist);
     Q_INVOKABLE Track* getTrack(int index);
     Q_INVOKABLE Track* getCurrentTrack();
+    Q_INVOKABLE Track* getPrevTrack();
     Q_INVOKABLE void clear();
 
 signals:
@@ -55,8 +56,10 @@ signals:
 
 private:
     int m_currentIndex;
+
     QHash<int, QByteArray> m_hash;
     QList<Track*> m_currentTracks;
+    Track* m_prevTrack;
 };
 
 #endif // CURRENTPLAYLISTMODEL_H

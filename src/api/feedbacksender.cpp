@@ -31,8 +31,6 @@ FeedbackSender::FeedbackSender(QObject* parent)
 
 void FeedbackSender::sendFeedback(Track* track, int totalSeconds, int playedSeconds, int playlistId)
 {
-    qDebug() << Q_FUNC_INFO;
-
     if (track == nullptr || m_userID == 0) {
         return;
     }
@@ -59,6 +57,7 @@ void FeedbackSender::sendFeedback(Track* track, int totalSeconds, int playedSeco
     query.addQueryItem("client-now", QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
 
     Request* sendFeedbackRequest = new Request("/play-audio");
+    sendFeedbackRequest->setDebug(true);
     connect(sendFeedbackRequest, &Request::dataReady, this, &FeedbackSender::sendFeedbackHandler);
 
     sendFeedbackRequest->post(query.toString());

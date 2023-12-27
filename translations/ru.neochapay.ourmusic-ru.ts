@@ -30,22 +30,22 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="48"/>
+        <location filename="../qml/pages/FeedPage.qml" line="58"/>
         <source>Oops. We have a problem.</source>
         <translation>Упс. У нас проблема.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="65"/>
+        <location filename="../qml/pages/FeedPage.qml" line="76"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="75"/>
+        <location filename="../qml/pages/FeedPage.qml" line="86"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="81"/>
+        <location filename="../qml/pages/FeedPage.qml" line="92"/>
         <source>Search</source>
         <translation type="unfinished">Поиск</translation>
     </message>
@@ -61,7 +61,7 @@
 <context>
     <name>MyWavePlayer</name>
     <message>
-        <location filename="../qml/components/MyWavePlayer.qml" line="18"/>
+        <location filename="../qml/components/MyWavePlayer.qml" line="20"/>
         <source>My wave</source>
         <translation>Моя волна</translation>
     </message>

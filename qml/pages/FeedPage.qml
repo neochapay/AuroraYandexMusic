@@ -20,6 +20,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import QtMultimedia 5.5
+
 import ru.neochapay.ourmusic 1.0
 
 import "../components"
@@ -29,15 +31,23 @@ Page {
     id: mainPage
 
     Component.onCompleted: {
-        rotor.getStationTracks();
         landing.get()
     }
 
     Connections{
         target: rotor
-        onStantionTrackReady: {
-            currentPlayListModel.push(track)
-            busyIndicator.visible = false
+        onStantionTracksReady: {
+            if(ourMusic.isMyWave && currentPlayListModel.rowCount == 0) {
+                rotor.postStantionFeedback(Rotor.RadioStarted, tracks[0]);
+            }
+
+            for(var i = 0; i < tracks.length; i++) {
+                currentPlayListModel.push(tracks[i])
+            }
+
+            if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
+                currentPlayListModel.currentIndex = 0
+            }
         }
     }
 
@@ -52,6 +62,7 @@ Page {
         id: landing
         onLandingBlocksReady: {
             landingBlockRepeater.model = blocks
+            busyIndicator.visible = false
         }
     }
 

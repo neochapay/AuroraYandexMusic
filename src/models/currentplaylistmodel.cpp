@@ -23,6 +23,7 @@
 CurrentPlayListModel::CurrentPlayListModel(QObject* parent)
     : QAbstractListModel(parent)
     , m_currentIndex(-1)
+    , m_prevTrack(nullptr)
 {
     connect(this, &QAbstractListModel::rowsInserted, this, &CurrentPlayListModel::rowCountChanged);
     connect(this, &QAbstractListModel::rowsRemoved, this, &CurrentPlayListModel::rowCountChanged);
@@ -37,6 +38,8 @@ void CurrentPlayListModel::setCurrentIndex(int newCurrentIndex)
 {
     if (m_currentIndex == newCurrentIndex)
         return;
+    m_prevTrack = getTrack(m_currentIndex);
+
     m_currentIndex = newCurrentIndex;
     emit currentIndexChanged();
 }
@@ -122,7 +125,7 @@ void CurrentPlayListModel::setPlaylist(Playlist *playlist)
 
 Track* CurrentPlayListModel::getTrack(int index)
 {
-    if (index < m_currentTracks.count()) {
+    if (index < m_currentTracks.count() && index > 0) {
         return m_currentTracks.at(index);
     }
     return nullptr;
@@ -134,6 +137,11 @@ Track* CurrentPlayListModel::getCurrentTrack()
         return m_currentTracks.at(m_currentIndex);
     }
     return nullptr;
+}
+
+Track *CurrentPlayListModel::getPrevTrack()
+{
+    return m_prevTrack;
 }
 
 void CurrentPlayListModel::clear()

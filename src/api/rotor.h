@@ -27,17 +27,26 @@
 
 class Rotor : public QObject {
     Q_OBJECT
+
 public:
+    enum FeedbackType{
+        RadioStarted,
+        TrackStarted,
+        TrackFinished,
+        Skip
+    };
+    Q_ENUM(FeedbackType)
+
     explicit Rotor(QObject* parent = nullptr);
     Q_INVOKABLE void getStationInfo(QString stationId = "user:onyourwave");
     Q_INVOKABLE void getStationTracks(QString stationId = "user:onyourwave", QString lastTrackid = "0");
     Q_INVOKABLE void getAccountStatus();
     Q_INVOKABLE void getStantionsList();
     Q_INVOKABLE void getStantionsDashboard();
-    Q_INVOKABLE void postStantionFeedback(QString stationId = "user:onyourwave");
+    Q_INVOKABLE void postStantionFeedback(FeedbackType type, Track* track, QString stationId = "user:onyourwave", int totalPlayedSeconds =0);
 
 signals:
-    void stantionTrackReady(Track* track);
+    void stantionTracksReady(QList<QObject*> tracks);
 
 private slots:
     void getStationInfoRequestHandler(QJsonValue value);
@@ -46,6 +55,10 @@ private slots:
     void getStantionsListRequestHandler(QJsonValue value);
     void getStantionsDashboardRequestHandler(QJsonValue value);
     void getStantionFeedbackRequestHandler(QJsonValue value);
-};
+    void postStantionFeedbackRequestHandler(QJsonValue value);
 
+private:
+    QString m_batchId;
+};
+Q_DECLARE_METATYPE(Rotor::FeedbackType)
 #endif // ROTOR_H

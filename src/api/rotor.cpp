@@ -22,6 +22,7 @@
 
 #include <QDebug>
 #include <QJsonArray>
+#include <QJsonDocument>
 
 Rotor::Rotor(QObject* parent)
     : QObject(parent)
@@ -47,7 +48,6 @@ void Rotor::getStationTracks(QString stationId, QString lastTrackid)
 
     Request* getStationTracksRequest = new Request("/rotor/station/" + stationId + "/tracks");
     connect(getStationTracksRequest, &Request::dataReady, this, &Rotor::getStationTracksRequestHandler);
-
     getStationTracksRequest->get(query);
 }
 
@@ -75,9 +75,51 @@ void Rotor::getStantionsDashboard()
     getStantionsDashboardRequest->get();
 }
 
-void Rotor::postStantionFeedback(QString stationId)
+void Rotor::postStantionFeedback(FeedbackType type, Track* track, QString stationId, int totalPlayedSeconds)
 {
-    Q_UNUSED(stationId)
+    if(track == nullptr) {
+        return;
+    }
+
+    QString typeSting;
+    switch (type) {
+    case FeedbackType::RadioStarted:
+        typeSting = "radioStarted";
+        break;
+    case FeedbackType::TrackFinished:
+        typeSting = "trackFinished";
+        break;
+    case FeedbackType::TrackStarted:
+        typeSting = "trackStarted";
+        break;
+    case FeedbackType::Skip:
+        typeSting = "skip";
+        break;
+    }
+
+    QString from = "mobile-radio-user-onyourwave";
+    QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzzZ");
+    Album* album = reinterpret_cast<Album*>(track->albums().first());
+    QString trackId = track->trackId() + ":" + QString::number(album->albumId());
+
+    QJsonObject query;
+    query.insert("type", typeSting);
+    query.insert("timestamp", timestamp);
+    if(type == FeedbackType::TrackFinished || type == FeedbackType::Skip) {
+        query.insert("totalPlayedSeconds", QString::number(totalPlayedSeconds));
+    } else {
+        query.insert("totalPlayedSeconds", 0);
+    }
+    query.insert("trackId", trackId);
+    query.insert("from", from);
+    QString batchApx;
+    if(type == FeedbackType::RadioStarted && !m_batchId.isEmpty()) {
+        batchApx = "?batch-id="+m_batchId;
+    }
+
+    Request* postStantionFeedbackRequest = new Request("/rotor/station/"+stationId+"/feedback"+batchApx);
+    connect(postStantionFeedbackRequest, &Request::dataReady, this, &Rotor::postStantionFeedbackRequestHandler);
+    postStantionFeedbackRequest->post(QJsonDocument(query).toJson(QJsonDocument::Compact));
 }
 
 void Rotor::getStationInfoRequestHandler(QJsonValue value)
@@ -87,14 +129,17 @@ void Rotor::getStationInfoRequestHandler(QJsonValue value)
 
 void Rotor::getStationTracksRequestHandler(QJsonValue value)
 {
-    QJsonArray tracks = value.toObject()["sequence"].toArray();
+    QList<QObject*> tracksList;
+    m_batchId = value.toObject().value("batchId").toString();
+    QJsonArray tracks = value.toObject().value("sequence").toArray();
     foreach (const QJsonValue& value, tracks) {
         QJsonObject trackObject = value.toObject().value("track").toObject();
         Track* trackToAdd = new Track(trackObject);
         if (trackToAdd->trackId() != 0) {
-            stantionTrackReady(trackToAdd);
+            tracksList.push_back(trackToAdd);
         }
     }
+    emit stantionTracksReady(tracksList);
 }
 
 void Rotor::getAccountStatusRequestHandler(QJsonValue value)
@@ -115,4 +160,11 @@ void Rotor::getStantionsDashboardRequestHandler(QJsonValue value)
 void Rotor::getStantionFeedbackRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+}
+
+void Rotor::postStantionFeedbackRequestHandler(QJsonValue value)
+{
+    if(value.toString() != "ok") {
+        qWarning() << Q_FUNC_INFO << value;
+    }
 }

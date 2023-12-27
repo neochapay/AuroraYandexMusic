@@ -74,6 +74,14 @@ ApplicationWindow {
     CurrentPlayListModel{
         id: currentPlayListModel
         onCurrentIndexChanged: {
+            //send feedback
+            var track = currentPlayListModel.getPrevTrack();
+            if(track) {
+                feedbackSender.sendFeedback(track, rootAudio.duration, rootAudio.position)
+            }
+            //send rotor feedback
+            //TODO
+
             musicFetcher.load(currentPlayListModel.getCurrentTrack())
             if(ourMusic.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
                 var lastTrack = currentPlayListModel.getCurrentTrack()

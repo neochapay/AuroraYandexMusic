@@ -59,6 +59,7 @@ int main(int argc, char* argv[])
     qRegisterMetaType<Playlist>("Playlist");
     qRegisterMetaType<DerivedColors>("DerivedColors");
     qRegisterMetaType<Search::SearchType>("SearchType");
+    qRegisterMetaType<Rotor::FeedbackType>("FeedbackType");
 
     qmlRegisterType<CurrentPlayListModel>("ru.neochapay.ourmusic", 1, 0, "CurrentPlayListModel");
     qmlRegisterType<User>("ru.neochapay.ourmusic", 1, 0, "User");

@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import ru.neochapay.ourmusic 1.0
+
 import QtMultimedia 5.5
 
 Item {
@@ -29,15 +31,7 @@ Item {
 
         onClicked: {
             ourMusic.isMyWave = true
-            if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
-                currentPlayListModel.currentIndex = 0
-            }
-
-            if(rootAudio.playbackState == MediaPlayer.PlayingState) {
-                rootAudio.pause()
-            } else {
-                rootAudio.play()
-            }
+            rotor.getStationTracks();
         }
     }
 
