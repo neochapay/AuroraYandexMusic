@@ -38,6 +38,7 @@ Page {
 
         onAlbumReady: {
             mainData.model = album.tracks
+            mainData.height = mainData.model.length * Theme.itemSizeLarge
             albumCover.source = "https://"+album.coverUri.replace("%%","1000x1000")
             artistName.text = album.title
         }
