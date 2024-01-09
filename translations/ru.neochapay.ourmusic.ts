@@ -4,12 +4,12 @@
 <context>
     <name>ArtistPage</name>
     <message>
-        <location filename="../qml/pages/ArtistPage.qml" line="102"/>
+        <location filename="../qml/pages/ArtistPage.qml" line="103"/>
         <source>Popular tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/ArtistPage.qml" line="114"/>
+        <location filename="../qml/pages/ArtistPage.qml" line="116"/>
         <source>Albums</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,6 +80,19 @@
         <location filename="../qml/pages/SearchPage.qml" line="55"/>
         <location filename="../qml/pages/SearchPage.qml" line="63"/>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrackListItemDelegate</name>
+    <message>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="108"/>
+        <source>Go to artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="113"/>
+        <source>Go to album</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

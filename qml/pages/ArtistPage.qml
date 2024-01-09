@@ -44,6 +44,7 @@ Page {
             artistCover.source = "https://"+artistData.artist.coverUri.replace("%%","1000x1000")
             artistName.text = artistData.artist.name
             popularTracksRepeator.model = artistData.popularTracks
+            popularTracksRepeator.height = popularTracksRepeator.model.length * Theme.itemSizeLarge
             albumsRepeator.model = artistData.albums
         }
     }
@@ -102,8 +103,9 @@ Page {
                 text: qsTr("Popular tracks")
             }
 
-            Repeater{
+            ListView{
                 id: popularTracksRepeator
+                width: parent.width
                 delegate: TrackListItemDelegate{
                     track: modelData
                 }
@@ -118,7 +120,7 @@ Page {
                 id: albumsRepeator
                 delegate: AlbumListItemDelegate{
                     album: modelData
-                    onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { album : modelData })
+                    onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { albumId : modelData.albumId })
                 }
             }
 

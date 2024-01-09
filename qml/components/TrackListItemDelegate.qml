@@ -22,10 +22,10 @@ import Sailfish.Silica 1.0
 
 import ru.neochapay.ourmusic 1.0
 
-Item {
+ListItem {
     id: trackListItemDelegate
-    width: parent.width
-    height: Theme.itemSizeLarge
+    width: ListView.view.width
+    contentHeight: Theme.itemSizeLarge
 
     signal clicked();
 
@@ -97,14 +97,25 @@ Item {
         }
     }
 
-    MouseArea{
-        height: parent.height
-        width: parent.width - playButton.width
-        anchors{
-            top: parent.top
-            left: parent.left
+    menu: ContextMenu {
+        /*MenuItem {
+            text: qsTr("Like")
         }
-
-        onClicked: trackListItemDelegate.clicked()
+        MenuItem {
+            text: qsTr("Download")
+        }*/
+        MenuItem {
+            text: qsTr("Go to artist")
+            onClicked: pageStack.push(Qt.resolvedUrl("../pages/ArtistPage.qml"), {
+                                          artistId: track.artists[0].artistId});
+        }
+        MenuItem {
+            text: qsTr("Go to album")
+            onClicked: pageStack.push(Qt.resolvedUrl("../pages/AlbumPage.qml"), {
+                                          albumId: track.albums[0].albumId});
+        }
+        /*MenuItem {
+            text: qsTr("Play next")
+        }*/
     }
 }

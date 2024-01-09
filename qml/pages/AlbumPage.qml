@@ -26,7 +26,7 @@ import "../components"
 
 Page {
     id: albumPage
-    property var album
+    property alias albumId: albumInfo.albumId
 
     AlbumInfo{
         id: albumInfo
@@ -37,8 +37,9 @@ Page {
         }
 
         onAlbumReady: {
-            albumPage.album = album
-            tracksRepeator.model = album.tracks
+            mainData.model = album.tracks
+            albumCover.source = "https://"+album.coverUri.replace("%%","1000x1000")
+            artistName.text = album.title
         }
     }
 
@@ -56,12 +57,10 @@ Page {
                 id: albumCover
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
-                source: "https://"+album.coverUri.replace("%%","1000x1000")
 
                 Label{
                     id: artistName
                     width: parent.width
-                    text: album.title
 
                     anchors{
                         bottom: parent.verticalCenter
@@ -96,15 +95,15 @@ Page {
                 onClicked: {
                     rootAudio.stop()
                     currentPlayListModel.clear()
-                    for(var i = 0; i < album.tracks.length; i++) {
-                        currentPlayListModel.push(album.tracks[i])
+                    for(var i = 0; i < mainData.model.length; i++) {
+                        currentPlayListModel.push(mainData.model[i])
                     }
                     currentPlayListModel.currentIndex = 0
                 }
             }
         }
 
-        Column{
+        ListView{
             id: mainData
             width: parent.width - Theme.paddingMedium*2
             spacing: Theme.paddingMedium
@@ -115,11 +114,8 @@ Page {
                 topMargin: Theme.paddingMedium
             }
 
-            Repeater{
-                id: tracksRepeator
-                delegate: TrackListItemDelegate{
-                    track: modelData
-                }
+            delegate: TrackListItemDelegate{
+                track: modelData
             }
         }
     }

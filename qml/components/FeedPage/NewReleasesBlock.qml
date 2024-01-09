@@ -61,7 +61,7 @@ Item {
             id: newReleasesCoverFeed
             album: modelData
             onClicked: pageStack.push(Qt.resolvedUrl("../../pages/AlbumPage.qml"), {
-                                          album: modelData});
+                                          albumId: modelData.albumId});
         }
     }
 }

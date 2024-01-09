@@ -4,12 +4,12 @@
 <context>
     <name>ArtistPage</name>
     <message>
-        <location filename="../qml/pages/ArtistPage.qml" line="102"/>
+        <location filename="../qml/pages/ArtistPage.qml" line="103"/>
         <source>Popular tracks</source>
         <translation>Популярные треки</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ArtistPage.qml" line="114"/>
+        <location filename="../qml/pages/ArtistPage.qml" line="116"/>
         <source>Albums</source>
         <translation>Альбомы</translation>
     </message>
@@ -81,6 +81,19 @@
         <location filename="../qml/pages/SearchPage.qml" line="63"/>
         <source>Search</source>
         <translation>Поиск</translation>
+    </message>
+</context>
+<context>
+    <name>TrackListItemDelegate</name>
+    <message>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="108"/>
+        <source>Go to artist</source>
+        <translation>Перейти к артисту</translation>
+    </message>
+    <message>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="113"/>
+        <source>Go to album</source>
+        <translation>Перейти к альбому</translation>
     </message>
 </context>
 <context>

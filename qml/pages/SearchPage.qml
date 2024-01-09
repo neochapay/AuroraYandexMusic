@@ -95,7 +95,7 @@ Page {
 
                 delegate: AlbumListItemDelegate{
                     album: modelData
-                    onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { album : modelData })
+                    onClicked: pageStack.push(Qt.resolvedUrl("AlbumPage.qml"), { albumId : modelData.albumId })
                 }
             }
 
