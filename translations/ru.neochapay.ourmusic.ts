@@ -77,8 +77,8 @@
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="55"/>
-        <location filename="../qml/pages/SearchPage.qml" line="63"/>
+        <location filename="../qml/pages/SearchPage.qml" line="56"/>
+        <location filename="../qml/pages/SearchPage.qml" line="64"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>

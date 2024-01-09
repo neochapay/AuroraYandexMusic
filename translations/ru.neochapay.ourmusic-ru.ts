@@ -47,7 +47,7 @@
     <message>
         <location filename="../qml/pages/FeedPage.qml" line="92"/>
         <source>Search</source>
-        <translation type="unfinished">Поиск</translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -77,8 +77,8 @@
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="55"/>
-        <location filename="../qml/pages/SearchPage.qml" line="63"/>
+        <location filename="../qml/pages/SearchPage.qml" line="56"/>
+        <location filename="../qml/pages/SearchPage.qml" line="64"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>

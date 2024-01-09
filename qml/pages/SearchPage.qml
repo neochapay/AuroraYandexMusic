@@ -48,6 +48,7 @@ Page {
     SilicaFlickable {
         id: feedView
         anchors.fill: parent
+        contentHeight: header.height + searchQuery.height + mainColumn.height
         clip: true
 
         PageHeader {
@@ -72,6 +73,7 @@ Page {
             id: mainColumn
             visible: !busyIndicator.visible
             width: parent.width
+            height: childrenRect.height
             anchors{
                 top: searchQuery.bottom
             }

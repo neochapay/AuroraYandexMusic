@@ -24,7 +24,7 @@ import ru.neochapay.ourmusic 1.0
 
 ListItem {
     id: trackListItemDelegate
-    width: ListView.view.width
+    width: parent.width
     contentHeight: Theme.itemSizeLarge
 
     signal clicked();
