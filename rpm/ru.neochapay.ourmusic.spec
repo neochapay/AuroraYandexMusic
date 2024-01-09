@@ -1,6 +1,6 @@
 Name:       ru.neochapay.ourmusic
 Summary:    The unofficial client for Yandex Music
-Version:    0.3.4
+Version:    0.3.5
 Release:    0
 Group:      Qt/Qt
 License:    GNU GPLv3
