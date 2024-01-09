@@ -93,6 +93,13 @@ ApplicationWindow {
     MainPlayer{
         id: mainPlayer
         visible: currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex != -1
+        onVisibleChanged: {
+            if(mainPlayer.visible) {
+                ourMusic.bottomMargin = mainPlayer.height
+            } else {
+                ourMusic.bottomMargin = 0
+            }
+        }
     }
 
     MediaPlayer{
