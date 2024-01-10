@@ -16,3 +16,4 @@ configure-stamp
 build-stamp
 .project
 .cproject
+.apptools/
