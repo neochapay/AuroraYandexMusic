@@ -19,12 +19,14 @@
 
 #include "oauth.h"
 
+#include <QDir>
 #include <QStandardPaths>
 #include <QUrl>
 #include <QUrlQuery>
 
 OAuth::OAuth(QObject* parent)
     : QObject(parent)
+    , m_clientID("23cabbbdc6cd418abb4b39c32c41195d")
 {
     m_settings = new Settings();
     m_token = m_settings->value("accessToken").toString();
@@ -63,6 +65,20 @@ void OAuth::parseUrl(QString url)
     }
 }
 
+void OAuth::logout()
+{
+    m_token = QString();
+    m_settings->setValue("accessToken", m_token);
+    m_settings->sync();
+
+    emit tokenChanged();
+    emit isLoginedChanged();
+
+    QDir cache(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    cache.removeRecursively();
+
+}
+
 bool OAuth::isLogined() const
 {
     return m_token.isEmpty();
@@ -71,9 +87,4 @@ bool OAuth::isLogined() const
 const QString& OAuth::token() const
 {
     return m_token;
-}
-
-const QString& OAuth::clientID() const
-{
-    return "23cabbbdc6cd418abb4b39c32c41195d";
 }

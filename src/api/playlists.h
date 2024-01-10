@@ -23,6 +23,8 @@
 #include <QJsonValue>
 #include <QObject>
 
+#include "../types/playlist.h"
+
 class Playlists : public QObject {
     Q_OBJECT
     Q_PROPERTY(int userID READ userID WRITE setUserID NOTIFY userIDChanged)
@@ -30,27 +32,25 @@ class Playlists : public QObject {
 public:
     explicit Playlists(QObject* parent = nullptr);
 
-    void list(QList<int> kinds);
-    void list(int kind);
-    void getUserLists();
-    void getUserList(int kind);
-    void getUserLists(QList<int> kinds);
-    void create(QString title, QString visibility);
-    void rename(int kind, QString value);
-    void deleteList(int kind);
-    void change(int kind, QList<int> addedTracks = QList<int>(), QList<int> deletedTraks = QList<int>());
-    void recommindations(int kind);
+    Q_INVOKABLE void getUserLists();
+    Q_INVOKABLE void getUserList(int kind);
+    Q_INVOKABLE void getUserLists(QList<int> kinds);
+    Q_INVOKABLE void create(QString title, QString visibility);
+    Q_INVOKABLE void rename(int kind, QString value);
+    Q_INVOKABLE void deleteList(int kind);
+    Q_INVOKABLE void change(int kind, QList<int> addedTracks = QList<int>(), QList<int> deletedTraks = QList<int>());
+    Q_INVOKABLE void recommindations(int kind);
     //Необходимо передать "public" или "private" в качестве значения
-    void changeVisiblity(int kind, QString visiblity);
+    Q_INVOKABLE void changeVisiblity(int kind, QString visiblity);
 
     int userID() const;
     void setUserID(int newUserID);
 
 signals:
     void userIDChanged();
+    void playlistChanged(Playlist* playlist);
 
 private slots:
-    void listRequestHandler(QJsonValue value);
     void getUserListRequestHandler(QJsonValue value);
     void createRequestHandler(QJsonValue value);
     void renameRequestHandler(QJsonValue value);

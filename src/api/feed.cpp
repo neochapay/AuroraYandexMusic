@@ -55,10 +55,10 @@ void Feed::getFeedHandler(QJsonValue value)
 
 const QList<QObject*>& Feed::generatedPlaylists() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&m_generatedPlaylists);
+    return m_generatedPlaylists;
 }
 
 const QList<QObject*>& Feed::tracksToPlay() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&m_tracksToPlay);
+    return m_tracksToPlay;
 }

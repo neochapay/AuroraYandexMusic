@@ -46,6 +46,7 @@ signals:
     void trackReady(QString path);
     void error(QString errorMessage);
     void downloadProgress(float progress);
+    void finalUrlReady(QString url);
 
 private slots:
     void downloadInfoHandler(QJsonValue value);

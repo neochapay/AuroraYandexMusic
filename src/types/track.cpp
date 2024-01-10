@@ -19,8 +19,10 @@
 
 #include "track.h"
 #include <QDebug>
+#include <QFile>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QStandardPaths>
 
 Track::Track(QObject* parent)
     : QObject(parent)
@@ -106,12 +108,12 @@ Track& Track::operator=(const Track& other)
 
 const QList<QObject*>& Track::albums() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->albums);
+    return d_ptr->albums;
 }
 
 const QList<QObject*>& Track::artists() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->artists);
+    return d_ptr->artists;
 }
 
 bool Track::available() const
@@ -222,4 +224,9 @@ const QString& Track::type() const
 const QString& Track::contentWarning() const
 {
     return d_ptr->contentWarning;
+}
+
+bool Track::downloaded()
+{
+    return QFile::exists(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + d_ptr->trackId + ".mp3");
 }

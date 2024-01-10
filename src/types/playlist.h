@@ -21,6 +21,7 @@
 #define PLAYLIST_H
 
 #include "cover.h"
+#include "track.h"
 #include <QDateTime>
 #include <QObject>
 
@@ -43,12 +44,16 @@ public:
     int kind;
     QDateTime modified;
     QString ogImage;
+    int ownerUid;
+    QString ownerName;
+    QString ownerLogin;
     QString playlistUuid;
     int revision;
     int snapshot;
     QStringList tags;
     QString title;
     int trackCount;
+    QList<QObject*> tracks;
 };
 
 class Playlist : public QObject {
@@ -71,7 +76,11 @@ class Playlist : public QObject {
     // TODO: add madeFor
     Q_PROPERTY(QDateTime modified READ modified NOTIFY playlistChanged)
     Q_PROPERTY(QString ogImage READ ogImage NOTIFY playlistChanged)
-    // TODO: add owner
+
+    Q_PROPERTY(int ownerUid READ ownerUid NOTIFY playlistChanged)
+    Q_PROPERTY(QString ownerName READ ownerName NOTIFY playlistChanged)
+    Q_PROPERTY(QString ownerLogin READ ownerLogin NOTIFY playlistChanged)
+
     Q_PROPERTY(QString playlistUuid READ playlistUuid NOTIFY playlistChanged)
     Q_PROPERTY(int revision READ revision NOTIFY playlistChanged)
     Q_PROPERTY(int snapshot READ snapshot NOTIFY playlistChanged)
@@ -79,6 +88,7 @@ class Playlist : public QObject {
     Q_PROPERTY(QString title READ title NOTIFY playlistChanged)
     Q_PROPERTY(int trackCount READ trackCount NOTIFY playlistChanged)
     // TODO: add tracks
+    Q_PROPERTY(QList<QObject*> tracks READ tracks NOTIFY playlistChanged)
 
 public:
     explicit Playlist(QObject* parent = nullptr);
@@ -110,6 +120,10 @@ public:
     const QStringList& tags() const;
     const QString& title() const;
     int trackCount() const;
+    int ownerUid() const;;
+    const QString &ownerName() const;
+    const QString &ownerLogin() const;
+    const QList<QObject *> &tracks() const;
 
 signals:
     void playlistChanged();

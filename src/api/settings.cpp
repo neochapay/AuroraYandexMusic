@@ -20,11 +20,13 @@
 #include "settings.h"
 
 #include <QStandardPaths>
+#include <QDebug>
+#include <QFile>
 
 Settings::Settings(QSettings* parent)
-    : QSettings { QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat, parent }
+    : QSettings (QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat, parent)
 {
     QFileSystemWatcher* settingsFileWatcher = new QFileSystemWatcher(this);
-    settingsFileWatcher->addPath(this->fileName());
+    settingsFileWatcher->addPath(fileName());
     connect(settingsFileWatcher, &QFileSystemWatcher::fileChanged, this, &Settings::settingsUpdated);
 }

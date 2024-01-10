@@ -48,8 +48,8 @@ public:
 
 class TrackPrivate {
 public:
-    QList<Album*> albums;
-    QList<Artist*> artists;
+    QList<QObject*> albums;
+    QList<QObject*> artists;
     bool available;
     QStringList availableForOptions;
     bool availableForPremiumUsers;
@@ -76,33 +76,34 @@ public:
 
 class Track : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QList<QObject*> albums READ albums)
-    Q_PROPERTY(QList<QObject*> artists READ artists)
-    Q_PROPERTY(bool available READ available)
-    Q_PROPERTY(QStringList availableForOptions READ availableForOptions)
-    Q_PROPERTY(bool availableForPremiumUsers READ availableForPremiumUsers)
-    Q_PROPERTY(bool availableFullWithoutPermission READ availableFullWithoutPermission)
-    Q_PROPERTY(QString contentWarning READ contentWarning)
+    Q_PROPERTY(QList<QObject*> albums READ albums NOTIFY trackChanged)
+    Q_PROPERTY(QList<QObject*> artists READ artists NOTIFY trackChanged)
+    Q_PROPERTY(bool available READ available NOTIFY trackChanged)
+    Q_PROPERTY(QStringList availableForOptions READ availableForOptions NOTIFY trackChanged)
+    Q_PROPERTY(bool availableForPremiumUsers READ availableForPremiumUsers NOTIFY trackChanged)
+    Q_PROPERTY(bool availableFullWithoutPermission READ availableFullWithoutPermission NOTIFY trackChanged)
+    Q_PROPERTY(QString contentWarning READ contentWarning NOTIFY trackChanged)
     Q_PROPERTY(QString coverUri READ coverUri)
-    Q_PROPERTY(DerivedColors derivedColors READ derivedColors)
-    Q_PROPERTY(QStringList disclaimers READ disclaimers)
-    Q_PROPERTY(int durationMs READ durationMs)
-    Q_PROPERTY(Fade fade READ fade)
-    Q_PROPERTY(int fileSize READ fileSize)
-    Q_PROPERTY(QString trackId READ trackId)
-    Q_PROPERTY(bool lyricsAvailable READ lyricsAvailable)
+    Q_PROPERTY(DerivedColors derivedColors READ derivedColors NOTIFY trackChanged)
+    Q_PROPERTY(QStringList disclaimers READ disclaimers NOTIFY trackChanged)
+    Q_PROPERTY(int durationMs READ durationMs NOTIFY trackChanged)
+    Q_PROPERTY(Fade fade READ fade NOTIFY trackChanged)
+    Q_PROPERTY(int fileSize READ fileSize NOTIFY trackChanged)
+    Q_PROPERTY(QString trackId READ trackId NOTIFY trackChanged)
+    Q_PROPERTY(bool lyricsAvailable READ lyricsAvailable NOTIFY trackChanged)
     // TODO lyricsInfo
     // TODO major
-    Q_PROPERTY(QString ogImage READ ogImage)
-    Q_PROPERTY(int previewDurationMs READ previewDurationMs)
+    Q_PROPERTY(QString ogImage READ ogImage NOTIFY trackChanged)
+    Q_PROPERTY(int previewDurationMs READ previewDurationMs NOTIFY trackChanged)
     // TODO r128
-    Q_PROPERTY(int realId READ realId)
-    Q_PROPERTY(bool rememberPosition READ rememberPosition)
-    Q_PROPERTY(QString storageDir READ storageDir)
-    Q_PROPERTY(QString title READ title)
-    Q_PROPERTY(QString trackSharingFlag READ trackSharingFlag)
-    Q_PROPERTY(QString trackSource READ trackSource)
-    Q_PROPERTY(QString type READ type)
+    Q_PROPERTY(int realId READ realId NOTIFY trackChanged)
+    Q_PROPERTY(bool rememberPosition READ rememberPosition NOTIFY trackChanged)
+    Q_PROPERTY(QString storageDir READ storageDir NOTIFY trackChanged)
+    Q_PROPERTY(QString title READ title NOTIFY trackChanged)
+    Q_PROPERTY(QString trackSharingFlag READ trackSharingFlag NOTIFY trackChanged)
+    Q_PROPERTY(QString trackSource READ trackSource NOTIFY trackChanged)
+    Q_PROPERTY(QString type READ type NOTIFY trackChanged)
+    Q_PROPERTY(bool downloaded READ downloaded NOTIFY trackChanged)
 
 public:
     explicit Track(QObject* parent = nullptr);
@@ -134,8 +135,11 @@ public:
     const QString& trackSharingFlag() const;
     const QString& trackSource() const;
     const QString& type() const;
-
     const QString& contentWarning() const;
+    bool downloaded();
+
+signals:
+    void trackChanged();
 
 private:
     TrackPrivate* d_ptr;

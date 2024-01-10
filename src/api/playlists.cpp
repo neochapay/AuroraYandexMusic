@@ -28,36 +28,6 @@ Playlists::Playlists(QObject* parent)
 {
 }
 
-void Playlists::list(QList<int> kinds)
-{
-    if (m_userID == 0) {
-        return;
-    }
-
-    QString playlists;
-    for (const int i : kinds) {
-        playlists += QString::number(i) + ",";
-    }
-    QUrlQuery query;
-    query.addQueryItem("playlistIds", QString::number(m_userID) + ":" + playlists);
-
-    Request* listRequest = new Request("/playlist/list");
-    connect(listRequest, &Request::dataReady, this, &Playlists::listRequestHandler);
-
-    listRequest->post(query.toString());
-}
-
-void Playlists::list(int kind)
-{
-    QUrlQuery query;
-    query.addQueryItem("playlistIds", QString::number(userID()) + ":" + QString::number(kind));
-
-    Request* listRequest = new Request("/playlist/list");
-    connect(listRequest, &Request::dataReady, this, &Playlists::listRequestHandler);
-
-    listRequest->post(query.toString());
-}
-
 void Playlists::getUserLists()
 {
     if (m_userID == 0) {
@@ -205,14 +175,12 @@ void Playlists::setUserID(int newUserID)
     emit userIDChanged();
 }
 
-void Playlists::listRequestHandler(QJsonValue value)
-{
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
-}
-
 void Playlists::getUserListRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    Playlist* playlist = new Playlist(value.toObject());
+    if(playlist->tracks().count() > 0) {
+        emit playlistChanged(playlist);
+    }
 }
 
 void Playlists::createRequestHandler(QJsonValue value)

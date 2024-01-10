@@ -23,6 +23,7 @@
 CurrentPlayListModel::CurrentPlayListModel(QObject* parent)
     : QAbstractListModel(parent)
     , m_currentIndex(-1)
+    , m_prevTrack(nullptr)
 {
     connect(this, &QAbstractListModel::rowsInserted, this, &CurrentPlayListModel::rowCountChanged);
     connect(this, &QAbstractListModel::rowsRemoved, this, &CurrentPlayListModel::rowCountChanged);
@@ -37,12 +38,16 @@ void CurrentPlayListModel::setCurrentIndex(int newCurrentIndex)
 {
     if (m_currentIndex == newCurrentIndex)
         return;
+    m_prevTrack = getTrack(m_currentIndex);
+
     m_currentIndex = newCurrentIndex;
     emit currentIndexChanged();
 }
 
 QVariant CurrentPlayListModel::data(const QModelIndex& index, int role) const
 {
+    Q_UNUSED(index);
+    Q_UNUSED(role);
     return QVariant();
 }
 
@@ -55,6 +60,10 @@ int CurrentPlayListModel::rowCount(const QModelIndex& parent) const
 bool CurrentPlayListModel::insertRow(int position, Track* track, const QModelIndex& index)
 {
     Q_UNUSED(index);
+    if(track == nullptr) {
+        return false;
+    }
+
     if (!(m_currentTracks.contains(track))) {
         beginInsertRows(QModelIndex(), position, position);
         if (!(m_currentTracks.contains(track))) {
@@ -83,6 +92,11 @@ bool CurrentPlayListModel::removeRows(int position, int rows, const QModelIndex&
 
 void CurrentPlayListModel::push(Track* track)
 {
+    if(track == nullptr) {
+        qWarning() << "Wrong track";
+        return;
+    }
+
     if (!track->trackId().isEmpty()) {
         beginInsertRows(QModelIndex(), m_currentTracks.count(), m_currentTracks.count());
         m_currentTracks.push_back(track);
@@ -93,9 +107,25 @@ void CurrentPlayListModel::push(Track* track)
     }
 }
 
+void CurrentPlayListModel::setPlaylist(Playlist *playlist)
+{
+    if(playlist == nullptr) {
+        return;
+    }
+    clear();
+    beginInsertRows(QModelIndex(), 0, playlist->tracks().count());
+    for(QObject* trackObject: playlist->tracks()) {
+        Track* track = reinterpret_cast<Track*>(trackObject);
+        if(track != nullptr) {
+            m_currentTracks.push_back(track);
+        }
+    }
+    endInsertRows();
+}
+
 Track* CurrentPlayListModel::getTrack(int index)
 {
-    if (index < m_currentTracks.count()) {
+    if (index < m_currentTracks.count() && index > 0) {
         return m_currentTracks.at(index);
     }
     return nullptr;
@@ -107,4 +137,18 @@ Track* CurrentPlayListModel::getCurrentTrack()
         return m_currentTracks.at(m_currentIndex);
     }
     return nullptr;
+}
+
+Track *CurrentPlayListModel::getPrevTrack()
+{
+    return m_prevTrack;
+}
+
+void CurrentPlayListModel::clear()
+{
+    beginResetModel();
+    m_currentTracks.clear();
+    m_currentIndex = -1;
+    endResetModel();
+    currentIndexChanged();
 }

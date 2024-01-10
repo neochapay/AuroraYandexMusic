@@ -28,8 +28,19 @@ Item {
     property string cover
     clip: true
 
+    signal clicked()
+
     width: Theme.itemSizeHuge*1.5
-    height: coverImage.height + coverTitle.height + coverDescription.height + Theme.paddingMedium*3
+    height: playlistCoverFeed.width + coverTitle.height + coverDescription.height + Theme.paddingMedium*4
+
+    Component.onCompleted: calcHeigh()
+    onHeightChanged: calcHeigh()
+
+    function calcHeigh() {
+        if(generatedPlayListView.height < playlistCoverFeed.height) {
+            generatedPlayListView.height = playlistCoverFeed.height
+        }
+    }
 
     Image {
         id: coverImage
@@ -61,5 +72,10 @@ Item {
         color: Theme.secondaryColor
         font.pixelSize: Theme.fontSizeSmall
         wrapMode: Text.WordWrap
+    }
+
+    MouseArea{
+        anchors.fill: parent
+        onClicked: playlistCoverFeed.clicked()
     }
 }

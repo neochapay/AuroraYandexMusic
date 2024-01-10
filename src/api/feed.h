@@ -48,8 +48,8 @@ signals:
 
 private:
     Request* m_getFeedApiRequest;
-    QList<Playlist*> m_generatedPlaylists;
-    QList<Track*> m_tracksToPlay;
+    QList<QObject*> m_generatedPlaylists;
+    QList<QObject*> m_tracksToPlay;
 };
 
 #endif // FEED_H

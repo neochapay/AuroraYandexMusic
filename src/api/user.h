@@ -43,7 +43,7 @@ public:
     Q_INVOKABLE void getFeed();
 
     Q_INVOKABLE void like(QString type, int id, bool remove = false);
-    Q_INVOKABLE void dislike(int id, bool remove = false);
+    Q_INVOKABLE void dislike(QString type, int id);
 
     Q_INVOKABLE void loadLikedTracks();
     Q_INVOKABLE bool isTrackLiked(Track* track);
@@ -56,20 +56,20 @@ private slots:
     void getFeedHandler(QJsonValue value);
 
     void likeRequestHandler(QJsonValue value);
-    void dislikeRequestHandler(QJsonValue value);
     void likedTracksHandler(QJsonValue value);
 
 signals:
     void userIDChanged();
     void displayNameChanged();
     void wrongUser();
-    void likeActionFinished(int actionId);
+    void likeActionFinished(int actionId, QString action);
 
 private:
     int m_userID;
     int m_likeActionID;
 
     QString m_displayName;
+    QString m_likeAction;
     QList<LikedTrack*> m_likedTrackList;
 };
 

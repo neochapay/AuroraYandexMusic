@@ -64,9 +64,9 @@ void User::like(QString type, int id, bool remove)
         return;
     }
 
-    QString action = "add-multiple";
+    m_likeAction = "add-multiple";
     if (remove) {
-        action = "remove";
+        m_likeAction = "remove";
     }
 
     m_likeActionID = id;
@@ -74,38 +74,16 @@ void User::like(QString type, int id, bool remove)
     QUrlQuery query;
     query.addQueryItem(type + "-ids", QString::number(id));
 
-    Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/" + type + "s/" + action);
+    Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/" + type + "s/" + m_likeAction);
     likeRequest->setDebug(true);
     connect(likeRequest, &Request::dataReady, this, &User::likeRequestHandler);
 
     likeRequest->post(query.toString());
 }
 
-void User::dislike(int id, bool remove)
+void User::dislike(QString type, int id)
 {
-    if (m_userID == 0) {
-        qWarning() << "Wrong user id";
-        return;
-    }
-
-    if (id == 0) {
-        qWarning() << "Wrong item id";
-        return;
-    }
-    QString action = "add-multiple";
-    if (remove) {
-        action = "remove";
-    }
-
-    m_likeActionID = id;
-
-    QUrlQuery query;
-    query.addQueryItem("track-ids-ids", QString::number(id));
-
-    Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/dislikes/tracks/" + action);
-    connect(likeRequest, &Request::dataReady, this, &User::likeRequestHandler);
-
-    likeRequest->post(query.toString());
+    like(type, id, true);
 }
 
 void User::loadLikedTracks()
@@ -165,15 +143,8 @@ void User::getFeedHandler(QJsonValue value)
 
 void User::likeRequestHandler(QJsonValue value)
 {
-    if (!value.toObject().value("revision").toString().isEmpty()) {
-        emit likeActionFinished(m_likeActionID);
-    }
-}
-
-void User::dislikeRequestHandler(QJsonValue value)
-{
-    if (!value.toObject().value("revision").toString().isEmpty()) {
-        emit likeActionFinished(m_likeActionID);
+    if (value.toObject().value("revision").toInt() > 0) {
+        emit likeActionFinished(m_likeActionID, m_likeAction);
     }
 }
 

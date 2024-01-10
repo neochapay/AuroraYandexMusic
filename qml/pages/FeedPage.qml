@@ -20,31 +20,35 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import ru.neochapay.yandexmusic 1.0
+import QtMultimedia 5.5
+
+import ru.neochapay.ourmusic 1.0
 
 import "../components"
+import "../components/FeedPage"
 
 Page {
     id: mainPage
 
-    Feed{
-        id: feed
-        onFeedReady: {
-            busyIndicator.visible = false
-            for(var i = 0; i < tracksToPlay.length; i++) {
-                currentPlayListModel.push(tracksToPlay[i])
-            }
-            currentPlayListModel.currentIndex = 0
-        }
-        onErrorReady: {
-            feedView.visible = false
-            errorLabel.visible = true
-        }
+    Component.onCompleted: {
+        landing.get()
     }
 
     Connections{
-        target: user
-        onUserIDChanged: feed.get()
+        target: rotor
+        onStantionTracksReady: {
+            if(ourMusic.isMyWave && currentPlayListModel.rowCount == 0) {
+                rotor.postStantionFeedback(Rotor.RadioStarted, tracks[0]);
+            }
+
+            for(var i = 0; i < tracks.length; i++) {
+                currentPlayListModel.push(tracks[i])
+            }
+
+            if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
+                currentPlayListModel.currentIndex = 0
+            }
+        }
     }
 
     Label{
@@ -54,13 +58,42 @@ Page {
         text: qsTr("Oops. We have a problem.")
     }
 
+    Landing{
+        id: landing
+        onLandingBlocksReady: {
+            landingBlockRepeater.model = blocks
+            busyIndicator.visible = false
+        }
+    }
+
     SilicaFlickable {
         id: feedView
         anchors.fill: parent
+        contentHeight: header.height + feedColumn.height
 
         PageHeader {
             id: header
             title: qsTr("You feed")
+        }
+
+        VerticalScrollDecorator {
+            id: scroll
+        }
+
+        PullDownMenu {
+            id: feedPullMenu
+            MenuItem {
+                text: qsTr("Profile")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("UserPage.qml"));
+                }
+            }
+            MenuItem {
+                text: qsTr("Search")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SearchPage.qml"));
+                }
+            }
         }
 
         BusyIndicator {
@@ -79,31 +112,39 @@ Page {
                 leftMargin: Theme.paddingLarge
             }
             width: parent.width-Theme.paddingLarge*2
-            height: parent.height-header.height-Theme.paddingLarge*2
+            height: childrenRect.height-Theme.paddingLarge*2
 
             visible: !busyIndicator.visible
             spacing: Theme.paddingLarge
 
-            Label{
-                width: parent.width
-                color: Theme.highlightColor
-                text: qsTr("Collect for you")
-                font.pixelSize: Theme.fontSizeExtraLarge
-                horizontalAlignment: Text.AlignHCenter
+            MyWavePlayer{
+                id: myWavePlayer
             }
 
-            ListView{
-                id: generatedPlayListView
+            Repeater{
+                id: landingBlockRepeater
                 width: parent.width
-                height: Theme.itemSizeHuge
-                model: feed.generatedPlaylists
-                orientation: ListView.Horizontal
-                spacing: Theme.paddingLarge
 
-                delegate: PlaylistCoverFeed{
-                    title: modelData.title
-                    destription: modelData.description
-                    cover: modelData.cover.uri
+                delegate: Loader{
+                    id: landingBlocksLoader
+                    width: parent.width
+
+                    Component.onCompleted: {
+                        if(modelData.type == "personal-playlists") {
+                            landingBlocksLoader.setSource("../components/FeedPage/PersonalPlaylistsBlock.qml",
+                                                          {
+                                                              "blockData": modelData
+                                                          })
+                        }
+
+                        if(modelData.type == "new-releases") {
+                            landingBlocksLoader.setSource("../components/FeedPage/NewReleasesBlock.qml",
+                                                          {
+                                                              "blockData": modelData
+                                                          })
+                        }
+                    }
+
                 }
             }
         }

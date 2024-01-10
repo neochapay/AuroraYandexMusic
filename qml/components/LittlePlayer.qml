@@ -14,19 +14,19 @@ Item{
         target: rootAudio
         onStatusChanged: {
             if(rootAudio.status == MediaPlayer.NoMedia) {
-                littlePlayerPlayButton.iconName = "icon-m-cancel"
+                littlePlayerPlayButton.source = "../img/ban.svg"
             }
 
             if(rootAudio.status == MediaPlayer.Loaded) {
-                littlePlayerPlayButton.iconName = "icon-m-play"
+                littlePlayerPlayButton.source = "../img/play.svg"
             }
         }
 
         onPlaybackStateChanged: {
             if(rootAudio.playbackState == MediaPlayer.PlayingState) {
-                littlePlayerPlayButton.iconName = "icon-m-pause"
+                littlePlayerPlayButton.source = "../img/pause.svg"
             } else {
-                littlePlayerPlayButton.iconName = "icon-m-play"
+                littlePlayerPlayButton.source = "../img/play.svg"
             }
         }
     }
@@ -92,33 +92,34 @@ Item{
         verticalAlignment: Text.AlignTop
     }
 
-    IconButton {
+    SvgIcon {
         id: littlePlayerLikeButton
-        width: parent.height
+        width: parent.height * 0.5
         height: width
 
         anchors{
             right: littlePlayerPlayButton.left
+            rightMargin: parent.height * 0.25
+            verticalCenter: parent.verticalCenter
         }
 
-        icon.source: "image://theme/icon-m-like?" + (pressed
-                                                     ? Theme.highlightColor
-                                                     : Theme.primaryColor)
+        source: "../img/heart.svg"
         onClicked: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
     }
 
 
-    IconButton {
+    SvgIcon {
         id: littlePlayerPlayButton
 
-        property string iconName: "icon-m-play"
-
-        width: parent.height
+        width: parent.height * 0.5
         height: width
-        anchors.right: parent.right
-        icon.source: "image://theme/"+iconName+"?" + (pressed
-                                                      ? Theme.highlightColor
-                                                      : Theme.primaryColor)
+        anchors{
+            right: parent.right
+            rightMargin: parent.height * 0.25
+            verticalCenter: parent.verticalCenter
+        }
+        source: "../img/play.svg"
+
         onClicked: if(rootAudio.playbackState == MediaPlayer.PlayingState) {
                        rootAudio.pause()
                    } else {

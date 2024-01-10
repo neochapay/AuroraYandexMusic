@@ -53,6 +53,7 @@ void MusicFetcher::load(Track* track)
     if (trackFile.exists()) {
         qDebug() << "File exists";
         emit trackReady(m_trackPath);
+        emit finalUrlReady(m_trackPath);
     } else {
         Request* downloadInfoRequest = new Request("/tracks/" + track->trackId() + "/download-info");
         connect(downloadInfoRequest, &Request::dataReady, this, &MusicFetcher::downloadInfoHandler);
@@ -120,8 +121,6 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
         return;
     }
 
-    qDebug() << downloadInfoUrl;
-
     QNetworkAccessManager* downloadInfoManager = new QNetworkAccessManager(this);
     QNetworkRequest downloadInfoUrlRequest(downloadInfoUrl);
     QNetworkReply* reply = downloadInfoManager->get(downloadInfoUrlRequest);
@@ -164,11 +163,11 @@ void MusicFetcher::downloadInfoUrlHandler()
     QString sign = QString(QCryptographicHash::hash((("XGRlBW9FXlekgbPrRHuSiA" + path.mid(1) + s).toUtf8()), QCryptographicHash::Md5).toHex());
     QString finalUrl = "https://" + host + "/get-mp3/" + sign + "/" + ts + path;
 
-    qDebug() << finalUrl;
-
     QNetworkAccessManager* manager = new QNetworkAccessManager(this);
     QNetworkRequest request(finalUrl);
     QNetworkReply* m_reply = manager->get(request);
+
+    emit finalUrlReady(finalUrl);
 
     connect(manager, &QNetworkAccessManager::finished, this, &MusicFetcher::dataReadyHandler);
     connect(m_reply, &QNetworkReply::downloadProgress, this, &MusicFetcher::onDownloadProgress);

@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import ru.neochapay.yandexmusic 1.0
+import ru.neochapay.ourmusic 1.0
 
 Item {
     id: mainPlayer
@@ -10,6 +10,7 @@ Item {
     height: Theme.itemSizeLarge
     anchors{
         bottom: parent.bottom
+        bottomMargin: -Theme.itemSizeLarge
     }
     z: 99
 
@@ -32,8 +33,11 @@ Item {
     BigPlayer{
         id: bigPlayer
         width: parent.width
-        height: mainPlayer.parent.height
+        height: mainPlayer.parent.height + Theme.itemSizeLarge
         visible: !littlePlayer.visible
+        anchors{
+            bottom: parent.bottom
+        }
     }
 
     Behavior on height {

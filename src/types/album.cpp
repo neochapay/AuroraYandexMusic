@@ -18,6 +18,7 @@
  */
 
 #include "album.h"
+#include "track.h"
 
 #include <QJsonArray>
 #include <QJsonValueRef>
@@ -40,6 +41,15 @@ Album::Album(QJsonObject object, QObject* parent)
 {
     for (const QJsonValue& v : object.value("artists").toArray()) {
         d_ptr->artists.push_back(new Artist(v.toObject()));
+    }
+
+    for (const QJsonValue& volumes : object.value("volumes").toArray()) {
+        for (const QJsonValue& trackValue : volumes.toArray()) {
+            Track* track = new Track(trackValue.toObject());
+            if(!track->trackId().isEmpty()) {
+                d_ptr->tracks.push_back(track);
+            }
+        }
     }
 
     d_ptr->available = object.value("available").toBool();
@@ -92,7 +102,7 @@ Album& Album::operator=(const Album& other)
 
 const QList<QObject*>& Album::artists() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->artists);
+    return d_ptr->artists;
 }
 
 bool Album::available() const
@@ -152,7 +162,7 @@ int Album::albumId() const
 
 const QList<QObject*> Album::labels() const
 {
-    return *reinterpret_cast<const QList<QObject*>*>(&d_ptr->labels);
+    return d_ptr->labels;
 }
 
 int Album::likesConut() const
@@ -203,4 +213,9 @@ int Album::trackPositionVolume() const
 int Album::year() const
 {
     return d_ptr->year;
+}
+
+const QList<QObject *> &Album::tracks() const
+{
+    return d_ptr->tracks;
 }

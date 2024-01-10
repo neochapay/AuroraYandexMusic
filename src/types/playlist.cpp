@@ -19,6 +19,9 @@
 
 #include "playlist.h"
 
+#include <QJsonArray>
+#include <QJsonValue>
+
 Playlist::Playlist(QObject* parent)
     : QObject(parent)
     , d_ptr(new PlaylistPrivate())
@@ -34,7 +37,7 @@ Playlist::Playlist(const Playlist& other, QObject* parent)
 Playlist::Playlist(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new PlaylistPrivate())
-{
+{   
     d_ptr->available = object.value("available").toBool();
     d_ptr->backgroundImageUrl = object.value("backgroundImageUrl").toString();
     d_ptr->backgroundVideoUrl = object.value("backgroundVideoUrl").toString();
@@ -52,12 +55,20 @@ Playlist::Playlist(QJsonObject object, QObject* parent)
     d_ptr->kind = object.value("kind").toInt();
     d_ptr->modified = QDateTime::fromString(object.value("modified").toString());
     d_ptr->ogImage = object.value("ogImage").toString();
+    d_ptr->ownerUid = object.value("owner").toObject().value("uid").toInt();
+    d_ptr->ownerName = object.value("owner").toObject().value("name").toString();
+    d_ptr->ownerLogin = object.value("owner").toObject().value("login").toString();
     d_ptr->playlistUuid = object.value("playlistUuid").toString();
     d_ptr->revision = object.value("revision").toInt();
     d_ptr->snapshot = object.value("snapshot").toInt();
     // d_ptr->tags = object.value("tags").toArray();
     d_ptr->title = object.value("title").toString();
     d_ptr->trackCount = object.value("trackCount").toInt();
+
+    for (const QJsonValue& v : object.value("tracks").toArray()) {
+        Track* track = new Track(v.toObject().value("track").toObject());
+        d_ptr->tracks.push_back(track);
+    }
 }
 
 Playlist::~Playlist()
@@ -184,4 +195,24 @@ const QString& Playlist::title() const
 int Playlist::trackCount() const
 {
     return d_ptr->trackCount;
+}
+
+int Playlist::ownerUid() const
+{
+    return d_ptr->ownerUid;
+}
+
+const QString &Playlist::ownerName() const
+{
+    return d_ptr->ownerName;
+}
+
+const QString &Playlist::ownerLogin() const
+{
+    return d_ptr->ownerLogin;
+}
+
+const QList<QObject *> &Playlist::tracks() const
+{
+    return d_ptr->tracks;
 }

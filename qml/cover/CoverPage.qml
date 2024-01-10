@@ -30,7 +30,7 @@ CoverBackground {
         }
 
         fillMode: Image.PreserveAspectFit
-        source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.yandexmusic.png"
+        source: "/usr/share/icons/hicolor/172x172/apps/ru.neochapay.ourmusic.png"
     }
 
     Column {
@@ -43,7 +43,9 @@ CoverBackground {
         }
 
         width: parent.width * 0.8
-        spacing: parent.width*0.1
+        height: parent.height - bgCover.height - activecover.height
+        clip: true
+        spacing: Theme.paddingSmall
 
         Label {
             id: artistLabel
@@ -52,7 +54,7 @@ CoverBackground {
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
-            visible: artistLabel.text != ""
+            text: qsTr("Play")
         }
 
         Label {
@@ -62,7 +64,7 @@ CoverBackground {
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
             truncationMode: TruncationMode.Fade
-            visible: songLabel.text != ""
+            text: qsTr("My wave")
         }
     }
 
@@ -70,12 +72,16 @@ CoverBackground {
         id: activecover
         CoverAction {
             iconSource: "image://theme/icon-m-like"
-            onTriggered: console.log("like pressed")
+            onTriggered: user.like("track", currentPlayListModel.getTrack(currentPlayListModel.currentIndex).trackId)
         }
 
         CoverAction {
             iconSource: (rootAudio.playbackState === MediaPlayer.PlayingState) ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
             onTriggered: {
+                if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
+                    currentPlayListModel.currentIndex = 0
+                }
+
                 if (rootAudio.playbackState === MediaPlayer.PlayingState) {
                     rootAudio.pause()
                 } else {
@@ -86,7 +92,10 @@ CoverBackground {
 
         CoverAction {
             iconSource: "image://theme/icon-cover-next-song"
-            onTriggered: console.log("next pressed")
+            onTriggered: {
+                rootAudio.stop()
+                currentPlayListModel.currentIndex++
+            }
         }
     }
 }
