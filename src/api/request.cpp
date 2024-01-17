@@ -81,31 +81,27 @@ void Request::replyHandler(QNetworkReply* reply)
     if (!reply) {
         return;
     }
+    reply->deleteLater();
 
     if (reply->error()) {
         if (m_debug) {
             qDebug() << reply->errorString();
         }
         emit errorReady(reply->errorString());
-        return;
+    } else {
+        QString rawAnswer = reply->readAll();
+        QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
+
+        if (m_debug) {
+            qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
+        }
+
+        if (!ansObject.value("result").isNull()) {
+            emit dataReady(ansObject.value("result"));
+        } else if (!ansObject.value("error").isNull()) {
+            emit errorReady(ansObject.value("error").toString());
+        }
+
+        qWarning() << "download error!";
     }
-
-    QString rawAnswer = reply->readAll();
-    QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
-
-    if (m_debug) {
-        qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
-    }
-
-    if (!ansObject.value("result").isNull()) {
-        emit dataReady(ansObject.value("result"));
-        return;
-    }
-
-    if (!ansObject.value("error").isNull()) {
-        emit errorReady(ansObject.value("error").toString());
-        return;
-    }
-
-    qWarning() << "download error!";
 }
