@@ -54,6 +54,9 @@ ListItem {
         color: Theme.highlightColor
         font.bold: true
 
+        width: parent.width - trackCover.width - playButton.width - parent.height*0.4
+        clip: true
+
         anchors{
             bottom: parent.verticalCenter
             bottomMargin: parent.height*0.1
@@ -65,6 +68,9 @@ ListItem {
     Label{
         id: artistTitle
         text: track.artists[0].name
+
+        width: parent.width - trackCover.width - playButton.width - parent.height*0.4
+        clip: true
 
         anchors{
             top: parent.verticalCenter
