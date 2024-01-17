@@ -73,10 +73,11 @@ Item{
             leftMargin: Theme.paddingSmall
             bottom: parent.verticalCenter
         }
-        width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width - littlePlayerTrackCover.width - Theme.paddingSmall*2
+        width: parent.width - littlePlayerLikeButton.width - littlePlayerPlayButton.width - littlePlayerTrackCover.width - Theme.paddingSmall*4 - parent.height * 0.5
         height: parent.height / 2
         color: Theme.highlightColor
         verticalAlignment: Text.AlignVCenter
+        clip: true
     }
 
     Label{
@@ -90,6 +91,7 @@ Item{
         height: parent.height / 2
         color: Theme.primaryColor
         verticalAlignment: Text.AlignTop
+        clip: true
     }
 
     SvgIcon {
