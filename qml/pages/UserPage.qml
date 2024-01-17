@@ -41,19 +41,34 @@ Page {
             id: scroll
         }
 
-        Button{
-            text: qsTr("Logout")
-            width: parent.width - Theme.paddingMedium*2
+        Column{
+            width: parent.width - Theme.paddingMedium * 2
+            height: childrenRect.height
+
             anchors{
                 top: header.bottom
                 topMargin: Theme.paddingMedium
                 left: parent.left
                 leftMargin: Theme.paddingMedium
             }
+            spacing: Theme.paddingMedium
 
-            onClicked: {
-                auth.logout();
-                pageStack.replace(Qt.createComponent(Qt.resolvedUrl("LoginPage.qml")))
+            Button{
+                text: qsTr("My playlists")
+                width: parent.width
+                onClicked: {
+                    pageStack.replace(Qt.createComponent(Qt.resolvedUrl("UserPlaylistsPage.qml")))
+                }
+            }
+
+            Button{
+                text: qsTr("Logout")
+                width: parent.width
+
+                onClicked: {
+                    auth.logout();
+                    pageStack.replace(Qt.createComponent(Qt.resolvedUrl("LoginPage.qml")))
+                }
             }
         }
     }

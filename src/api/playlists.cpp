@@ -21,6 +21,7 @@
 #include "request.h"
 
 #include <QUrlQuery>
+#include <QJsonArray>
 
 Playlists::Playlists(QObject* parent)
     : QObject(parent)
@@ -35,7 +36,7 @@ void Playlists::getUserLists()
     }
 
     Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/list");
-    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
+    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListsRequestHandler);
 
     getUserListsRequest->get();
 }
@@ -181,6 +182,23 @@ void Playlists::getUserListRequestHandler(QJsonValue value)
     if(playlist->tracks().count() > 0) {
         emit playlistChanged(playlist);
     }
+}
+
+void Playlists::getUserListsRequestHandler(QJsonValue value)
+{
+    QList<QObject *> playlists;
+
+    QJsonArray playlistArray = value.toArray();
+    for (const QJsonValue& v : playlistArray) {
+        QJsonObject playListObject = v.toObject();
+        Playlist *playlist = new Playlist(playListObject);
+
+        if(!playlist->title().isEmpty()) {
+            playlists.push_back(playlist);
+        }
+    }
+
+    emit userPlaylistsReady();
 }
 
 void Playlists::createRequestHandler(QJsonValue value)

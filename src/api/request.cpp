@@ -100,8 +100,8 @@ void Request::replyHandler(QNetworkReply* reply)
             emit dataReady(ansObject.value("result"));
         } else if (!ansObject.value("error").isNull()) {
             emit errorReady(ansObject.value("error").toString());
+        } else {
+            qWarning() << "download error!";
         }
-
-        qWarning() << "download error!";
     }
 }

@@ -20,6 +20,8 @@
 #include "user.h"
 #include "request.h"
 
+#include "../types/playlist.h"
+
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -93,7 +95,6 @@ void User::loadLikedTracks()
         return;
     }
     Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/tracks/");
-    likeRequest->setDebug(true);
     connect(likeRequest, &Request::dataReady, this, &User::likedTracksHandler);
     likeRequest->get();
 }

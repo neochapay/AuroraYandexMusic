@@ -86,12 +86,12 @@
 <context>
     <name>TrackListItemDelegate</name>
     <message>
-        <location filename="../qml/components/TrackListItemDelegate.qml" line="108"/>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="114"/>
         <source>Go to artist</source>
         <translation>Перейти к артисту</translation>
     </message>
     <message>
-        <location filename="../qml/components/TrackListItemDelegate.qml" line="113"/>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="119"/>
         <source>Go to album</source>
         <translation>Перейти к альбому</translation>
     </message>
@@ -101,12 +101,25 @@
     <message>
         <location filename="../qml/pages/UserPage.qml" line="37"/>
         <source>You profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш профиль</translation>
     </message>
     <message>
-        <location filename="../qml/pages/UserPage.qml" line="45"/>
+        <location filename="../qml/pages/UserPage.qml" line="57"/>
+        <source>My playlists</source>
+        <translation>Мои плейлисты</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/UserPage.qml" line="65"/>
         <source>Logout</source>
         <translation>Выход</translation>
+    </message>
+</context>
+<context>
+    <name>UserPlaylistsPage</name>
+    <message>
+        <location filename="../qml/pages/UserPlaylistsPage.qml" line="47"/>
+        <source>My playlits</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

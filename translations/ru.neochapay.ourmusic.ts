@@ -86,12 +86,12 @@
 <context>
     <name>TrackListItemDelegate</name>
     <message>
-        <location filename="../qml/components/TrackListItemDelegate.qml" line="108"/>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="114"/>
         <source>Go to artist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/TrackListItemDelegate.qml" line="113"/>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="119"/>
         <source>Go to album</source>
         <translation type="unfinished"></translation>
     </message>
@@ -104,8 +104,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/UserPage.qml" line="45"/>
+        <location filename="../qml/pages/UserPage.qml" line="57"/>
+        <source>My playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/UserPage.qml" line="65"/>
         <source>Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UserPlaylistsPage</name>
+    <message>
+        <location filename="../qml/pages/UserPlaylistsPage.qml" line="47"/>
+        <source>My playlits</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
