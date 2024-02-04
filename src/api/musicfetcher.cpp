@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -45,7 +45,7 @@ void MusicFetcher::load(Track* track)
     m_linksList.clear();
     m_trackPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + track->trackId() + ".mp3";
 
-    if (track->trackId().isEmpty()) {
+    if (track->trackId() == 0) {
         qWarning() << "Wrong track id!";
     }
 
@@ -55,7 +55,7 @@ void MusicFetcher::load(Track* track)
         emit trackReady(m_trackPath);
         emit finalUrlReady(m_trackPath);
     } else {
-        Request* downloadInfoRequest = new Request("/tracks/" + track->trackId() + "/download-info");
+        Request* downloadInfoRequest = new Request("/tracks/" + QString::number(track->trackId()) + "/download-info");
         connect(downloadInfoRequest, &Request::dataReady, this, &MusicFetcher::downloadInfoHandler);
 
         downloadInfoRequest->get();

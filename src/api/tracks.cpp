@@ -17,33 +17,46 @@
  * Boston, MA 02110-1301, USA.
  */
 
-import QtQuick 2.0
-import Sailfish.Silica 1.0
+#include "tracks.h"
+#include "request.h"
 
-import ru.neochapay.ourmusic 1.0
+#include <QJsonArray>
 
-import "../components"
-import "../components/FeedPage"
+Tracks::Tracks(QObject *parent) : QObject(parent)
+{
 
-Page {
-    id: userPlaylistsPage
+}
 
-    Playlists{
-        id: playlists;
-        userID: user.userID
+void Tracks::getTracksInfo(QList<QString> ids)
+{
+    if(ids.count() == 0) {
+        return;
     }
 
-    Component.onCompleted: {
-        playlists.getUserLists();
+    QString idsString;
+    for(QString id : ids) {
+        idsString += id + ",";
     }
 
-    SilicaFlickable {
-        id: feedView
-        anchors.fill: parent
+    QUrlQuery query;
+    query.addQueryItem("track-ids", idsString);
 
-        PageHeader {
-            id: header
-            title: qsTr("My playlits")
+    Request* trackRequest = new Request("/tracks/");
+    connect(trackRequest, &Request::dataReady, this, &Tracks::getTracksInfoHandler);
+
+    trackRequest->post(query.toString());
+}
+
+void Tracks::getTracksInfoHandler(QJsonValue value)
+{
+    QList<Track*> tracks;
+    QJsonArray tracksArray = value.toArray();
+
+    for (const QJsonValue& v : tracksArray) {
+        Track* track = new Track(v.toObject());
+        if(track->trackId() != 0) {
+            tracks.push_back(track);
         }
     }
+    emit tracksInfoReady(tracks);
 }

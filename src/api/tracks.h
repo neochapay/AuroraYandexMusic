@@ -17,33 +17,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-import QtQuick 2.0
-import Sailfish.Silica 1.0
+#ifndef TRACKS_H
+#define TRACKS_H
 
-import ru.neochapay.ourmusic 1.0
+#include <QObject>
+#include "../types/track.h"
 
-import "../components"
-import "../components/FeedPage"
+class Tracks : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Tracks(QObject *parent = nullptr);
+    void getTracksInfo(QList<QString> ids); //TRACK_ID:ALBUM_ID
 
-Page {
-    id: userPlaylistsPage
+signals:
+    void tracksInfoReady(QList<Track*> tracks);
 
-    Playlists{
-        id: playlists;
-        userID: user.userID
-    }
+private:
+    void getTracksInfoHandler(QJsonValue value);
+};
 
-    Component.onCompleted: {
-        playlists.getUserLists();
-    }
-
-    SilicaFlickable {
-        id: feedView
-        anchors.fill: parent
-
-        PageHeader {
-            id: header
-            title: qsTr("My playlits")
-        }
-    }
-}
+#endif // TRACKS_H

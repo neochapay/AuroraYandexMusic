@@ -23,19 +23,9 @@ import Sailfish.Silica 1.0
 import ru.neochapay.ourmusic 1.0
 
 import "../components"
-import "../components/FeedPage"
 
 Page {
-    id: userPlaylistsPage
-
-    Playlists{
-        id: playlists;
-        userID: user.userID
-    }
-
-    Component.onCompleted: {
-        playlists.getUserLists();
-    }
+    id: userLikedPage
 
     SilicaFlickable {
         id: feedView
@@ -43,7 +33,36 @@ Page {
 
         PageHeader {
             id: header
-            title: qsTr("My playlits")
+            title: qsTr("Liked tracks")
         }
+
+        VerticalScrollDecorator {
+            id: scroll
+        }
+
+
+        ListView{
+            id: mainData
+            width: parent.width - Theme.paddingMedium*2
+            spacing: Theme.paddingMedium
+            height: feedView.height - header.height - Theme.paddingMedium*2
+            clip: true
+            anchors{
+                left: parent.left
+                leftMargin: Theme.paddingMedium
+                top: header.bottom
+                topMargin: Theme.paddingMedium
+            }
+
+            delegate: TrackListItemDelegate{
+                track: modelData
+            }
+        }
+    }
+
+    Component.onCompleted: mainData.model = user.likedTracks()
+    Connections{
+        target: user
+        onLikedTracksChanged: mainData.model = user.likedTracks()
     }
 }

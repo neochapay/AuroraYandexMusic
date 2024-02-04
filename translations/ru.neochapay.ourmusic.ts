@@ -97,6 +97,14 @@
     </message>
 </context>
 <context>
+    <name>UserLikedTracksPage</name>
+    <message>
+        <location filename="../qml/pages/UserLikedTracksPage.qml" line="36"/>
+        <source>Liked tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UserPage</name>
     <message>
         <location filename="../qml/pages/UserPage.qml" line="37"/>
@@ -105,11 +113,21 @@
     </message>
     <message>
         <location filename="../qml/pages/UserPage.qml" line="57"/>
-        <source>My playlists</source>
+        <source>Downloaded tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/UserPage.qml" line="65"/>
+        <source>Liked tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/UserPage.qml" line="73"/>
+        <source>My playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/UserPage.qml" line="81"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -117,7 +135,7 @@
 <context>
     <name>UserPlaylistsPage</name>
     <message>
-        <location filename="../qml/pages/UserPlaylistsPage.qml" line="47"/>
+        <location filename="../qml/pages/UserPlaylistsPage.qml" line="46"/>
         <source>My playlits</source>
         <translation type="unfinished"></translation>
     </message>

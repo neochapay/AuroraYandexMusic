@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -81,7 +81,7 @@ Track::Track(QJsonObject object, QObject* parent)
     d_ptr->fade = fade;
 
     d_ptr->fileSize = object.value("fileSize").toInt();
-    d_ptr->trackId = object.value("id").toString();
+    d_ptr->trackId = object.value("id").toString().toInt(); //Because sometime server return string
     d_ptr->lyricsAvailable = object.value("lyricsAvailable").toBool();
     d_ptr->ogImage = object.value("ogImage").toString();
     d_ptr->previewDurationMs = object.value("previewDurationMs").toInt();
@@ -166,7 +166,7 @@ int Track::fileSize() const
     return d_ptr->fileSize;
 }
 
-QString Track::trackId() const
+int Track::trackId() const
 {
     return d_ptr->trackId;
 }

@@ -46,7 +46,7 @@ Album::Album(QJsonObject object, QObject* parent)
     for (const QJsonValue& volumes : object.value("volumes").toArray()) {
         for (const QJsonValue& trackValue : volumes.toArray()) {
             Track* track = new Track(trackValue.toObject());
-            if(!track->trackId().isEmpty()) {
+            if(track->trackId() != 0) {
                 d_ptr->tracks.push_back(track);
             }
         }

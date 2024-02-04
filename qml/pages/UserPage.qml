@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -52,6 +52,22 @@ Page {
                 leftMargin: Theme.paddingMedium
             }
             spacing: Theme.paddingMedium
+
+            Button{
+                text: qsTr("Downloaded tracks")
+                width: parent.width
+                onClicked: {
+                    pageStack.replace(Qt.createComponent(Qt.resolvedUrl("UserDownloadedTracksPage.qml")))
+                }
+            }
+
+            Button{
+                text: qsTr("Liked tracks")
+                width: parent.width
+                onClicked: {
+                    pageStack.replace(Qt.createComponent(Qt.resolvedUrl("UserLikedTracksPage.qml")))
+                }
+            }
 
             Button{
                 text: qsTr("My playlists")

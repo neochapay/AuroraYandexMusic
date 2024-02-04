@@ -18,6 +18,7 @@ SOURCES += \
     src/api/rotor.cpp \
     src/api/search.cpp \
     src/api/settings.cpp \
+    src/api/tracks.cpp \
     src/api/user.cpp \
     src/models/currentplaylistmodel.cpp \
     src/main.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     src/api/rotor.h \
     src/api/search.h \
     src/api/settings.h \
+    src/api/tracks.h \
     src/api/user.h \
     src/models/currentplaylistmodel.h \
     src/types/ArtistInfoData.h \
@@ -70,6 +72,7 @@ DISTFILES += \
     qml/pages/ArtistPage.qml \
     qml/pages/FeedPage.qml \
     qml/pages/SearchPage.qml \
+    qml/pages/UserLikedTracksPage.qml \
     qml/pages/UserPage.qml \
     qml/pages/UserPlaylistsPage.qml \
     rpm/*.spec \

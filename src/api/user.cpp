@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,6 +17,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "tracks.h"
 #include "user.h"
 #include "request.h"
 
@@ -101,13 +102,12 @@ void User::loadLikedTracks()
 
 bool User::isTrackLiked(Track* track)
 {
-    QString trackId = track->trackId();
-    if (trackId.isEmpty()) {
+    if (track->trackId() == 0) {
         return false;
     }
 
-    foreach (LikedTrack* track, m_likedTrackList) {
-        if (track->trackId == trackId) {
+    foreach (QObject* trackFromList, m_likedTrackList) {
+        if (reinterpret_cast<Track*>(trackFromList)->trackId() == track->trackId()) {
             return true;
         }
     }
@@ -152,16 +152,24 @@ void User::likeRequestHandler(QJsonValue value)
 void User::likedTracksHandler(QJsonValue value)
 {
     m_likedTrackList.clear();
+    QList<QString> likedTracksIDS;
     QJsonArray likedTracksArray = value.toObject().value("library").toObject().value("tracks").toArray();
     for (const QJsonValue& v : likedTracksArray) {
         QJsonObject trackObject = v.toObject();
-        LikedTrack* track = new LikedTrack;
-        track->trackId = trackObject.value("id").toString();
-        track->albumId = trackObject.value("albumId").toString();
-        track->timestamp = QDateTime::fromString(trackObject.value("timestamp").toString());
+        QString trackID = trackObject.value("id").toString() + ":" +trackObject.value("albumId").toString();
 
-        m_likedTrackList.push_back(track);
+        likedTracksIDS.push_back(trackID);
     }
+
+    Tracks* tracks = new Tracks();
+    tracks->getTracksInfo(likedTracksIDS);
+    connect(tracks, &Tracks::tracksInfoReady, [=](const QList<Track*> likedTracks) {
+        for(Track* track: likedTracks) {
+            m_likedTrackList.push_back(track);
+        }
+        qDebug() << m_likedTrackList.count();
+        emit likedTracksChanged();
+    });
 }
 
 int User::userID() const

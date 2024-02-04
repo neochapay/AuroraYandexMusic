@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -36,7 +36,7 @@ void FeedbackSender::sendFeedback(Track* track, int totalSeconds, int playedSeco
     }
 
     QUrlQuery query;
-    query.addQueryItem("track-id", track->trackId());
+    query.addQueryItem("track-id", QString::number(track->trackId()));
     query.addQueryItem("from-cache", "false");
     query.addQueryItem("restored", "true");
     query.addQueryItem("from", "radio-mobile-user-feed-default");
