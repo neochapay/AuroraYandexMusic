@@ -37,16 +37,17 @@ void Rotor::getStationInfo(QString stationId)
     getStationInfoRequest->get();
 }
 
-void Rotor::getStationTracks(QString stationId, QString lastTrackid)
+void Rotor::getStationTracks(QString stationId, int lastTrackid)
 {
     QUrlQuery query;
     query.addQueryItem("settings2", "true");
 
-    if (lastTrackid.toInt() > 0) {
-        query.addQueryItem("queue", lastTrackid);
+    if (lastTrackid >= 0) {
+        query.addQueryItem("queue", QString::number(lastTrackid));
     }
 
     Request* getStationTracksRequest = new Request("/rotor/station/" + stationId + "/tracks");
+    getStationTracksRequest->setDebug(true);
     connect(getStationTracksRequest, &Request::dataReady, this, &Rotor::getStationTracksRequestHandler);
     getStationTracksRequest->get(query);
 }
