@@ -115,7 +115,7 @@ void Playlists::deleteList(int kind)
 
 void Playlists::change(int kind, QList<int> addedTracks, QList<int> deletedTraks)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!";
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!";
     Q_UNUSED(addedTracks)
     Q_UNUSED(deletedTraks)
     return;
@@ -203,30 +203,30 @@ void Playlists::getUserListsRequestHandler(QJsonValue value)
 
 void Playlists::createRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::renameRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::deleteListRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::changeRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::recommindationsRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::changeVisiblityRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }

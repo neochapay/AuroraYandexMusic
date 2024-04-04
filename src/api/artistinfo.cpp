@@ -46,12 +46,12 @@ void ArtistInfo::getBriefInfo()
 
 void ArtistInfo::getTracks()
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!";
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!";
 }
 
 void ArtistInfo::getDirectAlbums(QString sortBy)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << sortBy;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << sortBy;
 }
 
 int ArtistInfo::artistId() const
@@ -69,7 +69,7 @@ void ArtistInfo::setArtistId(int newArtistId)
 
 void ArtistInfo::getTrackIdsByRatingRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void ArtistInfo::getBriefInfoRequestHandler(QJsonValue value)
@@ -99,10 +99,10 @@ void ArtistInfo::getBriefInfoRequestHandler(QJsonValue value)
 
 void ArtistInfo::getTracksRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void ArtistInfo::getDirectAlbumsRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }

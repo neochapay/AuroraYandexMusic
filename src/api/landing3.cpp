@@ -43,12 +43,12 @@ void Landing3::get(QString blocks)
 
 void Landing3::loadingBlock(QString blockName)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << blockName;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << blockName;
 }
 
 void Landing3::chart(QString charType)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << charType;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << charType;
 }
 
 void Landing3::getLandingRequestHandler(QJsonValue value)
@@ -92,10 +92,10 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
 
 void Landing3::loadingBlockRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Landing3::chartRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
