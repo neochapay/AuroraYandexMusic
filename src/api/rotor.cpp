@@ -77,7 +77,7 @@ void Rotor::getStantionsDashboard()
 
 void Rotor::postStantionFeedback(FeedbackType type, Track* track, QString stationId, int totalPlayedSeconds)
 {
-    if(track == nullptr) {
+    if(track == nullptr || track->trackId() == -1) {
         return;
     }
 
@@ -100,7 +100,7 @@ void Rotor::postStantionFeedback(FeedbackType type, Track* track, QString statio
     QString from = "mobile-radio-user-onyourwave";
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzzZ");
     Album* album = reinterpret_cast<Album*>(track->albums().first());
-    QString trackId = track->trackId() + ":" + QString::number(album->albumId());
+    QString trackId = QString::number(track->trackId()) + ":" + QString::number(album->albumId());
 
     QJsonObject query;
     query.insert("type", typeSting);
@@ -128,7 +128,7 @@ void Rotor::getStationInfoRequestHandler(QJsonValue value)
 }
 
 void Rotor::getStationTracksRequestHandler(QJsonValue value)
-{
+{   
     QList<QObject*> tracksList;
     m_batchId = value.toObject().value("batchId").toString();
     QJsonArray tracks = value.toObject().value("sequence").toArray();

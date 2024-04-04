@@ -60,7 +60,7 @@ public:
     int durationMs;
     Fade fade;
     int fileSize;
-    int trackId;
+    int trackId = -1;
     bool lyricsAvailable;
     QString ogImage;
     int previewDurationMs;
