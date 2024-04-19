@@ -230,3 +230,9 @@ bool Track::downloaded()
 {
     return QFile::exists(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + d_ptr->trackId + ".mp3");
 }
+
+void Track::setDownloaded(bool newDownloaded)
+{
+    Q_UNUSED(newDownloaded)
+    emit trackChanged();
+}

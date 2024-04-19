@@ -39,23 +39,24 @@ MusicFetcher::MusicFetcher(QObject* parent)
 void MusicFetcher::load(Track* track)
 {
     if (track == nullptr) {
+        qWarning() << "Track to download is null";
         return;
     }
 
-    m_linksList.clear();
-    m_trackPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + track->trackId() + ".mp3";
+    m_track = track;
 
-    if (track->trackId() == 0) {
+    m_linksList.clear();
+
+    if (m_track->trackId() == 0) {
         qWarning() << "Wrong track id!";
     }
 
-    QFile trackFile(m_trackPath);
+    QFile trackFile(trackPath());
     if (trackFile.exists()) {
         qDebug() << "File exists";
-        emit trackReady(m_trackPath);
-        emit finalUrlReady(m_trackPath);
+        emit trackReady(trackPath());
     } else {
-        Request* downloadInfoRequest = new Request("/tracks/" + QString::number(track->trackId()) + "/download-info");
+        Request* downloadInfoRequest = new Request("/tracks/" + QString::number(m_track->trackId()) + "/download-info");
         connect(downloadInfoRequest, &Request::dataReady, this, &MusicFetcher::downloadInfoHandler);
 
         downloadInfoRequest->get();
@@ -167,8 +168,6 @@ void MusicFetcher::downloadInfoUrlHandler()
     QNetworkRequest request(finalUrl);
     QNetworkReply* m_reply = manager->get(request);
 
-    emit finalUrlReady(finalUrl);
-
     connect(manager, &QNetworkAccessManager::finished, this, &MusicFetcher::dataReadyHandler);
     connect(m_reply, &QNetworkReply::downloadProgress, this, &MusicFetcher::onDownloadProgress);
 }
@@ -179,14 +178,15 @@ void MusicFetcher::dataReadyHandler(QNetworkReply* reply)
         qDebug() << reply->errorString();
     }
 
-    QFile fileToSave(m_trackPath);
+    QFile fileToSave(trackPath());
     fileToSave.open(QFile::ReadWrite);
     fileToSave.write(reply->readAll());
     fileToSave.close();
 
-    emit trackReady(m_trackPath);
+    m_track->setDownloaded(true);
+
+    emit trackReady(trackPath());
     m_linksList.clear();
-    m_trackPath = QString();
 }
 
 void MusicFetcher::onDownloadProgress(qint64 bytesRead, qint64 bytesTotal)
@@ -196,4 +196,9 @@ void MusicFetcher::onDownloadProgress(qint64 bytesRead, qint64 bytesTotal)
         progress = (float)bytesRead / (float)bytesTotal;
         emit downloadProgress(progress);
     }
+}
+
+QString MusicFetcher::trackPath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + m_track->trackId() + ".mp3";;
 }

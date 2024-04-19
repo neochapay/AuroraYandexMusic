@@ -40,12 +40,12 @@ do
    mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/
    rsvg-convert --width=$size --height=$size --output \
            %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png \
-           %{_sourcedir}/../icons/svg/ru.neochapay.ourmusic.svg
+           %{_sourcedir}/../src/icons/svg/ru.neochapay.ourmusic.svg
 done
 
 if grep "Sailfish" /etc/os-release; then
     rm %{buildroot}%{_datadir}/applications/ru.neochapay.ourmusic.desktop
-    cp  %{_sourcedir}/../ru.neochapay.ourmusic.desktop_nojail %{buildroot}%{_datadir}/applications/ru.neochapay.ourmusic.desktop
+    cp  %{_sourcedir}/../src/ru.neochapay.ourmusic.desktop_nojail %{buildroot}%{_datadir}/applications/ru.neochapay.ourmusic.desktop
 fi
 
 %files
