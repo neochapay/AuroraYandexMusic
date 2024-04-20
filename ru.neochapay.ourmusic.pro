@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS = src
+SUBDIRS = src libs
 
 OTHER_FILES += \
     LICENSE \
