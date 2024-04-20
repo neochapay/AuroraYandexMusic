@@ -48,3 +48,7 @@ HEADERS += \
     server_p.h \
     service.h \
     service_p.h
+
+target.path = /usr/share/ru.neochapay.ourmusic/lib
+
+INSTALLS += target

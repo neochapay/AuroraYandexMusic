@@ -3,7 +3,9 @@ TARGET = ru.neochapay.ourmusic
 CONFIG += \
     sailfishapp
 
-PKGCONFIG += \
+INCLUDEPATH += ../libs/qmdnsengine
+
+LIBS += -L ../libs/qmdnsengine -lqmdnsengine
 
 SOURCES += \
     api/albuminfo.cpp \
