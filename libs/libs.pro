@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS = qmdnsengine
+SUBDIRS = qmdnsengine qtwebsockets
