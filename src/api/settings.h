@@ -31,6 +31,9 @@ public:
 
 signals:
     void settingsUpdated();
+
+private:
+    QFileSystemWatcher* m_settingsFileWatcher;
 };
 
 #endif // SETTINGS_H
