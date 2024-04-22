@@ -39,6 +39,8 @@
 
 #include "models/currentplaylistmodel.h"
 
+#include "alice/stantiondetector.h"
+
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQuickView>
@@ -73,6 +75,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
     qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
+    qmlRegisterType<StantionDetector>("ru.neochapay.ourmusic", 1, 0, "StantionDetector");
 
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
     view->show();

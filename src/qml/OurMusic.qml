@@ -20,6 +20,7 @@
 import QtQuick 2.0
 import QtMultimedia 5.5
 import Sailfish.Silica 1.0
+import Nemo.Notifications 1.0
 import ru.neochapay.ourmusic 1.0
 
 import "pages"
@@ -40,6 +41,23 @@ ApplicationWindow {
 
     Auth{
         id: auth
+    }
+
+    StantionDetector{
+        id: stantionDetector
+        onStantionChanged: {
+            if(stantionDetector.valid) {
+                stantionDetectNotification.publish()
+            }
+        }
+    }
+
+    Notification{
+        id: stantionDetectNotification
+        appName: "OwnMusic"
+        appIcon: "/usr/share/ru.neochapay.ourmusic/qml/img/devices/"+ stantionDetector.stantionPlatform + ".svg"
+        summary: "Connect to " + stantionDetector.stantionName
+        body: "Do you want play music on " + stantionDetector.stantionName
     }
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

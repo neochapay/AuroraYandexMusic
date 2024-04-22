@@ -3,8 +3,7 @@ TARGET = ru.neochapay.ourmusic
 CONFIG += \
     sailfishapp
 
-INCLUDEPATH += ../libs/qmdnsengine
-
+INCLUDEPATH += ../libs/
 LIBS += -L ../libs/qmdnsengine -lqmdnsengine
 
 SOURCES += \
@@ -22,6 +21,7 @@ SOURCES += \
     api/settings.cpp \
     api/tracks.cpp \
     api/user.cpp \
+    alice/stantiondetector.cpp \
     models/currentplaylistmodel.cpp \
     main.cpp \
     types/album.cpp \
@@ -31,6 +31,7 @@ SOURCES += \
     types/track.cpp
 
 HEADERS += \
+    alice/stationdetector.h \
     api/albuminfo.h \
     api/artistinfo.h \
     api/feed.h \
@@ -45,6 +46,7 @@ HEADERS += \
     api/settings.h \
     api/tracks.h \
     api/user.h \
+    alice/stantiondetector.h \
     models/currentplaylistmodel.h \
     types/ArtistInfoData.h \
     types/LandingResultBlock.h \
