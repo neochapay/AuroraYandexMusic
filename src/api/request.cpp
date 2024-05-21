@@ -78,7 +78,10 @@ void Request::post(const QString& query)
 
 void Request::replyHandler(QNetworkReply* reply)
 {
+    Request* request = qobject_cast<Request*>(sender());
+
     if (!reply) {
+        delete request;
         return;
     }
     reply->deleteLater();
@@ -104,4 +107,5 @@ void Request::replyHandler(QNetworkReply* reply)
             qWarning() << "download error!";
         }
     }
+    delete request;
 }

@@ -135,11 +135,17 @@ void User::getAccountStatusHandler(QJsonValue value)
         m_userID = userId;
         emit userIDChanged();
     }
+
+    Request* request = qobject_cast<Request*>(sender());
+    delete request;
 }
 
 void User::getFeedHandler(QJsonValue value)
 {
     qDebug() << value;
+
+    Request* request = qobject_cast<Request*>(sender());
+    delete request;
 }
 
 void User::likeRequestHandler(QJsonValue value)
@@ -147,6 +153,9 @@ void User::likeRequestHandler(QJsonValue value)
     if (value.toObject().value("revision").toInt() > 0) {
         emit likeActionFinished(m_likeActionID, m_likeAction);
     }
+
+    Request* request = qobject_cast<Request*>(sender());
+    delete request;
 }
 
 void User::likedTracksHandler(QJsonValue value)
@@ -165,11 +174,15 @@ void User::likedTracksHandler(QJsonValue value)
     tracks->getTracksInfo(likedTracksIDS);
     connect(tracks, &Tracks::tracksInfoReady, [=](const QList<Track*> likedTracks) {
         for(Track* track: likedTracks) {
-            m_likedTrackList.push_back(track);
+            if(track != nullptr) {
+                m_likedTrackList.push_back(track);
+            }
         }
-        qDebug() << m_likedTrackList.count();
         emit likedTracksChanged();
     });
+
+    Request* request = qobject_cast<Request*>(sender());
+    delete request;
 }
 
 int User::userID() const

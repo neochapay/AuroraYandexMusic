@@ -4,7 +4,7 @@ CONFIG += \
     sailfishapp
 
 INCLUDEPATH += ../libs/
-LIBS += -L ../libs/qmdnsengine -lqmdnsengine -L ../libs/qtwebsockets -lqtwebsockets
+LIBS += -L../libs/qmdnsengine -lqmdnsengine -L../libs/qtwebsockets -lqtwebsockets
 
 SOURCES += \
     api/albuminfo.cpp \
