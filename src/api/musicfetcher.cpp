@@ -85,7 +85,9 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
         emit error("Cant get download links");
 
         Request* request = qobject_cast<Request*>(sender());
-        delete request;
+        if(request != nullptr) {
+            delete request;
+        }
 
         return;
     }
@@ -125,7 +127,9 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
         emit error("Cant get download links");
 
         Request* request = qobject_cast<Request*>(sender());
-        delete request;
+        if(request != nullptr) {
+            delete request;
+        }
 
         return;
     }
@@ -137,7 +141,9 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
     connect(reply, &QNetworkReply::finished, this, &MusicFetcher::downloadInfoUrlHandler);
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void MusicFetcher::downloadInfoUrlHandler()
@@ -203,7 +209,9 @@ void MusicFetcher::dataReadyHandler(QNetworkReply* reply)
     m_linksList.clear();
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void MusicFetcher::onDownloadProgress(qint64 bytesRead, qint64 bytesTotal)

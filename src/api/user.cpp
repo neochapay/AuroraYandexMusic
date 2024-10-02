@@ -137,7 +137,9 @@ void User::getAccountStatusHandler(QJsonValue value)
     }
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void User::getFeedHandler(QJsonValue value)
@@ -145,7 +147,9 @@ void User::getFeedHandler(QJsonValue value)
     qDebug() << value;
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void User::likeRequestHandler(QJsonValue value)
@@ -155,19 +159,25 @@ void User::likeRequestHandler(QJsonValue value)
     }
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void User::likedTracksHandler(QJsonValue value)
 {
     m_likedTrackList.clear();
-    QList<QString> likedTracksIDS;
+    QStringList likedTracksIDS;
     QJsonArray likedTracksArray = value.toObject().value("library").toObject().value("tracks").toArray();
+
     for (const QJsonValue& v : likedTracksArray) {
         QJsonObject trackObject = v.toObject();
-        QString trackID = trackObject.value("id").toString() + ":" +trackObject.value("albumId").toString();
+        QString trackID = trackObject.value("id").toString();
+        QString tAlbum = trackObject.value("albumId").toString();
 
-        likedTracksIDS.push_back(trackID);
+        if(!trackID.isEmpty() && !tAlbum.isEmpty()) {
+            likedTracksIDS.push_back(trackID+":"+tAlbum);
+        }
     }
 
     Tracks* tracks = new Tracks();
@@ -180,9 +190,6 @@ void User::likedTracksHandler(QJsonValue value)
         }
         emit likedTracksChanged();
     });
-
-    Request* request = qobject_cast<Request*>(sender());
-    delete request;
 }
 
 int User::userID() const

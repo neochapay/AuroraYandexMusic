@@ -42,12 +42,16 @@ Track::Track(QJsonObject object, QObject* parent)
 {
     for (const QJsonValue& v : object.value("albums").toArray()) {
         Album* album = new Album(v.toObject());
-        d_ptr->albums.push_back(album);
+        if(album != nullptr) {
+            d_ptr->albums.push_back(album);
+        }
     }
 
     for (const QJsonValue& v : object.value("artists").toArray()) {
         Artist* artist = new Artist(v.toObject());
-        d_ptr->artists.push_back(artist);
+        if(artist != nullptr) {
+            d_ptr->artists.push_back(artist);
+        }
     }
 
     d_ptr->available = object.value("available").toBool();

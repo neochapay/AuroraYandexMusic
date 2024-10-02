@@ -31,6 +31,11 @@ Request::Request(QString point, QObject* parent)
     , m_debug(false)
 {
     m_settings = new Settings();
+
+    if(m_point.isEmpty()) {
+        qWarning() << "WRONG POINT";
+    }
+
     m_accessToken = m_settings->value("accessToken").toString();
 
     if (m_accessToken.isEmpty()) {
@@ -78,7 +83,7 @@ void Request::post(const QString& query)
 
 void Request::replyHandler(QNetworkReply* reply)
 {
-    Request* request = qobject_cast<Request*>(sender());
+   Request* request = qobject_cast<Request*>(sender());
 
     if (!reply) {
         delete request;
@@ -93,6 +98,11 @@ void Request::replyHandler(QNetworkReply* reply)
         emit errorReady(reply->errorString());
     } else {
         QString rawAnswer = reply->readAll();
+        if(rawAnswer.isEmpty()) {
+            qWarning() << "Empty answer";
+            emit errorReady("Empty answer");
+            return;
+        }
         QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
 
         if (m_debug) {

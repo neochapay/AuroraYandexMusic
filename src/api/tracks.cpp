@@ -34,7 +34,7 @@ void Tracks::getTracksInfo(QList<QString> ids)
     }
 
     QString idsString;
-    for(QString id : ids) {
+    for(const QString &id : ids) {
         idsString += id + ",";
     }
 
@@ -54,12 +54,14 @@ void Tracks::getTracksInfoHandler(QJsonValue value)
 
     for (const QJsonValue& v : tracksArray) {
         Track* track = new Track(v.toObject());
-        if(track->trackId() != 0) {
+        if(track != nullptr && track->trackId() != 0) {
             tracks.push_back(track);
         }
     }
     emit tracksInfoReady(tracks);
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }

@@ -37,6 +37,10 @@ Page {
     Connections{
         target: rotor
         onStantionTracksReady: {
+            if(tracks.length == 0) {
+                return;
+            }
+
             if(ourMusic.isMyWave && currentPlayListModel.rowCount == 0) {
                 rotor.postStantionFeedback(Rotor.RadioStarted, tracks[0]);
             }

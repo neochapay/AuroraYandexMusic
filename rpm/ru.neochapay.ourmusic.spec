@@ -1,3 +1,6 @@
+%define __provides_exclude_from ^%{_datadir}/%{name}/.*$
+%define __requires_exclude ^lib.*\\.*$
+
 Name:       ru.neochapay.ourmusic
 Summary:    The unofficial client for Yandex Music
 Version:    0.3.6

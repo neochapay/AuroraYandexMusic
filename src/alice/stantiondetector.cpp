@@ -30,6 +30,13 @@ StantionDetector::StantionDetector(QObject *parent)
     connect(m_DetrctorBrowser, &QMdnsEngine::Browser::serviceAdded, this, &StantionDetector::onServiceAdded);
 }
 
+StantionDetector::~StantionDetector()
+{
+    delete m_DetectorCache;
+    delete m_DetrctorServer;
+    delete m_DetrctorBrowser;
+}
+
 void StantionDetector::onServiceAdded(const QMdnsEngine::Service &service)
 {
     m_stantionPlatform = service.attributes()["platform"];

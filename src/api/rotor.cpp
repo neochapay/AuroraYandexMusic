@@ -127,7 +127,9 @@ void Rotor::getStationInfoRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStationTracksRequestHandler(QJsonValue value)
@@ -145,35 +147,45 @@ void Rotor::getStationTracksRequestHandler(QJsonValue value)
     emit stantionTracksReady(tracksList);
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getAccountStatusRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStantionsListRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStantionsDashboardRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStantionFeedbackRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::postStantionFeedbackRequestHandler(QJsonValue value)
@@ -182,5 +194,7 @@ void Rotor::postStantionFeedbackRequestHandler(QJsonValue value)
         qWarning() << Q_FUNC_INFO << value;
     }
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }

@@ -18,6 +18,7 @@ class StantionDetector : public QObject
 
 public:
     explicit StantionDetector(QObject *parent = nullptr);
+    virtual ~StantionDetector();
     const QString &stantionAddress() const;
     const QString &stantionName() const;
     int stantionPort() const;
@@ -33,7 +34,7 @@ private slots:
 private:
     bool isYandexStantion(const QString platform);
 
-    QMdnsEngine::Cache m_DetectorCache;
+    QMdnsEngine::Cache* m_DetectorCache;
     QMdnsEngine::Server *m_DetrctorServer;
     QMdnsEngine::Browser* m_DetrctorBrowser;
     QString m_stantionAddress;

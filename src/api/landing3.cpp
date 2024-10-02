@@ -58,7 +58,7 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
     for(const QJsonValue &vBlock: value.toObject().value("blocks").toArray()) {
         QJsonObject valueObject = vBlock.toObject();
 
-        LandingResultBlock* block = new LandingResultBlock;
+        LandingResultBlock* block = new LandingResultBlock();
         block->type = valueObject.value("type").toString();
         block->title = valueObject.value("title").toString();
         block->description = valueObject.value("description").toString();
@@ -77,7 +77,7 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
             if(block->type == "new-releases") {
                 if(entitiesObject.value("type").toString() == "album") { //Now support only albums
                     Album* album = new Album(entitiesObject.value("data").toObject());
-                    if(album->albumId() != 0) {
+                    if(album != nullptr && album->albumId() != 0) {
                         block->entities.push_back(album);
                     }
                 }
@@ -90,7 +90,9 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
     emit landingBlocksReady(blocks);
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Landing3::loadingBlockRequestHandler(QJsonValue value)
@@ -98,7 +100,9 @@ void Landing3::loadingBlockRequestHandler(QJsonValue value)
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Landing3::chartRequestHandler(QJsonValue value)
@@ -106,5 +110,7 @@ void Landing3::chartRequestHandler(QJsonValue value)
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }

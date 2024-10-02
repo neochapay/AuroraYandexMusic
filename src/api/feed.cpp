@@ -53,7 +53,9 @@ void Feed::getFeedHandler(QJsonValue value)
     emit feedReady();
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 const QList<QObject*>& Feed::generatedPlaylists() const

@@ -17,7 +17,6 @@ Item {
             bottom: myWavePlayButton.top
             bottomMargin: Theme.paddingLarge
         }
-        text: qsTr("My wave")
     }
 
     SvgIcon {

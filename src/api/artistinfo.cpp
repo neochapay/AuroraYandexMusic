@@ -72,7 +72,9 @@ void ArtistInfo::getTrackIdsByRatingRequestHandler(QJsonValue value)
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void ArtistInfo::getBriefInfoRequestHandler(QJsonValue value)
@@ -100,7 +102,9 @@ void ArtistInfo::getBriefInfoRequestHandler(QJsonValue value)
     emit getBriefInfoArtistInfoReady(aData);
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void ArtistInfo::getTracksRequestHandler(QJsonValue value)
@@ -108,7 +112,9 @@ void ArtistInfo::getTracksRequestHandler(QJsonValue value)
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void ArtistInfo::getDirectAlbumsRequestHandler(QJsonValue value)
@@ -116,5 +122,7 @@ void ArtistInfo::getDirectAlbumsRequestHandler(QJsonValue value)
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 
     Request* request = qobject_cast<Request*>(sender());
-    delete request;
+    if(request != nullptr) {
+        delete request;
+    }
 }

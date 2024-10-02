@@ -43,22 +43,22 @@ ApplicationWindow {
         id: auth
     }
 
-    StantionDetector{
+    /*StantionDetector{
         id: stantionDetector
         onStantionChanged: {
             if(stantionDetector.valid) {
                 stantionDetectNotification.publish()
             }
         }
-    }
+    }*/
 
-    Notification{
+    /*Notification{
         id: stantionDetectNotification
         appName: "OwnMusic"
         appIcon: "/usr/share/ru.neochapay.ourmusic/qml/img/devices/"+ stantionDetector.stantionPlatform + ".svg"
         summary: "Connect to " + stantionDetector.stantionName
         body: "Do you want play music on " + stantionDetector.stantionName
-    }
+    }*/
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
