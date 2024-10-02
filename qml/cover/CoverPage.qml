@@ -20,13 +20,11 @@ CoverBackground {
 
     Image{
         id: bgCover
-        width: parent.width * 0.8
-        height: width
+        width: parent.width - Theme.paddingMedium * 2
         anchors{
             top: parent.top
-            topMargin: parent.width*0.1
-            left: parent.left
-            leftMargin: parent.width*0.1
+    	    horizontalCenter: parent.horizontalCenter
+    	    margins: Theme.paddingMedium
         }
 
         fillMode: Image.PreserveAspectFit
@@ -37,22 +35,23 @@ CoverBackground {
         id: titleColumn
         anchors{
             top: bgCover.bottom
-            topMargin: parent.width*0.1
-            left: parent.left
-            leftMargin: parent.width*0.1
+            topMargin: Theme.paddingMedium
+	    horizontalCenter: parent.horizontalCenter
+            rightMargin: Theme.paddingMedium
+            leftMargin: Theme.paddingMedium
         }
 
-        width: parent.width * 0.8
+        width: parent.width - Theme.paddingMedium * 2
         height: parent.height - bgCover.height - activecover.height
         clip: true
-        spacing: Theme.paddingSmall
+        spacing: paddingSmall
 
         Label {
             id: artistLabel
             width: contentWidth>cover.width ? cover.width : contentWidth
             anchors.horizontalCenter: parent.horizontalCenter
             color: Theme.secondaryColor
-            font.pixelSize: Theme.fontSizeExtraSmall
+            font.pixelSize: Theme.fontSizeTiny
             truncationMode: TruncationMode.Fade
             text: qsTr("Play")
         }
@@ -63,6 +62,7 @@ CoverBackground {
             anchors.horizontalCenter: parent.horizontalCenter
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
+            font.weight: Font.Medium
             truncationMode: TruncationMode.Fade
             text: qsTr("My wave")
         }
