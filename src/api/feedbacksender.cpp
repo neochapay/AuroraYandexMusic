@@ -83,9 +83,4 @@ void FeedbackSender::sendFeedbackHandler(QJsonValue value)
     } else {
         emit sendFeedbackFail();
     }
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }

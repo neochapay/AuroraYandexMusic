@@ -88,29 +88,14 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
     }
 
     emit landingBlocksReady(blocks);
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Landing3::loadingBlockRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Landing3::chartRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }

@@ -182,11 +182,6 @@ void Playlists::getUserListRequestHandler(QJsonValue value)
     if(playlist->tracks().count() > 0) {
         emit playlistChanged(playlist);
     }
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::getUserListsRequestHandler(QJsonValue value)
@@ -204,69 +199,34 @@ void Playlists::getUserListsRequestHandler(QJsonValue value)
     }
 
     emit userPlaylistsReady();
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::createRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::renameRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::deleteListRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::changeRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::recommindationsRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void Playlists::changeVisiblityRequestHandler(QJsonValue value)
 {
     qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
