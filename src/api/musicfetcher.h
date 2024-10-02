@@ -46,7 +46,7 @@ signals:
     void trackReady(QString path);
     void error(QString errorMessage);
     void downloadProgress(float progress);
-    void finalUrlReady(QString url);
+//    void finalUrlReady(QString url);
 
 private slots:
     void downloadInfoHandler(QJsonValue value);
@@ -59,7 +59,8 @@ private:
     Track* m_track;
     Settings* m_settings;
     QList<DownloadLink*> m_linksList;
-    QString m_trackPath;
+
+    QString trackPath();
 };
 
 #endif // MUSICFETCHER_H

@@ -39,7 +39,7 @@ public:
 
     explicit Rotor(QObject* parent = nullptr);
     Q_INVOKABLE void getStationInfo(QString stationId = "user:onyourwave");
-    Q_INVOKABLE void getStationTracks(QString stationId = "user:onyourwave", QString lastTrackid = "0");
+    Q_INVOKABLE void getStationTracks(QString stationId = "user:onyourwave", int lastTrackid = -1);
     Q_INVOKABLE void getAccountStatus();
     Q_INVOKABLE void getStantionsList();
     Q_INVOKABLE void getStantionsDashboard();

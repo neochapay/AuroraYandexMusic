@@ -37,16 +37,17 @@ void Rotor::getStationInfo(QString stationId)
     getStationInfoRequest->get();
 }
 
-void Rotor::getStationTracks(QString stationId, QString lastTrackid)
+void Rotor::getStationTracks(QString stationId, int lastTrackid)
 {
     QUrlQuery query;
     query.addQueryItem("settings2", "true");
 
-    if (lastTrackid.toInt() > 0) {
-        query.addQueryItem("queue", lastTrackid);
+    if (lastTrackid >= 0) {
+        query.addQueryItem("queue", QString::number(lastTrackid));
     }
 
     Request* getStationTracksRequest = new Request("/rotor/station/" + stationId + "/tracks");
+    getStationTracksRequest->setDebug(true);
     connect(getStationTracksRequest, &Request::dataReady, this, &Rotor::getStationTracksRequestHandler);
     getStationTracksRequest->get(query);
 }
@@ -77,7 +78,7 @@ void Rotor::getStantionsDashboard()
 
 void Rotor::postStantionFeedback(FeedbackType type, Track* track, QString stationId, int totalPlayedSeconds)
 {
-    if(track == nullptr) {
+    if(track == nullptr || track->trackId() == -1) {
         return;
     }
 
@@ -100,7 +101,7 @@ void Rotor::postStantionFeedback(FeedbackType type, Track* track, QString statio
     QString from = "mobile-radio-user-onyourwave";
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzzZ");
     Album* album = reinterpret_cast<Album*>(track->albums().first());
-    QString trackId = track->trackId() + ":" + QString::number(album->albumId());
+    QString trackId = QString::number(track->trackId()) + ":" + QString::number(album->albumId());
 
     QJsonObject query;
     query.insert("type", typeSting);
@@ -124,11 +125,15 @@ void Rotor::postStantionFeedback(FeedbackType type, Track* track, QString statio
 
 void Rotor::getStationInfoRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStationTracksRequestHandler(QJsonValue value)
-{
+{   
     QList<QObject*> tracksList;
     m_batchId = value.toObject().value("batchId").toString();
     QJsonArray tracks = value.toObject().value("sequence").toArray();
@@ -140,31 +145,56 @@ void Rotor::getStationTracksRequestHandler(QJsonValue value)
         }
     }
     emit stantionTracksReady(tracksList);
+
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getAccountStatusRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStantionsListRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStantionsDashboardRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::getStantionFeedbackRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void Rotor::postStantionFeedbackRequestHandler(QJsonValue value)
 {
     if(value.toString() != "ok") {
         qWarning() << Q_FUNC_INFO << value;
+    }
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
     }
 }

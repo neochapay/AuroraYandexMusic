@@ -31,6 +31,11 @@ Request::Request(QString point, QObject* parent)
     , m_debug(false)
 {
     m_settings = new Settings();
+
+    if(m_point.isEmpty()) {
+        qWarning() << "WRONG POINT";
+    }
+
     m_accessToken = m_settings->value("accessToken").toString();
 
     if (m_accessToken.isEmpty()) {
@@ -81,31 +86,32 @@ void Request::replyHandler(QNetworkReply* reply)
     if (!reply) {
         return;
     }
+    reply->deleteLater();
 
     if (reply->error()) {
         if (m_debug) {
             qDebug() << reply->errorString();
         }
         emit errorReady(reply->errorString());
-        return;
+    } else {
+        QString rawAnswer = reply->readAll();
+        if(rawAnswer.isEmpty()) {
+            qWarning() << "Empty answer";
+            emit errorReady("Empty answer");
+            return;
+        }
+        QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
+
+        if (m_debug) {
+            qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
+        }
+
+        if (!ansObject.value("result").isNull()) {
+            emit dataReady(ansObject.value("result"));
+        } else if (!ansObject.value("error").isNull()) {
+            emit errorReady(ansObject.value("error").toString());
+        } else {
+            qWarning() << "download error!";
+        }
     }
-
-    QString rawAnswer = reply->readAll();
-    QJsonObject ansObject = QJsonDocument::fromJson(rawAnswer.toUtf8()).object();
-
-    if (m_debug) {
-        qDebug().noquote() << m_request.url().toString() << " GOT ANSWER: " << m_type << rawAnswer;
-    }
-
-    if (!ansObject.value("result").isNull()) {
-        emit dataReady(ansObject.value("result"));
-        return;
-    }
-
-    if (!ansObject.value("error").isNull()) {
-        emit errorReady(ansObject.value("error").toString());
-        return;
-    }
-
-    qWarning() << "download error!";
 }

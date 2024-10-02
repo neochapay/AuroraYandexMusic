@@ -49,9 +49,11 @@ public:
 signals:
     void userIDChanged();
     void playlistChanged(Playlist* playlist);
+    void userPlaylistsReady();
 
 private slots:
     void getUserListRequestHandler(QJsonValue value);
+    void getUserListsRequestHandler(QJsonValue value);
     void createRequestHandler(QJsonValue value);
     void renameRequestHandler(QJsonValue value);
     void deleteListRequestHandler(QJsonValue value);

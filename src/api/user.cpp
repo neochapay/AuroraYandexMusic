@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,8 +17,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "tracks.h"
 #include "user.h"
 #include "request.h"
+
+#include "../types/playlist.h"
 
 #include <QDebug>
 #include <QJsonArray>
@@ -93,20 +96,18 @@ void User::loadLikedTracks()
         return;
     }
     Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/tracks/");
-    likeRequest->setDebug(true);
     connect(likeRequest, &Request::dataReady, this, &User::likedTracksHandler);
     likeRequest->get();
 }
 
 bool User::isTrackLiked(Track* track)
 {
-    QString trackId = track->trackId();
-    if (trackId.isEmpty()) {
+    if (track->trackId() == 0) {
         return false;
     }
 
-    foreach (LikedTrack* track, m_likedTrackList) {
-        if (track->trackId == trackId) {
+    foreach (QObject* trackFromList, m_likedTrackList) {
+        if (reinterpret_cast<Track*>(trackFromList)->trackId() == track->trackId()) {
             return true;
         }
     }
@@ -134,11 +135,21 @@ void User::getAccountStatusHandler(QJsonValue value)
         m_userID = userId;
         emit userIDChanged();
     }
+
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void User::getFeedHandler(QJsonValue value)
 {
     qDebug() << value;
+
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void User::likeRequestHandler(QJsonValue value)
@@ -146,21 +157,39 @@ void User::likeRequestHandler(QJsonValue value)
     if (value.toObject().value("revision").toInt() > 0) {
         emit likeActionFinished(m_likeActionID, m_likeAction);
     }
+
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }
 
 void User::likedTracksHandler(QJsonValue value)
 {
     m_likedTrackList.clear();
+    QStringList likedTracksIDS;
     QJsonArray likedTracksArray = value.toObject().value("library").toObject().value("tracks").toArray();
+
     for (const QJsonValue& v : likedTracksArray) {
         QJsonObject trackObject = v.toObject();
-        LikedTrack* track = new LikedTrack;
-        track->trackId = trackObject.value("id").toString();
-        track->albumId = trackObject.value("albumId").toString();
-        track->timestamp = QDateTime::fromString(trackObject.value("timestamp").toString());
+        QString trackID = trackObject.value("id").toString();
+        QString tAlbum = trackObject.value("albumId").toString();
 
-        m_likedTrackList.push_back(track);
+        if(!trackID.isEmpty() && !tAlbum.isEmpty()) {
+            likedTracksIDS.push_back(trackID+":"+tAlbum);
+        }
     }
+
+    Tracks* tracks = new Tracks();
+    tracks->getTracksInfo(likedTracksIDS);
+    connect(tracks, &Tracks::tracksInfoReady, [=](const QList<Track*> likedTracks) {
+        for(Track* track: likedTracks) {
+            if(track != nullptr) {
+                m_likedTrackList.push_back(track);
+            }
+        }
+        emit likedTracksChanged();
+    });
 }
 
 int User::userID() const

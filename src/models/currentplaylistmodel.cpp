@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -97,7 +97,7 @@ void CurrentPlayListModel::push(Track* track)
         return;
     }
 
-    if (!track->trackId().isEmpty()) {
+    if (track->trackId() != 0) {
         beginInsertRows(QModelIndex(), m_currentTracks.count(), m_currentTracks.count());
         m_currentTracks.push_back(track);
         endInsertRows();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -162,10 +162,14 @@ void Search::searchRequestHandler(QJsonValue value)
 
     for(int i=0; i < tracksConut; i++) {
         Track* track = new Track(albumsResult[i].toObject());
-        if(!track->trackId().isEmpty()) {
+        if(track->trackId() != 0) {
             searchResult->tracks.push_back(track);
         }
     }
 
     emit searchReady(searchResult);
+    Request* request = qobject_cast<Request*>(sender());
+    if(request != nullptr) {
+        delete request;
+    }
 }

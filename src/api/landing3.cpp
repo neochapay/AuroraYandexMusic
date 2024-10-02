@@ -43,12 +43,12 @@ void Landing3::get(QString blocks)
 
 void Landing3::loadingBlock(QString blockName)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << blockName;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << blockName;
 }
 
 void Landing3::chart(QString charType)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << charType;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << charType;
 }
 
 void Landing3::getLandingRequestHandler(QJsonValue value)
@@ -58,7 +58,7 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
     for(const QJsonValue &vBlock: value.toObject().value("blocks").toArray()) {
         QJsonObject valueObject = vBlock.toObject();
 
-        LandingResultBlock* block = new LandingResultBlock;
+        LandingResultBlock* block = new LandingResultBlock();
         block->type = valueObject.value("type").toString();
         block->title = valueObject.value("title").toString();
         block->description = valueObject.value("description").toString();
@@ -77,7 +77,7 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
             if(block->type == "new-releases") {
                 if(entitiesObject.value("type").toString() == "album") { //Now support only albums
                     Album* album = new Album(entitiesObject.value("data").toObject());
-                    if(album->albumId() != 0) {
+                    if(album != nullptr && album->albumId() != 0) {
                         block->entities.push_back(album);
                     }
                 }
@@ -92,10 +92,10 @@ void Landing3::getLandingRequestHandler(QJsonValue value)
 
 void Landing3::loadingBlockRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Landing3::chartRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }

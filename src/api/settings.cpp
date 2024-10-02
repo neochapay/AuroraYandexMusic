@@ -25,8 +25,8 @@
 
 Settings::Settings(QSettings* parent)
     : QSettings (QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf", QSettings::NativeFormat, parent)
+    , m_settingsFileWatcher(new QFileSystemWatcher(this))
 {
-    QFileSystemWatcher* settingsFileWatcher = new QFileSystemWatcher(this);
-    settingsFileWatcher->addPath(fileName());
-    connect(settingsFileWatcher, &QFileSystemWatcher::fileChanged, this, &Settings::settingsUpdated);
+    m_settingsFileWatcher->addPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/yamusic.conf");
+    connect(m_settingsFileWatcher, &QFileSystemWatcher::fileChanged, this, &Settings::settingsUpdated);
 }

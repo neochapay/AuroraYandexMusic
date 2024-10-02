@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,13 +25,6 @@
 
 #include "../types/track.h"
 
-struct LikedTrack {
-public:
-    QString trackId;
-    QString albumId;
-    QDateTime timestamp;
-};
-
 class User : public QObject {
     Q_OBJECT
     Q_PROPERTY(int userID READ userID NOTIFY userIDChanged)
@@ -45,6 +38,7 @@ public:
     Q_INVOKABLE void like(QString type, int id, bool remove = false);
     Q_INVOKABLE void dislike(QString type, int id);
 
+    Q_INVOKABLE QList<QObject*> likedTracks() {return m_likedTrackList;};
     Q_INVOKABLE void loadLikedTracks();
     Q_INVOKABLE bool isTrackLiked(Track* track);
 
@@ -63,6 +57,7 @@ signals:
     void displayNameChanged();
     void wrongUser();
     void likeActionFinished(int actionId, QString action);
+    void likedTracksChanged();
 
 private:
     int m_userID;
@@ -70,7 +65,7 @@ private:
 
     QString m_displayName;
     QString m_likeAction;
-    QList<LikedTrack*> m_likedTrackList;
+    QList<QObject*> m_likedTrackList;
 };
 
 #endif // USER_H

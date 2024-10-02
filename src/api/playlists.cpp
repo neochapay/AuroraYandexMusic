@@ -21,6 +21,7 @@
 #include "request.h"
 
 #include <QUrlQuery>
+#include <QJsonArray>
 
 Playlists::Playlists(QObject* parent)
     : QObject(parent)
@@ -35,7 +36,7 @@ void Playlists::getUserLists()
     }
 
     Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/list");
-    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
+    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListsRequestHandler);
 
     getUserListsRequest->get();
 }
@@ -114,7 +115,7 @@ void Playlists::deleteList(int kind)
 
 void Playlists::change(int kind, QList<int> addedTracks, QList<int> deletedTraks)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!";
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!";
     Q_UNUSED(addedTracks)
     Q_UNUSED(deletedTraks)
     return;
@@ -183,32 +184,49 @@ void Playlists::getUserListRequestHandler(QJsonValue value)
     }
 }
 
+void Playlists::getUserListsRequestHandler(QJsonValue value)
+{
+    QList<QObject *> playlists;
+
+    QJsonArray playlistArray = value.toArray();
+    for (const QJsonValue& v : playlistArray) {
+        QJsonObject playListObject = v.toObject();
+        Playlist *playlist = new Playlist(playListObject);
+
+        if(!playlist->title().isEmpty()) {
+            playlists.push_back(playlist);
+        }
+    }
+
+    emit userPlaylistsReady();
+}
+
 void Playlists::createRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::renameRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::deleteListRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::changeRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::recommindationsRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }
 
 void Playlists::changeVisiblityRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENED YEAT!" << value;
+    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
 }

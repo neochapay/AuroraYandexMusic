@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2023-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -60,7 +60,7 @@ public:
     int durationMs;
     Fade fade;
     int fileSize;
-    QString trackId;
+    int trackId = -1;
     bool lyricsAvailable;
     QString ogImage;
     int previewDurationMs;
@@ -89,7 +89,7 @@ class Track : public QObject {
     Q_PROPERTY(int durationMs READ durationMs NOTIFY trackChanged)
     Q_PROPERTY(Fade fade READ fade NOTIFY trackChanged)
     Q_PROPERTY(int fileSize READ fileSize NOTIFY trackChanged)
-    Q_PROPERTY(QString trackId READ trackId NOTIFY trackChanged)
+    Q_PROPERTY(int trackId READ trackId NOTIFY trackChanged)
     Q_PROPERTY(bool lyricsAvailable READ lyricsAvailable NOTIFY trackChanged)
     // TODO lyricsInfo
     // TODO major
@@ -103,7 +103,7 @@ class Track : public QObject {
     Q_PROPERTY(QString trackSharingFlag READ trackSharingFlag NOTIFY trackChanged)
     Q_PROPERTY(QString trackSource READ trackSource NOTIFY trackChanged)
     Q_PROPERTY(QString type READ type NOTIFY trackChanged)
-    Q_PROPERTY(bool downloaded READ downloaded NOTIFY trackChanged)
+    Q_PROPERTY(bool downloaded READ downloaded WRITE setDownloaded NOTIFY trackChanged)
 
 public:
     explicit Track(QObject* parent = nullptr);
@@ -124,7 +124,7 @@ public:
     int durationMs() const;
     const Fade& fade() const;
     int fileSize() const;
-    QString trackId() const;
+    int trackId() const;
     bool lyricsAvailable() const;
     const QString& ogImage() const;
     int previewDurationMs() const;
@@ -137,6 +137,7 @@ public:
     const QString& type() const;
     const QString& contentWarning() const;
     bool downloaded();
+    void setDownloaded(bool newDownloaded);
 
 signals:
     void trackChanged();
