@@ -23,8 +23,8 @@ CoverBackground {
         width: parent.width - Theme.paddingMedium * 2
         anchors{
             top: parent.top
-    	    horizontalCenter: parent.horizontalCenter
-    	    margins: Theme.paddingMedium
+	    horizontalCenter: parent.horizontalCenter
+	    margins: Theme.paddingMedium
         }
 
         fillMode: Image.PreserveAspectFit
@@ -36,7 +36,7 @@ CoverBackground {
         anchors{
             top: bgCover.bottom
             topMargin: Theme.paddingMedium
-	    horizontalCenter: parent.horizontalCenter
+            horizontalCenter: parent.horizontalCenter
             rightMargin: Theme.paddingMedium
             leftMargin: Theme.paddingMedium
         }
