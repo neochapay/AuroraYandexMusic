@@ -36,6 +36,7 @@ Image {
     MouseArea{
         id: clickMouseArea
         anchors.fill: parent
+        enabled: clickIcon.enabled
         onClicked: {
             clickIcon.clicked()
         }

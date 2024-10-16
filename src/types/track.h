@@ -103,7 +103,8 @@ class Track : public QObject {
     Q_PROPERTY(QString trackSharingFlag READ trackSharingFlag NOTIFY trackChanged)
     Q_PROPERTY(QString trackSource READ trackSource NOTIFY trackChanged)
     Q_PROPERTY(QString type READ type NOTIFY trackChanged)
-    Q_PROPERTY(bool downloaded READ downloaded WRITE setDownloaded NOTIFY trackChanged)
+    Q_PROPERTY(bool downloaded READ downloaded NOTIFY trackChanged)
+    Q_PROPERTY(QString filePath READ filePath CONSTANT)
 
 public:
     explicit Track(QObject* parent = nullptr);
@@ -137,7 +138,8 @@ public:
     const QString& type() const;
     const QString& contentWarning() const;
     bool downloaded();
-    void setDownloaded(bool newDownloaded);
+    QString filePath();
+    Q_INVOKABLE void download();
 
 signals:
     void trackChanged();

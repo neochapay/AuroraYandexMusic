@@ -18,6 +18,8 @@
  */
 
 #include "track.h"
+#include "../api/musicfetcher.h"
+
 #include <QDebug>
 #include <QFile>
 #include <QJsonArray>
@@ -32,14 +34,26 @@ Track::Track(QObject* parent)
 
 Track::Track(const Track& other, QObject* parent)
     : QObject(parent)
-    , d_ptr(other.d_ptr)
 {
+    if(other.trackId() < 1) {
+        qWarning() << "Wrong Track object";
+        return;
+    }
+    d_ptr = other.d_ptr;
 }
 
 Track::Track(QJsonObject object, QObject* parent)
     : QObject(parent)
     , d_ptr(new TrackPrivate())
 {
+    int trackId = object.value("id").toString().toInt(); //Because sometime server return string
+    if(trackId < 1) {
+        qWarning() << "Wrong json object";
+        return;
+    }
+
+    d_ptr->trackId = trackId;
+
     for (const QJsonValue& v : object.value("albums").toArray()) {
         Album* album = new Album(v.toObject());
         if(album != nullptr) {
@@ -85,7 +99,6 @@ Track::Track(QJsonObject object, QObject* parent)
     d_ptr->fade = fade;
 
     d_ptr->fileSize = object.value("fileSize").toInt();
-    d_ptr->trackId = object.value("id").toString().toInt(); //Because sometime server return string
     d_ptr->lyricsAvailable = object.value("lyricsAvailable").toBool();
     d_ptr->ogImage = object.value("ogImage").toString();
     d_ptr->previewDurationMs = object.value("previewDurationMs").toInt();
@@ -232,11 +245,27 @@ const QString& Track::contentWarning() const
 
 bool Track::downloaded()
 {
-    return QFile::exists(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + d_ptr->trackId + ".mp3");
+    return QFile::exists(filePath());
 }
 
-void Track::setDownloaded(bool newDownloaded)
+QString Track::filePath()
 {
-    Q_UNUSED(newDownloaded)
-    emit trackChanged();
+    if(d_ptr->trackId < 1) {
+        return QString();
+    }
+
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + QString::number(d_ptr->trackId) + ".mp3";
+}
+
+void Track::download()
+{
+    if(downloaded()) {
+        return;
+    }
+
+    MusicFetcher* fetcher = new MusicFetcher();
+    fetcher->load(this);
+    connect(fetcher, &MusicFetcher::trackReady, [=] {
+        emit trackChanged();
+    });
 }

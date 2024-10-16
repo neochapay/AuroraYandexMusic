@@ -26,7 +26,6 @@
 #include "api/feed.h"
 #include "api/feedbacksender.h"
 #include "api/landing3.h"
-#include "api/musicfetcher.h"
 #include "api/oauth.h"
 #include "api/playlists.h"
 #include "api/rotor.h"
@@ -65,9 +64,9 @@ int main(int argc, char* argv[])
 
     qmlRegisterType<CurrentPlayListModel>("ru.neochapay.ourmusic", 1, 0, "CurrentPlayListModel");
     qmlRegisterType<User>("ru.neochapay.ourmusic", 1, 0, "User");
+    qmlRegisterType<Track>("ru.neochapay.ourmusic", 1, 0, "Track");
     qmlRegisterType<OAuth>("ru.neochapay.ourmusic", 1, 0, "Auth");
     qmlRegisterType<Feed>("ru.neochapay.ourmusic", 1, 0, "Feed");
-    qmlRegisterType<MusicFetcher>("ru.neochapay.ourmusic", 1, 0, "MusicFetcher");
     qmlRegisterType<FeedbackSender>("ru.neochapay.ourmusic", 1, 0, "FeedbackSender");
     qmlRegisterType<Playlists>("ru.neochapay.ourmusic", 1, 0, "Playlists");
     qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");

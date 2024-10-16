@@ -24,9 +24,12 @@ CurrentPlayListModel::CurrentPlayListModel(QObject* parent)
     : QAbstractListModel(parent)
     , m_currentIndex(-1)
     , m_prevTrack(nullptr)
+    , m_nextTrack(nullptr)
 {
     connect(this, &QAbstractListModel::rowsInserted, this, &CurrentPlayListModel::rowCountChanged);
     connect(this, &QAbstractListModel::rowsRemoved, this, &CurrentPlayListModel::rowCountChanged);
+
+    connect(this, &CurrentPlayListModel::currentIndexChanged, this, &CurrentPlayListModel::calculateNextready);
 }
 
 int CurrentPlayListModel::currentIndex() const
@@ -150,5 +153,29 @@ void CurrentPlayListModel::clear()
     m_currentTracks.clear();
     m_currentIndex = -1;
     endResetModel();
-    currentIndexChanged();
+    emit currentIndexChanged();
 }
+
+bool CurrentPlayListModel::nextReady() const
+{
+    if(m_nextTrack == nullptr) {
+        return false;
+    }
+
+    if(m_nextTrack->downloaded()) {
+        return true;
+    }
+    return false;
+}
+
+void CurrentPlayListModel::calculateNextready()
+{
+    m_nextTrack = getTrack(m_currentIndex+1);
+    if(m_nextTrack != nullptr) {
+        m_nextTrack->download();
+        connect(m_nextTrack, &Track::trackChanged, [=] {
+            emit nextReadyChanged();
+        });
+    }
+}
+

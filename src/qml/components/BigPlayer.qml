@@ -206,6 +206,7 @@ Rectangle{
             id: bigPlayerBackwardButton
             width: parent.height*0.6
             height: width
+            enabled:  currentPlayListModel.currentIndex > 1
             defaultColor: "white"
             activeColor: "deepskyblue"
 
@@ -238,8 +239,9 @@ Rectangle{
             id: bigPlayerForwardButton
             width: parent.height*0.6
             height: width
-            defaultColor: "white"
+            defaultColor: currentPlayListModel.nextReady ? "white" : "gray"
             activeColor: "deepskyblue"
+            enabled: currentPlayListModel.nextReady
 
             source: "../img/forward.svg"
 

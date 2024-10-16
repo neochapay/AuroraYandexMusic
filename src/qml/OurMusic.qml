@@ -30,6 +30,7 @@ ApplicationWindow {
     id: ourMusic
 
     property bool isMyWave: false
+    property Track currentTrack;
 
     initialPage: {
         if (auth.token.length > 0) {
@@ -89,11 +90,11 @@ ApplicationWindow {
         id: rotor
     }
 
-    MusicFetcher{
-        id: musicFetcher
-        onTrackReady: {
-            rootAudio.source = path
-            if(currentPlayListModel.currentIndex > -1) {
+    Connections{
+        target: currentTrack
+        onTrackChanged:{
+            if(currentTrack.downloaded) {
+                rootAudio.source = currentTrack.filePath;
                 rootAudio.play()
             }
         }
@@ -110,13 +111,19 @@ ApplicationWindow {
             //send rotor feedback
             //TODO
 
-            musicFetcher.load(currentPlayListModel.getCurrentTrack())
+            currentTrack = currentPlayListModel.getCurrentTrack();
             if(ourMusic.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
-                var lastTrack = currentPlayListModel.getCurrentTrack()
-                rotor.getStationTracks("user:onyourwave", lastTrack.trackId)
+                rotor.getStationTracks("user:onyourwave", currentTrack.trackId)
+            }
+            if(currentTrack.downloaded) {
+                rootAudio.source = currentTrack.filePath;
+                rootAudio.play()
+            } else {
+                currentTrack.download(currentTrack)
             }
         }
     }
+
 
     MainPlayer{
         id: mainPlayer

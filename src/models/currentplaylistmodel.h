@@ -29,6 +29,7 @@ class CurrentPlayListModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(int rowCount READ rowCount NOTIFY rowCountChanged)
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+    Q_PROPERTY(bool nextReady READ nextReady NOTIFY nextReadyChanged)
 
 public:
     explicit CurrentPlayListModel(QObject* parent = 0);
@@ -50,9 +51,15 @@ public:
     Q_INVOKABLE Track* getPrevTrack();
     Q_INVOKABLE void clear();
 
+    bool nextReady() const;
+
 signals:
     void rowCountChanged();
     void currentIndexChanged();
+    void nextReadyChanged();
+
+private slots:
+    void calculateNextready();
 
 private:
     int m_currentIndex;
@@ -60,6 +67,7 @@ private:
     QHash<int, QByteArray> m_hash;
     QList<Track*> m_currentTracks;
     Track* m_prevTrack;
+    Track* m_nextTrack;
 };
 
 #endif // CURRENTPLAYLISTMODEL_H

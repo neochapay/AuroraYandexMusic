@@ -59,8 +59,6 @@ private:
     Track* m_track;
     Settings* m_settings;
     QList<DownloadLink*> m_linksList;
-
-    QString trackPath();
 };
 
 #endif // MUSICFETCHER_H
