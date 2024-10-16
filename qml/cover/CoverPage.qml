@@ -44,7 +44,7 @@ CoverBackground {
         width: parent.width - Theme.paddingMedium * 2
         height: parent.height - bgCover.height - activecover.height
         clip: true
-        spacing: paddingSmall
+        spacing: Theme.paddingSmall
 
         Label {
             id: artistLabel
