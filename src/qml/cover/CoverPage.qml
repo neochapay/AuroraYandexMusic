@@ -59,7 +59,7 @@ CoverBackground {
                 property bool needsAnimation: contentWidth > parent.width
 
                 onNeedsAnimationChanged: updatePosition()
-                onTextChanged: Qt.callLater(updatePosition)
+                onTextChanged: updatePosition()
 
                 function updatePosition() {
                     if (needsAnimation) {
@@ -115,7 +115,7 @@ CoverBackground {
                 property bool needsAnimation: contentWidth > parent.width
 
                 onNeedsAnimationChanged: updatePosition()
-                onTextChanged: Qt.callLater(updatePosition)
+                onTextChanged: updatePosition()
 
                 function updatePosition() {
                     if (needsAnimation) {
