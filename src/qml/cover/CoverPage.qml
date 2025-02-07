@@ -33,38 +33,125 @@ CoverBackground {
 
     Column {
         id: titleColumn
-        anchors{
+        anchors {
             top: bgCover.bottom
             topMargin: Theme.paddingMedium
-	    horizontalCenter: parent.horizontalCenter
-            rightMargin: Theme.paddingMedium
-            leftMargin: Theme.paddingMedium
+            horizontalCenter: parent.horizontalCenter
         }
-
         width: parent.width - Theme.paddingMedium * 2
         height: parent.height - bgCover.height - activecover.height
         clip: true
-        spacing: paddingSmall
+        spacing: Theme.paddingSmall
 
-        Label {
-            id: artistLabel
-            width: contentWidth>cover.width ? cover.width : contentWidth
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: Theme.secondaryColor
-            font.pixelSize: Theme.fontSizeTiny
-            truncationMode: TruncationMode.Fade
-            text: qsTr("Play")
+        Item {
+            width: parent.width
+            height: artistLabel.height
+            clip: true
+
+            Label {
+                id: artistLabel
+                width: contentWidth
+                anchors.verticalCenter: parent.verticalCenter
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeTiny
+                text: qsTr("Play")
+
+                property bool needsAnimation: contentWidth > parent.width
+
+                onNeedsAnimationChanged: updatePosition()
+                onTextChanged: Qt.callLater(updatePosition)
+
+                function updatePosition() {
+                    if (needsAnimation) {
+                        x = 0
+                        artistAnimation.restart()
+                    } else {
+                        x = (parent.width - contentWidth)/2
+                        artistAnimation.stop()
+                    }
+                }
+
+                SequentialAnimation {
+                    id: artistAnimation
+                    loops: Animation.Infinite
+                    running: false
+
+                    NumberAnimation {
+                        target: artistLabel
+                        property: "x"
+                        from: 0
+                        to: parent.width - artistLabel.contentWidth
+                        duration: Math.max(2000, (artistLabel.contentWidth - parent.width) * 20)
+                        easing.type: Easing.InOutSine
+                    }
+                    PauseAnimation { duration: 800 }
+                    NumberAnimation {
+                        target: artistLabel
+                        property: "x"
+                        from: parent.width - artistLabel.contentWidth
+                        to: 0
+                        duration: Math.max(2000, (artistLabel.contentWidth - parent.width) * 20)
+                        easing.type: Easing.InOutSine
+                    }
+                    PauseAnimation { duration: 800 }
+                }
+            }
         }
 
-        Label {
-            id: songLabel
-            width: contentWidth>cover.width ? cover.width : contentWidth
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: Theme.secondaryColor
-            font.pixelSize: Theme.fontSizeExtraSmall
-            font.weight: Font.Medium
-            truncationMode: TruncationMode.Fade
-            text: qsTr("My wave")
+        Item {
+            width: parent.width
+            height: songLabel.height
+            clip: true
+
+            Label {
+                id: songLabel
+                width: contentWidth
+                anchors.verticalCenter: parent.verticalCenter
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeExtraSmall
+                font.weight: Font.Medium
+                text: qsTr("My wave")
+
+                property bool needsAnimation: contentWidth > parent.width
+
+                onNeedsAnimationChanged: updatePosition()
+                onTextChanged: Qt.callLater(updatePosition)
+
+                function updatePosition() {
+                    if (needsAnimation) {
+                        x = 0
+                        songAnimation.restart()
+                    } else {
+                        x = (parent.width - contentWidth)/2
+                        songAnimation.stop()
+                    }
+                }
+
+                SequentialAnimation {
+                    id: songAnimation
+                    loops: Animation.Infinite
+                    running: false
+
+                    NumberAnimation {
+                        target: songLabel
+                        property: "x"
+                        from: 0
+                        to: parent.width - songLabel.contentWidth
+                        duration: Math.max(2000, (songLabel.contentWidth - parent.width) * 20)
+                        easing.type: Easing.InOutSine
+                    }
+                    PauseAnimation { duration: 800 }
+                    NumberAnimation {
+                        target: songLabel
+                        property: "x"
+                        from: parent.width - songLabel.contentWidth
+                        to: 0
+                        duration: Math.max(2000, (songLabel.contentWidth - parent.width) * 20)
+                        easing.type: Easing.InOutSine
+                    }
+                    PauseAnimation { duration: 800 }
+                }
+            }
         }
     }
 
