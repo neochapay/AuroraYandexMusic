@@ -80,7 +80,7 @@ CoverBackground {
                         target: artistLabel
                         property: "x"
                         from: 0
-                        to: parent.width - artistLabel.contentWidth
+                        to: parent.width - Theme.paddingMedium * 2 - artistLabel.contentWidth
                         duration: Math.max(2000, (artistLabel.contentWidth - parent.width) * 20)
                         easing.type: Easing.InOutSine
                     }
@@ -88,7 +88,7 @@ CoverBackground {
                     NumberAnimation {
                         target: artistLabel
                         property: "x"
-                        from: parent.width - artistLabel.contentWidth
+                        from: parent.width - Theme.paddingMedium * 2 - artistLabel.contentWidth
                         to: 0
                         duration: Math.max(2000, (artistLabel.contentWidth - parent.width) * 20)
                         easing.type: Easing.InOutSine
@@ -136,7 +136,7 @@ CoverBackground {
                         target: songLabel
                         property: "x"
                         from: 0
-                        to: parent.width - songLabel.contentWidth
+                        to: parent.width - Theme.paddingMedium * 2 - songLabel.contentWidth
                         duration: Math.max(2000, (songLabel.contentWidth - parent.width) * 20)
                         easing.type: Easing.InOutSine
                     }
@@ -144,7 +144,7 @@ CoverBackground {
                     NumberAnimation {
                         target: songLabel
                         property: "x"
-                        from: parent.width - songLabel.contentWidth
+                        from: parent.width - Theme.paddingMedium * 2 - songLabel.contentWidth
                         to: 0
                         duration: Math.max(2000, (songLabel.contentWidth - parent.width) * 20)
                         easing.type: Easing.InOutSine
