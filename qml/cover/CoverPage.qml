@@ -57,16 +57,23 @@ CoverBackground {
                 text: qsTr("Play")
 
                 property bool needsAnimation: contentWidth > parent.width
+                property real parentWidth: parent ? parent.width : 0
 
-                onNeedsAnimationChanged: updatePosition()
+                onParentWidthChanged: updatePosition()
                 onTextChanged: updatePosition()
 
+                Component.onCompleted: updatePosition()
+
                 function updatePosition() {
+                    if (!parent || parent.width <= 0) return
+
+                    needsAnimation = contentWidth > parent.width
+
                     if (needsAnimation) {
                         x = 0
                         artistAnimation.restart()
                     } else {
-                        x = (parent.width - contentWidth)/2
+                        x = Math.max(0, (parent.width - contentWidth) / 2)
                         artistAnimation.stop()
                     }
                 }
@@ -113,16 +120,23 @@ CoverBackground {
                 text: qsTr("My wave")
 
                 property bool needsAnimation: contentWidth > parent.width
+                property real parentWidth: parent ? parent.width : 0
 
-                onNeedsAnimationChanged: updatePosition()
+                onParentWidthChanged: updatePosition()
                 onTextChanged: updatePosition()
 
+                Component.onCompleted: updatePosition()
+
                 function updatePosition() {
+                    if (!parent || parent.width <= 0) return
+
+                    needsAnimation = contentWidth > parent.width
+
                     if (needsAnimation) {
                         x = 0
                         songAnimation.restart()
                     } else {
-                        x = (parent.width - contentWidth)/2
+                        x = Math.max(0, (parent.width - contentWidth) / 2)
                         songAnimation.stop()
                     }
                 }
