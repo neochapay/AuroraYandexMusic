@@ -15,7 +15,7 @@ Image {
     sourceSize.width: width
     sourceSize.height: height
 
-    layer.effect: ShaderEffect {
+    /*layer.effect: ShaderEffect {
         id: shaderItem
         property color color: clickMouseArea.pressed ?  clickIcon.activeColor : clickIcon.defaultColor
 
@@ -31,7 +31,7 @@ Image {
         "
     }
     layer.enabled: true
-    layer.samplerName: "source"
+    layer.samplerName: "source"*/
 
     MouseArea{
         id: clickMouseArea

@@ -44,11 +44,16 @@
 #include <QQmlContext>
 #include <QQuickView>
 #include <QScopedPointer>
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QtWebView/QtWebView>
+#endif
 #include <sailfishapp.h>
 
 int main(int argc, char* argv[])
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QtWebView::initialize();
+#endif
     QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
     application->setOrganizationName(QStringLiteral("ru.neochapay"));
     application->setApplicationName(QStringLiteral("ourmusic"));

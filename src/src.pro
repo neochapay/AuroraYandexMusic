@@ -87,6 +87,9 @@ DISTFILES += \
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
 CONFIG += sailfishapp_i18n
+greaterThan(QT_MAJOR_VERSION, 5) {
+    QT += webview
+}
 
 TRANSLATIONS += \
     translations/ru.neochapay.ourmusic-ru.ts \
