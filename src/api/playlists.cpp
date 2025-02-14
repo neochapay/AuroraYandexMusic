@@ -64,7 +64,7 @@ void Playlists::getUserLists(QList<int> kinds)
         playlists += QString::number(i) + ",";
     }
 
-    Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists?user_id=" + m_userID + "&kinds=" + playlists + "&mixed=false&rich-tracks=false");
+    Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists?user_id=" + QString::number(m_userID) + "&kinds=" + playlists + "&mixed=false&rich-tracks=false");
     connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
 
     getUserListsRequest->get();
@@ -95,7 +95,7 @@ void Playlists::rename(int kind, QString value)
     QUrlQuery query;
     query.addQueryItem("value", value);
 
-    Request* renameRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + kind + "/name");
+    Request* renameRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/name");
     connect(renameRequest, &Request::dataReady, this, &Playlists::renameRequestHandler);
 
     renameRequest->post(query.toString());
@@ -107,7 +107,7 @@ void Playlists::deleteList(int kind)
         return;
     }
 
-    Request* deleteListRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + kind + "/delete");
+    Request* deleteListRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/delete");
     connect(deleteListRequest, &Request::dataReady, this, &Playlists::deleteListRequestHandler);
 
     deleteListRequest->post();
@@ -130,7 +130,7 @@ void Playlists::change(int kind, QList<int> addedTracks, QList<int> deletedTraks
     query.addQueryItem("diff", changeDiffJSON);
     query.addQueryItem("revision", QString());
 
-    Request* deleteListRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + kind + "/change-relative");
+    Request* deleteListRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/change-relative");
     connect(deleteListRequest, &Request::dataReady, this, &Playlists::deleteListRequestHandler);
 
     deleteListRequest->post();
@@ -142,7 +142,7 @@ void Playlists::recommindations(int kind)
         return;
     }
 
-    Request* recommindationsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + kind + "/recommendations");
+    Request* recommindationsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/recommendations");
     connect(recommindationsRequest, &Request::dataReady, this, &Playlists::recommindationsRequestHandler);
 
     recommindationsRequest->get();
@@ -157,7 +157,7 @@ void Playlists::changeVisiblity(int kind, QString visiblity)
     QUrlQuery query;
     query.addQueryItem("value", visiblity);
 
-    Request* visiblityRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + kind + "/visiblity");
+    Request* visiblityRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/visiblity");
     connect(visiblityRequest, &Request::dataReady, this, &Playlists::changeVisiblityRequestHandler);
 
     visiblityRequest->post(query.toString());

@@ -60,6 +60,15 @@
 
 #include <limits>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+namespace Qt
+{
+using SplitBehavior = QString::SplitBehavior;
+const SplitBehavior SkipEmptyParts = SplitBehavior::SkipEmptyParts;
+const auto endl = ::endl;
+}
+#endif
+
 QT_BEGIN_NAMESPACE
 
 const quint64 FRAME_SIZE_IN_BYTES = 512 * 512 * 2; // maximum size of a frame when sending a message
@@ -301,7 +310,11 @@ QWebSocket* QWebSocketPrivate::upgradeFrom(QTcpSocket* pTcpSocket,
     QWebSocket* pWebSocket = new QWebSocket(pTcpSocket, response.acceptedVersion(), parent);
     if (Q_LIKELY(pWebSocket)) {
         QNetworkRequest netRequest(request.requestUrl());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QMultiMapIterator<QString, QString> headerIter(request.headers());
+#else
         QMapIterator<QString, QString> headerIter(request.headers());
+#endif
         while (headerIter.hasNext()) {
             headerIter.next();
             netRequest.setRawHeader(headerIter.key().toLatin1(), headerIter.value().toLatin1());
@@ -561,9 +574,11 @@ void QWebSocketPrivate::makeConnections(const QTcpSocket* pTcpSocket)
         // pass through signals
         typedef void (QAbstractSocket::*ASErrorSignal)(QAbstractSocket::SocketError);
         typedef void (QWebSocket::*WSErrorSignal)(QAbstractSocket::SocketError);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QObject::connect(pTcpSocket,
             static_cast<ASErrorSignal>(&QAbstractSocket::error),
             q, static_cast<WSErrorSignal>(&QWebSocket::errorOccurred));
+#endif
 #ifndef QT_NO_NETWORKPROXY
         QObject::connect(pTcpSocket, &QAbstractSocket::proxyAuthenticationRequired, q,
             &QWebSocket::proxyAuthenticationRequired);
@@ -962,9 +977,13 @@ void QWebSocketPrivate::processHandshake(QTcpSocket* pSocket)
         while (pSocket->canReadLine()) {
             QString headerLine = readLine(pSocket);
             const QStringList headerField = headerLine.split(QStringLiteral(": "),
-                QString::SkipEmptyParts);
+                Qt::SkipEmptyParts);
             if (headerField.size() == 2) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+                m_headers.insert(headerField[0].toLower(), headerField[1]);
+#else
                 m_headers.insertMulti(headerField[0].toLower(), headerField[1]);
+#endif
             }
             if (headerField.isEmpty()) {
                 m_handshakeState = ParsingHeaderState;
@@ -1011,7 +1030,7 @@ void QWebSocketPrivate::processHandshake(QTcpSocket* pSocket)
             // HTTP/1.1 400 Bad Request
             if (!version.isEmpty()) {
                 const QStringList versions = version.split(QStringLiteral(", "),
-                    QString::SkipEmptyParts);
+                    Qt::SkipEmptyParts);
                 if (!versions.contains(QString::number(QWebSocketProtocol::currentVersion()))) {
                     // if needed to switch protocol version, then we are finished here
                     // because we cannot handle other protocols than the RFC one (v13)

@@ -67,7 +67,11 @@ public:
     int port() const;
     bool isSecure() const;
     bool isValid() const;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QMultiMap<QString, QString> headers() const;
+#else
     QMap<QString, QString> headers() const;
+#endif
     QList<QWebSocketProtocol::Version> versions() const;
     QString key() const;
     QString origin() const;
@@ -83,7 +87,11 @@ private:
     int m_port;
     bool m_isSecure;
     bool m_isValid;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QMultiMap<QString, QString> m_headers;
+#else
     QMap<QString, QString> m_headers;
+#endif
     QList<QWebSocketProtocol::Version> m_versions;
     QString m_key;
     QString m_origin;

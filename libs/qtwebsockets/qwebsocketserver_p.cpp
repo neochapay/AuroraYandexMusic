@@ -392,8 +392,13 @@ void QWebSocketServerPrivate::onNewConnection()
  */
 void QWebSocketServerPrivate::onCloseConnection()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (Q_LIKELY(senderList().first())) {
+        QTcpSocket* pTcpSocket = qobject_cast<QTcpSocket*>(senderList().first());
+#else
     if (Q_LIKELY(currentSender)) {
         QTcpSocket* pTcpSocket = qobject_cast<QTcpSocket*>(currentSender->sender);
+#endif
         if (Q_LIKELY(pTcpSocket))
             pTcpSocket->close();
     }
@@ -404,10 +409,17 @@ void QWebSocketServerPrivate::onCloseConnection()
  */
 void QWebSocketServerPrivate::handshakeReceived()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (Q_UNLIKELY(!senderList().first())) {
+        return;
+    }
+    QTcpSocket* pTcpSocket = qobject_cast<QTcpSocket*>(senderList().first());
+#else
     if (Q_UNLIKELY(!currentSender)) {
         return;
     }
     QTcpSocket* pTcpSocket = qobject_cast<QTcpSocket*>(currentSender->sender);
+#endif
     if (Q_UNLIKELY(!pTcpSocket)) {
         return;
     }

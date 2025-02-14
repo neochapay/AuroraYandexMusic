@@ -50,7 +50,9 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QtCore/QTextCodec>
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -101,9 +103,10 @@ private:
     QByteArray m_binaryMessage;
     QString m_textMessage;
     quint64 m_payloadLength;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QTextCodec::ConverterState* m_pConverterState;
     QTextCodec* m_pTextCodec;
-
+#endif
     bool processControlFrame(const QWebSocketFrame& frame);
 };
 

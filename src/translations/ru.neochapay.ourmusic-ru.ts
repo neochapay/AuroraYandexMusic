@@ -22,7 +22,7 @@
         <translation>Играть</translation>
     </message>
     <message>
-        <location filename="../qml/cover/CoverPage.qml" line="67"/>
+        <location filename="../qml/cover/CoverPage.qml" line="113"/>
         <source>My wave</source>
         <translation>Мою волну</translation>
     </message>
@@ -30,22 +30,22 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="58"/>
+        <location filename="../qml/pages/FeedPage.qml" line="62"/>
         <source>Oops. We have a problem.</source>
         <translation>Упс. У нас проблема.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="76"/>
+        <location filename="../qml/pages/FeedPage.qml" line="80"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="86"/>
+        <location filename="../qml/pages/FeedPage.qml" line="90"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="92"/>
+        <location filename="../qml/pages/FeedPage.qml" line="96"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -56,14 +56,6 @@
         <location filename="../qml/components/MprisController.qml" line="30"/>
         <source>Own Music</source>
         <translation>Наша Музыка</translation>
-    </message>
-</context>
-<context>
-    <name>MyWavePlayer</name>
-    <message>
-        <location filename="../qml/components/MyWavePlayer.qml" line="20"/>
-        <source>My wave</source>
-        <translation>Моя волна</translation>
     </message>
 </context>
 <context>

@@ -151,19 +151,19 @@ void MusicFetcher::downloadInfoUrlHandler()
     QXmlStreamReader reader(answerXML);
     while (!reader.atEnd() && !reader.hasError()) {
         if (reader.readNext() == QXmlStreamReader::StartElement) {
-            if (reader.name() == "host") {
+            if (reader.name() == QString("host")) {
                 host = reader.readElementText();
             }
-            if (reader.name() == "path") {
+            if (reader.name() == QString("path")) {
                 path = reader.readElementText();
             }
-            if (reader.name() == "ts") {
+            if (reader.name() == QString("ts")) {
                 ts = reader.readElementText();
             }
-            if (reader.name() == "region") {
+            if (reader.name() == QString("region")) {
                 region = reader.readElementText();
             }
-            if (reader.name() == "s") {
+            if (reader.name() == QString("s")) {
                 s = reader.readElementText();
             }
         }

@@ -22,7 +22,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/cover/CoverPage.qml" line="67"/>
+        <location filename="../qml/cover/CoverPage.qml" line="113"/>
         <source>My wave</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,22 +30,22 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="58"/>
+        <location filename="../qml/pages/FeedPage.qml" line="62"/>
         <source>Oops. We have a problem.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="76"/>
+        <location filename="../qml/pages/FeedPage.qml" line="80"/>
         <source>You feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="86"/>
+        <location filename="../qml/pages/FeedPage.qml" line="90"/>
         <source>Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="92"/>
+        <location filename="../qml/pages/FeedPage.qml" line="96"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -55,14 +55,6 @@
     <message>
         <location filename="../qml/components/MprisController.qml" line="30"/>
         <source>Own Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MyWavePlayer</name>
-    <message>
-        <location filename="../qml/components/MyWavePlayer.qml" line="20"/>
-        <source>My wave</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

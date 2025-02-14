@@ -45,7 +45,7 @@
 //
 
 #include "qwebsocket.h"
-#include <5.6.3/QtCore/private/qobject_p.h>
+#include <QtCore/private/qobject_p.h>
 #include <QtCore/QObject>
 #include <QtCore/QQueue>
 #include <QtCore/QString>

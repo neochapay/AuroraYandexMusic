@@ -18,7 +18,7 @@
  */
 
 import QtQuick 2.0
-import QtMultimedia 5.5
+import QtMultimedia
 import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
 import ru.neochapay.ourmusic 1.0
@@ -130,21 +130,21 @@ ApplicationWindow {
         visible: currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex != -1
         onVisibleChanged: {
             if(mainPlayer.visible) {
-                ourMusic.bottomMargin = mainPlayer.height
+                //ourMusic.bottomMargin = mainPlayer.height
             } else {
-                ourMusic.bottomMargin = 0
+                //ourMusic.bottomMargin = 0
             }
         }
     }
 
     MediaPlayer{
         id: rootAudio
-        onStopped: {
+        /*onStopped: {
             if (rootAudio.status == MediaPlayer.EndOfMedia) {
                 feedbackSender.sendFeedback(currentPlayListModel.getCurrentTrack(), rootAudio.duration, rootAudio.position)
                 ++currentPlayListModel.currentIndex
             }
-        }
+        }*/
     }
 
     MprisController{

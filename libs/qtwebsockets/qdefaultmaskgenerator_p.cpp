@@ -53,6 +53,9 @@
 
 #include "qdefaultmaskgenerator_p.h"
 #include <QDateTime>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#include <QRandomGenerator>
+#endif
 #include <limits>
 
 QT_BEGIN_NAMESPACE
@@ -84,7 +87,12 @@ QDefaultMaskGenerator::~QDefaultMaskGenerator()
 */
 bool QDefaultMaskGenerator::seed() Q_DECL_NOEXCEPT
 {
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    QRandomGenerator::global()->generate();
+#else
     qsrand(static_cast<uint>(QDateTime::currentMSecsSinceEpoch()));
+#endif
     return true;
 }
 
@@ -95,7 +103,11 @@ bool QDefaultMaskGenerator::seed() Q_DECL_NOEXCEPT
 */
 quint32 QDefaultMaskGenerator::nextMask() Q_DECL_NOEXCEPT
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return quint32((double(QRandomGenerator::global()->generate()) / RAND_MAX) * std::numeric_limits<quint32>::max());
+#else
     return quint32((double(qrand()) / RAND_MAX) * std::numeric_limits<quint32>::max());
+#endif
 }
 
 QT_END_NAMESPACE

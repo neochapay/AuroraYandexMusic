@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = qtwebsockets
-QT +=  core network
+QT +=  core network core-private
 
 SOURCES += \
     qdefaultmaskgenerator_p.cpp \

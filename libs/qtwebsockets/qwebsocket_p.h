@@ -55,8 +55,12 @@
 #include <QtNetwork/QSslError>
 #include <QtNetwork/QSslSocket>
 #endif
-#include <5.6.3/QtCore/private/qobject_p.h>
+#include <QtCore/private/qobject_p.h>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QElapsedTimer>
+#else
 #include <QtCore/QTime>
+#endif
 
 #include "qdefaultmaskgenerator_p.h"
 #include "qwebsocketdataprocessor_p.h"
@@ -219,8 +223,11 @@ private:
     bool m_isClosingHandshakeReceived;
     QWebSocketProtocol::CloseCode m_closeCode;
     QString m_closeReason;
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    QElapsedTimer m_pingTimer;
+#else
     QTime m_pingTimer;
+#endif
 
     QWebSocketDataProcessor m_dataProcessor;
     QWebSocketConfiguration m_configuration;

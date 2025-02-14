@@ -48,6 +48,10 @@
 #include <QtCore/QTextStream>
 
 #include <functional> //for std::greater
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <algorithm>
+#include <iterator>
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -75,6 +79,20 @@ QWebSocketHandshakeResponse::QWebSocketHandshakeResponse(
         supportedProtocols, supportedExtensions);
     m_isValid = true;
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0 )
+template <class T, class Compare>
+static QList<T> listIntersection(QList<T> list1, QList<T> list2, Compare comp)
+{
+    QList<T> result;
+    std::sort(list1.begin(), list1.end(), comp);
+    std::sort(list2.begin(), list2.end(), comp);
+    std::set_intersection(list1.cbegin(), list1.cend(),
+                          list2.cbegin(), list2.cend(),
+                          std::back_inserter(result), comp);
+    return result;
+}
+#endif
 
 /*!
     \internal
@@ -141,11 +159,21 @@ QString QWebSocketHandshakeResponse::getHandshakeResponse(
     } else {
         if (request.isValid()) {
             const QString acceptKey = calculateAcceptKey(request.key());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0 )
+            const QList<QString> matchingProtocols = listIntersection(supportedProtocols, request.protocols(), std::less<>());
+#else
             const QList<QString> matchingProtocols = supportedProtocols.toSet().intersect(request.protocols().toSet()).toList();
+#endif
             // TODO: extensions must be kept in the order in which they arrive
             // cannot use set.intersect() to get the supported extensions
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0 )
+            const QList<QString> matchingExtensions = QSet<QString>(supportedExtensions.begin(), supportedExtensions.end())
+                                                          .intersect(QSet<QString>(request.extensions().begin(),request.extensions().end())).values();
+            QList<QWebSocketProtocol::Version> matchingVersions = listIntersection(supportedVersions, request.versions(), std::less<>());
+#else
             const QList<QString> matchingExtensions = supportedExtensions.toSet().intersect(request.extensions().toSet()).toList();
             QList<QWebSocketProtocol::Version> matchingVersions = request.versions().toSet().intersect(supportedVersions.toSet()).toList();
+#endif
             std::sort(matchingVersions.begin(), matchingVersions.end(),
                 std::greater<QWebSocketProtocol::Version>()); // sort in descending order
 
