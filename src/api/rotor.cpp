@@ -133,7 +133,7 @@ void Rotor::getStationInfoRequestHandler(QJsonValue value)
 }
 
 void Rotor::getStationTracksRequestHandler(QJsonValue value)
-{   
+{
     QList<QObject*> tracksList;
     m_batchId = value.toObject().value("batchId").toString();
     QJsonArray tracks = value.toObject().value("sequence").toArray();

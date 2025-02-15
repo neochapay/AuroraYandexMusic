@@ -135,17 +135,10 @@ void User::getAccountStatusHandler(QJsonValue value)
         m_userID = userId;
         emit userIDChanged();
     }
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void User::getFeedHandler(QJsonValue value)
 {
-    qDebug() << value;
-
     Request* request = qobject_cast<Request*>(sender());
     if(request != nullptr) {
         delete request;

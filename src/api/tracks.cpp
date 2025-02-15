@@ -59,9 +59,4 @@ void Tracks::getTracksInfoHandler(QJsonValue value)
         }
     }
     emit tracksInfoReady(tracks);
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
