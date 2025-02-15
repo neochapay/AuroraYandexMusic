@@ -47,36 +47,56 @@ ListItem {
         fillMode: Image.PreserveAspectFit
     }
 
-    Label{
-        id: trackTitle
-        text: track.title
-
-        color: Theme.highlightColor
-        font.bold: true
-
+    Item{
+        id: trackTitleWrapper
         width: parent.width - trackCover.width - playButton.width - parent.height*0.4
-        clip: true
-
+        height: parent.height/2
         anchors{
             bottom: parent.verticalCenter
-            bottomMargin: parent.height*0.1
             left: trackCover.right
             leftMargin: parent.height*0.1
         }
+
+        Label{
+            id: trackTitle
+            text: track.title
+
+            color: Theme.highlightColor
+            font.bold: true
+
+            width: parent.width
+            height: parent.height
+            clip: true
+
+            anchors{
+                left: parent.left
+                leftMargin: parent.height*0.1
+                verticalCenter: parent.verticalCenter
+            }
+        }
     }
-
-    Label{
-        id: artistTitle
-        text: track.artists[0].name
-
+    Item{
+        id: artistTitleWraper
         width: parent.width - trackCover.width - playButton.width - parent.height*0.4
-        clip: true
-
+        height: parent.height/2
         anchors{
             top: parent.verticalCenter
-            topMargin: parent.height*0.1
             left: trackCover.right
             leftMargin: parent.height*0.1
+        }
+
+        Label{
+            id: artistTitle
+            text: track.artists[0].name
+
+            width: parent.width
+            clip: true
+
+            anchors{
+                left: parent.left
+                leftMargin: parent.height*0.1
+                verticalCenter: parent.verticalCenter
+            }
         }
     }
 
