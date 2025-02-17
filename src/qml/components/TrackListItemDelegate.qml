@@ -123,6 +123,18 @@ ListItem {
         }
     }
 
+
+    Separator {
+        id: separator
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: -1
+        }
+        width: parent.width
+        color: Theme.primaryColor
+        horizontalAlignment: Qt.AlignHCenter
+    }
+
     menu: ContextMenu {
         /*MenuItem {
             text: qsTr("Like")
