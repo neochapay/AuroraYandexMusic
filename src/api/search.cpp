@@ -168,8 +168,4 @@ void Search::searchRequestHandler(QJsonValue value)
     }
 
     emit searchReady(searchResult);
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }

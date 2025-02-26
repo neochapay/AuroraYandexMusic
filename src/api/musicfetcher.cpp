@@ -140,7 +140,6 @@ void MusicFetcher::downloadInfoUrlHandler()
 {
     QNetworkReply* reply = static_cast<QNetworkReply*>(sender());
     QString answerXML = reply->readAll();
-    delete  reply;
 
     QString host;
     QString path;

@@ -139,21 +139,12 @@ void User::getAccountStatusHandler(QJsonValue value)
 
 void User::getFeedHandler(QJsonValue value)
 {
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
-    }
 }
 
 void User::likeRequestHandler(QJsonValue value)
 {
     if (value.toObject().value("revision").toInt() > 0) {
         emit likeActionFinished(m_likeActionID, m_likeAction);
-    }
-
-    Request* request = qobject_cast<Request*>(sender());
-    if(request != nullptr) {
-        delete request;
     }
 }
 
