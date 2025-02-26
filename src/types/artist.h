@@ -40,6 +40,7 @@ public:
     QString name;
     int artistId;
     bool various;
+    bool foreignAgent;
 };
 
 class Artist : public QObject {
@@ -61,6 +62,7 @@ class Artist : public QObject {
     Q_PROPERTY(QString name READ name NOTIFY artistChanged)
     Q_PROPERTY(int artistId READ artistId NOTIFY artistChanged)
     Q_PROPERTY(bool various READ various NOTIFY artistChanged)
+    Q_PROPERTY(bool foreignAgent READ foreignAgent NOTIFY artistChanged)
 
 public:
     explicit Artist(QObject* parent = nullptr);
@@ -79,6 +81,7 @@ public:
     const QString& name() const;
     int artistId() const;
     bool various() const;
+    bool foreignAgent() const;
     int countsTracks() const;
     int countsDirectAlbums() const;
     int countsAlsoAlbums() const;

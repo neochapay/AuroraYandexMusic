@@ -59,6 +59,13 @@ Artist::Artist(QJsonObject object, QObject* parent)
     d_ptr->name = object.value("name").toString();
     d_ptr->artistId = object.value("id").toInt();
     d_ptr->various = object.value("various").toBool();
+    d_ptr->foreignAgent = false;
+    for (const QJsonValue &v : object.value("disclaimers").toArray()) {
+        if(v.toString() == "foreignAgent") {
+            d_ptr->foreignAgent = true;
+            break;
+        }
+    }
 }
 
 Artist::~Artist()
@@ -120,6 +127,11 @@ int Artist::artistId() const
 bool Artist::various() const
 {
     return d_ptr->various;
+}
+
+bool Artist::foreignAgent() const
+{
+    return d_ptr->foreignAgent;
 }
 
 int Artist::countsTracks() const
