@@ -110,11 +110,19 @@ ApplicationWindow {
             }
             //send rotor feedback
             //TODO
+            var tr = currentPlayListModel.getCurrentTrack()
 
-            currentTrack = currentPlayListModel.getCurrentTrack();
+            if(!tr) {
+                console.warn("Track is null")
+                return
+            } else {
+                ourMusic.currentTrack = tr;
+            }
+
             if(ourMusic.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
                 rotor.getStationTracks("user:onyourwave", currentTrack.trackId)
             }
+
             if(currentTrack.downloaded) {
                 rootAudio.source = currentTrack.filePath;
                 rootAudio.play()
