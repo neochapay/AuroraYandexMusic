@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
     QScopedPointer<QQuickView> view(SailfishApp::createView());
 
     qRegisterMetaType<Artist>("Artist");
+    qRegisterMetaType<Track>("Track");
     qRegisterMetaType<Cover>("Cover");
     qRegisterMetaType<Playlist>("Playlist");
     qRegisterMetaType<DerivedColors>("DerivedColors");
