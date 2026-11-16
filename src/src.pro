@@ -11,6 +11,7 @@ SOURCES += \
     api/albuminfo.cpp \
     api/albums.cpp \
     api/artistinfo.cpp \
+    api/booksandpodcasts.cpp \
     api/feed.cpp \
     api/feedbacksender.cpp \
     api/landing3.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     api/albuminfo.h \
     api/albums.h \
     api/artistinfo.h \
+    api/booksandpodcasts.h \
     api/feed.h \
     api/feedbacksender.h \
     api/landing3.h \

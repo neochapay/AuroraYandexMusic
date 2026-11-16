@@ -24,6 +24,7 @@
 #include "api/albuminfo.h"
 #include "api/albums.h"
 #include "api/artistinfo.h"
+#include "api/booksandpodcasts.h"
 #include "api/feed.h"
 #include "api/feedbacksender.h"
 #include "api/landing3.h"
@@ -107,6 +108,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
     qmlRegisterType<Tags>("ru.neochapay.ourmusic", 1, 0, "Tags");
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
+    qmlRegisterType<BooksAndPodcasts>("ru.neochapay.ourmusic", 1, 0, "BooksAndPodcasts");
     qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
     qmlRegisterType<Albums>("ru.neochapay.ourmusic", 1, 0, "Albums");
     qmlRegisterType<StantionDetector>("ru.neochapay.ourmusic", 1, 0, "StantionDetector");
