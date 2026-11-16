@@ -20,6 +20,8 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonValue>
 #include <QObject>
 
@@ -35,6 +37,7 @@ class Search : public QObject {
     Q_PROPERTY(int perPage READ perPage WRITE setPerPage NOTIFY perPageChanged)
     Q_PROPERTY(int page READ page WRITE setPage NOTIFY pageChanged)
     Q_PROPERTY(SearchType type READ type WRITE setType NOTIFY typeChanged)
+    Q_PROPERTY(bool noCorrect READ noCorrect WRITE setNoCorrect NOTIFY noCorrectChanged)
 
 public:
     enum SearchType {
@@ -57,27 +60,41 @@ public:
     int page() const;
     void setPage(int newPage);
 
-    const SearchType& type() const;
-    void setType(const SearchType& newType);
+    SearchType type() const;
+    void setType(SearchType newType);
+
+    bool noCorrect() const;
+    void setNoCorrect(bool noCorrect);
+
+    Q_INVOKABLE void search(const QString &text = QString(), int page = -1);
+    Q_INVOKABLE void suggest(const QString &part);
 
 signals:
     void queryChanged();
     void perPageChanged();
     void pageChanged();
     void typeChanged();
+    void noCorrectChanged();
 
     void searchStarted();
     void searchReady(SearchResultData* result);
+    void searchResultReady(const QJsonObject &result);
+    void suggestReady(const QJsonObject &result);
 
 private slots:
     void makeQuery();
     void searchRequestHandler(QJsonValue value);
+    void suggestRequestHandler(QJsonValue value);
 
 private:
+    static QString typeToString(SearchType type);
+
     QString m_query;
     int m_perPage;
     int m_page;
     SearchType m_type;
+    bool m_noCorrect = false;
 };
 
 #endif // SEARCH_H
+

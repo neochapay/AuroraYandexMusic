@@ -33,7 +33,7 @@ Page {
             busyIndicator.visible = false
             artistsListView.model = result.artists
             albumListView.model = result.albums
-            tracksListView.model = result.albums
+            tracksListView.model = result.tracks
         }
         onSearchStarted: busyIndicator.visible = true
     }
