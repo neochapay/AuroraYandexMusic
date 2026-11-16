@@ -20,8 +20,10 @@
 #include "playlists.h"
 #include "request.h"
 
-#include <QUrlQuery>
 #include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QUrlQuery>
 
 Playlists::Playlists(QObject* parent)
     : QObject(parent)
@@ -31,136 +33,213 @@ Playlists::Playlists(QObject* parent)
 
 void Playlists::getUserLists()
 {
-    if (m_userID == 0) {
+    if (m_userID <= 0) {
         return;
     }
 
-    Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/list");
-    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListsRequestHandler);
-
-    getUserListsRequest->get();
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/list");
+    connect(request, &Request::dataReady, this, &Playlists::getUserListsRequestHandler);
+    request->get();
 }
 
 void Playlists::getUserList(int kind)
 {
-    if (m_userID == 0 || kind == 0) {
+    if (m_userID <= 0 || kind <= 0) {
         return;
     }
+    m_currentKind = kind;
 
-    Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind));
-    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
-
-    getUserListsRequest->get();
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind));
+    connect(request, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
+    request->get();
 }
 
 void Playlists::getUserLists(QList<int> kinds)
 {
-    if (m_userID == 0 || kinds.isEmpty()) {
+    if (m_userID <= 0 || kinds.isEmpty()) {
         return;
     }
 
-    QString playlists;
+    QStringList kindsStr;
     for (const int i : kinds) {
-        playlists += QString::number(i) + ",";
+        kindsStr << QString::number(i);
     }
 
-    Request* getUserListsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists?user_id=" + QString::number(m_userID) + "&kinds=" + playlists + "&mixed=false&rich-tracks=false");
-    connect(getUserListsRequest, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
-
-    getUserListsRequest->get();
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists?user_id=" + QString::number(m_userID) + "&kinds=" + kindsStr.join(',') + "&mixed=false&rich-tracks=true");
+    connect(request, &Request::dataReady, this, &Playlists::getUserListRequestHandler);
+    request->get();
 }
 
-void Playlists::create(QString title, QString visibility)
+void Playlists::getPlaylistsByIds(const QStringList &playlistIds)
 {
-    if (m_userID == 0) {
+    if (playlistIds.isEmpty()) {
         return;
     }
 
     QUrlQuery query;
-    query.addQueryItem("title", title);
-    query.addQueryItem("visibility", visibility);
+    query.addQueryItem(QStringLiteral("playlist-ids"), playlistIds.join(','));
 
-    Request* createRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/create");
-    connect(createRequest, &Request::dataReady, this, &Playlists::createRequestHandler);
-
-    createRequest->post(query.toString());
+    Request* request = new Request("/playlists/list");
+    connect(request, &Request::dataReady, this, &Playlists::getPlaylistsByIdsRequestHandler);
+    request->post(query.toString(QUrl::FullyEncoded));
 }
 
-void Playlists::rename(int kind, QString value)
+void Playlists::create(const QString &title, const QString &visibility)
 {
-    if (m_userID == 0) {
+    if (m_userID <= 0) {
         return;
     }
 
     QUrlQuery query;
-    query.addQueryItem("value", value);
+    query.addQueryItem(QStringLiteral("title"), title);
+    query.addQueryItem(QStringLiteral("visibility"), visibility.isEmpty() ? QStringLiteral("public") : visibility);
 
-    Request* renameRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/name");
-    connect(renameRequest, &Request::dataReady, this, &Playlists::renameRequestHandler);
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/create");
+    connect(request, &Request::dataReady, this, &Playlists::createRequestHandler);
+    request->post(query.toString(QUrl::FullyEncoded));
+}
 
-    renameRequest->post(query.toString());
+void Playlists::rename(int kind, const QString &value)
+{
+    if (m_userID <= 0 || kind <= 0) {
+        return;
+    }
+    m_currentKind = kind;
+
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("value"), value);
+
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/name");
+    connect(request, &Request::dataReady, this, &Playlists::renameRequestHandler);
+    request->post(query.toString(QUrl::FullyEncoded));
 }
 
 void Playlists::deleteList(int kind)
 {
-    if (m_userID == 0) {
+    if (m_userID <= 0 || kind <= 0) {
         return;
     }
+    m_currentKind = kind;
 
-    Request* deleteListRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/delete");
-    connect(deleteListRequest, &Request::dataReady, this, &Playlists::deleteListRequestHandler);
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/delete");
+    connect(request, &Request::dataReady, this, &Playlists::deleteListRequestHandler);
+    request->post();
+}
 
-    deleteListRequest->post();
+QJsonArray Playlists::tracksToJsonArray(const QVariantList &tracks) const
+{
+    QJsonArray arr;
+    for (const QVariant &v : tracks) {
+        if (v.type() == QVariant::Map) {
+            const QVariantMap m = v.toMap();
+            QJsonObject t;
+            if (m.contains("id")) t.insert(QStringLiteral("id"), m.value("id").toString());
+            if (m.contains("albumId")) t.insert(QStringLiteral("albumId"), m.value("albumId").toString());
+            if (!t.isEmpty()) arr.append(t);
+        } else if (v.canConvert<QString>()) {
+            const QString s = v.toString();
+            const QStringList parts = s.split(':');
+            if (!parts.isEmpty() && !parts.first().isEmpty()) {
+                QJsonObject t;
+                t.insert(QStringLiteral("id"), parts.value(0));
+                if (parts.size() > 1 && !parts.value(1).isEmpty()) {
+                    t.insert(QStringLiteral("albumId"), parts.value(1));
+                }
+                arr.append(t);
+            }
+        }
+    }
+    return arr;
+}
+
+void Playlists::changeTracks(int kind, int revision, const QJsonObject &diff)
+{
+    if (m_userID <= 0 || kind <= 0) {
+        return;
+    }
+    m_currentKind = kind;
+
+    QUrlQuery query;
+    QJsonDocument doc(diff);
+    query.addQueryItem(QStringLiteral("diff"), QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
+    query.addQueryItem(QStringLiteral("revision"), QString::number(qMax(0, revision)));
+
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/change-relative");
+    connect(request, &Request::dataReady, this, &Playlists::changeRequestHandler);
+    request->post(query.toString(QUrl::FullyEncoded));
+}
+
+void Playlists::addTracks(int kind, int revision, const QVariantList &tracks, int at)
+{
+    QJsonObject diffObj;
+    QJsonObject diff;
+    diff.insert(QStringLiteral("op"), QStringLiteral("insert"));
+    diff.insert(QStringLiteral("at"), at);
+    diff.insert(QStringLiteral("tracks"), tracksToJsonArray(tracks));
+    diffObj.insert(QStringLiteral("diff"), diff);
+    changeTracks(kind, revision, diffObj);
+}
+
+void Playlists::removeTracks(int kind, int revision, const QVariantList &tracks, int from, int to)
+{
+    QJsonArray tracksArr = tracksToJsonArray(tracks);
+    if (to < 0) {
+        to = from + tracksArr.size();
+    }
+
+    QJsonObject diffObj;
+    QJsonObject diff;
+    diff.insert(QStringLiteral("op"), QStringLiteral("delete"));
+    diff.insert(QStringLiteral("from"), from);
+    diff.insert(QStringLiteral("to"), to);
+    diff.insert(QStringLiteral("tracks"), tracksArr);
+    diffObj.insert(QStringLiteral("diff"), diff);
+    changeTracks(kind, revision, diffObj);
 }
 
 void Playlists::change(int kind, QList<int> addedTracks, QList<int> deletedTraks)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!";
+    Q_UNUSED(kind)
     Q_UNUSED(addedTracks)
     Q_UNUSED(deletedTraks)
-    return;
-    //Используй '{"diff":{"op":"insert","at":0,"tracks":[{"id":"20599729","albumId":"2347459"}]}}' - для добавления, {"diff":{"op":"delete","from":0,"to":1,"tracks":[{"id":"20599729","albumId":"2347459"}]}} - для удаления треков
-    if (m_userID == 0) {
-        return;
-    }
-
-    QString changeDiffJSON;
-
-    QUrlQuery query;
-    query.addQueryItem("diff", changeDiffJSON);
-    query.addQueryItem("revision", QString());
-
-    Request* deleteListRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/change-relative");
-    connect(deleteListRequest, &Request::dataReady, this, &Playlists::deleteListRequestHandler);
-
-    deleteListRequest->post();
+    qWarning() << Q_FUNC_INFO << "legacy signature is insufficient (needs revision and track albumId). Use addTracks/removeTracks/changeTracks.";
 }
 
 void Playlists::recommindations(int kind)
 {
-    if (m_userID == 0 || kind == 0) {
+    recommendations(kind);
+}
+
+void Playlists::recommendations(int kind)
+{
+    if (m_userID <= 0 || kind <= 0) {
         return;
     }
+    m_currentKind = kind;
 
-    Request* recommindationsRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/recommendations");
-    connect(recommindationsRequest, &Request::dataReady, this, &Playlists::recommindationsRequestHandler);
-
-    recommindationsRequest->get();
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/recommendations");
+    connect(request, &Request::dataReady, this, &Playlists::recommindationsRequestHandler);
+    request->get();
 }
 
 void Playlists::changeVisiblity(int kind, QString visiblity)
 {
-    if (m_userID == 0) {
+    changeVisibility(kind, visiblity);
+}
+
+void Playlists::changeVisibility(int kind, const QString &visibility)
+{
+    if (m_userID <= 0 || kind <= 0) {
         return;
     }
+    m_currentKind = kind;
 
     QUrlQuery query;
-    query.addQueryItem("value", visiblity);
+    query.addQueryItem(QStringLiteral("value"), visibility);
 
-    Request* visiblityRequest = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/visiblity");
-    connect(visiblityRequest, &Request::dataReady, this, &Playlists::changeVisiblityRequestHandler);
-
-    visiblityRequest->post(query.toString());
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/playlists/" + QString::number(kind) + "/visibility");
+    connect(request, &Request::dataReady, this, &Playlists::changeVisiblityRequestHandler);
+    request->post(query.toString(QUrl::FullyEncoded));
 }
 
 int Playlists::userID() const
@@ -176,57 +255,118 @@ void Playlists::setUserID(int newUserID)
     emit userIDChanged();
 }
 
+void Playlists::emitPlaylistOrList(QJsonValue value, bool asListSignal)
+{
+    if (value.isArray()) {
+        QList<Playlist*> playlists;
+        for (const QJsonValue& v : value.toArray()) {
+            if (!v.isObject()) continue;
+            Playlist *playlist = new Playlist(v.toObject());
+            playlists.push_back(playlist);
+            emit playlistChanged(playlist);
+        }
+        emit playlistsReady(playlists);
+        if (asListSignal) {
+            emit userPlaylistsReady();
+        }
+        return;
+    }
+
+    if (value.isObject()) {
+        Playlist* playlist = new Playlist(value.toObject());
+        emit playlistChanged(playlist);
+        QList<Playlist*> list;
+        list << playlist;
+        emit playlistsReady(list);
+        return;
+    }
+}
+
 void Playlists::getUserListRequestHandler(QJsonValue value)
 {
-    Playlist* playlist = new Playlist(value.toObject());
-    if(playlist->tracks().count() > 0) {
-        emit playlistChanged(playlist);
-    }
+    emitPlaylistOrList(value, false);
 }
 
 void Playlists::getUserListsRequestHandler(QJsonValue value)
 {
-    QList<QObject *> playlists;
-
-    QJsonArray playlistArray = value.toArray();
-    for (const QJsonValue& v : playlistArray) {
-        QJsonObject playListObject = v.toObject();
-        Playlist *playlist = new Playlist(playListObject);
-
-        if(!playlist->title().isEmpty()) {
+    if (value.isArray()) {
+        QList<Playlist*> playlists;
+        for (const QJsonValue& v : value.toArray()) {
+            if (!v.isObject()) continue;
+            Playlist *playlist = new Playlist(v.toObject());
             playlists.push_back(playlist);
+            emit playlistChanged(playlist);
         }
+        emit playlistsReady(playlists);
+        emit userPlaylistsReady();
+        return;
     }
+    emitPlaylistOrList(value, false);
+}
 
-    emit userPlaylistsReady();
+void Playlists::getPlaylistsByIdsRequestHandler(QJsonValue value)
+{
+    getUserListsRequestHandler(value);
 }
 
 void Playlists::createRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    if (value.isObject()) {
+        Playlist* playlist = new Playlist(value.toObject());
+        emit playlistCreated(playlist);
+        emit playlistChanged(playlist);
+    } else {
+        emit error(QStringLiteral("Failed to create playlist"));
+    }
 }
 
 void Playlists::renameRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    if (value.isObject()) {
+        Playlist* playlist = new Playlist(value.toObject());
+        emit playlistRenamed(playlist);
+        emit playlistChanged(playlist);
+    } else {
+        emit error(QStringLiteral("Failed to rename playlist"));
+    }
 }
 
 void Playlists::deleteListRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    Q_UNUSED(value)
+    emit playlistDeleted(m_currentKind, true);
 }
 
 void Playlists::changeRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    if (value.isObject()) {
+        Playlist* playlist = new Playlist(value.toObject());
+        emit playlistTracksChanged(playlist);
+        emit playlistChanged(playlist);
+    } else {
+        emit error(QStringLiteral("Failed to change playlist tracks"));
+    }
 }
 
 void Playlists::recommindationsRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    QJsonObject obj;
+    if (value.isObject()) {
+        obj = value.toObject();
+    } else if (value.isArray()) {
+        obj.insert(QStringLiteral("tracks"), value.toArray());
+    }
+    emit recommendationsReady(m_currentKind, obj);
 }
 
 void Playlists::changeVisiblityRequestHandler(QJsonValue value)
 {
-    qWarning() << Q_FUNC_INFO << "NOT IMPLEMENTED YEAT!" << value;
+    if (value.isObject()) {
+        Playlist* playlist = new Playlist(value.toObject());
+        emit visibilityChanged(playlist);
+        emit playlistChanged(playlist);
+    } else {
+        emit error(QStringLiteral("Failed to change playlist visibility"));
+    }
 }
+
