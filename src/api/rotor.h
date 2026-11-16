@@ -22,8 +22,11 @@
 
 #include "../types/track.h"
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonValue>
 #include <QObject>
+#include <QString>
 
 class Rotor : public QObject {
     Q_OBJECT
@@ -38,14 +41,43 @@ public:
     Q_ENUM(FeedbackType)
 
     explicit Rotor(QObject* parent = nullptr);
-    Q_INVOKABLE void getStationInfo(QString stationId = "user:onyourwave");
-    Q_INVOKABLE void getStationTracks(QString stationId = "user:onyourwave", int lastTrackid = -1);
+
+    // Station info & tracks
+    Q_INVOKABLE void getStationInfo(const QString &stationId = QStringLiteral("user:onyourwave"));
+    Q_INVOKABLE void getStationTracks(const QString &stationId = QStringLiteral("user:onyourwave"), int lastTrackid = -1);
+    Q_INVOKABLE void getStationTracks(const QString &stationId, const QString &queueTrackId, bool settings2 = true);
+
+    // Account/stations
     Q_INVOKABLE void getAccountStatus();
+    Q_INVOKABLE void getStationsList(const QString &language = QString());
+    Q_INVOKABLE void getStationsDashboard();
+    // Compatibility aliases (typos)
     Q_INVOKABLE void getStantionsList();
     Q_INVOKABLE void getStantionsDashboard();
-    Q_INVOKABLE void postStantionFeedback(FeedbackType type, Track* track, QString stationId = "user:onyourwave", int totalPlayedSeconds =0);
+
+    // Feedback
+    Q_INVOKABLE void postStationFeedback(FeedbackType type,
+                                         const QString &stationId = QStringLiteral("user:onyourwave"),
+                                         const QString &trackId = QString(),
+                                         int totalPlayedSeconds = 0,
+                                         const QString &from = QString(),
+                                         const QString &batchId = QString());
+    Q_INVOKABLE void postStationFeedback(FeedbackType type, Track* track, const QString &stationId = QStringLiteral("user:onyourwave"), int totalPlayedSeconds = 0);
+    Q_INVOKABLE void postStantionFeedback(FeedbackType type, Track* track, const QString &stationId = QStringLiteral("user:onyourwave"), int totalPlayedSeconds = 0); // compatibility
+
+    QString batchId() const { return m_batchId; }
 
 signals:
+    // New signals
+    void stationInfoReady(const QString &stationId, const QJsonValue &info);
+    void stationTracksReady(const QString &stationId, const QList<QObject*> &tracks, const QString &batchId, const QJsonObject &rawResult);
+    void accountStatusReady(const QJsonValue &status);
+    void stationsListReady(const QJsonArray &stations);
+    void stationsDashboardReady(const QJsonValue &dashboard);
+    void stationFeedbackSent(const QString &type, const QJsonValue &result);
+    void error(const QString &message);
+
+    // Compatibility (existing QML expects this name/signature)
     void stantionTracksReady(QList<QObject*> tracks);
 
 private slots:
@@ -54,11 +86,17 @@ private slots:
     void getAccountStatusRequestHandler(QJsonValue value);
     void getStantionsListRequestHandler(QJsonValue value);
     void getStantionsDashboardRequestHandler(QJsonValue value);
-    void getStantionFeedbackRequestHandler(QJsonValue value);
     void postStantionFeedbackRequestHandler(QJsonValue value);
 
 private:
+    static QString feedbackTypeToString(FeedbackType type);
+    QString trackFullId(Track* track) const;
+
     QString m_batchId;
+    QString m_lastStationId;
+    QString m_lastFeedbackType;
 };
+
 Q_DECLARE_METATYPE(Rotor::FeedbackType)
 #endif // ROTOR_H
+
