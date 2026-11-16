@@ -38,16 +38,38 @@
 
 #include "models/currentplaylistmodel.h"
 
+#include "alice/stationcontroller.h"
 #include "alice/stantiondetector.h"
-
+#include "imageonlynetworkdiskcache.h"
+#include <QDir>
 #include <QGuiApplication>
+#include <QNetworkAccessManager>
+#include <QQmlEngine>
+#include <QQmlNetworkAccessManagerFactory>
 #include <QQmlContext>
 #include <QQuickView>
 #include <QScopedPointer>
+#include <QStandardPaths>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QtWebView/QtWebView>
 #endif
 #include <sailfishapp.h>
+
+class CachingNetworkAccessManagerFactory : public QQmlNetworkAccessManagerFactory
+{
+public:
+    QNetworkAccessManager *create(QObject *parent) override
+    {
+        QNetworkAccessManager *nam = new QNetworkAccessManager(parent);
+        ImageOnlyNetworkDiskCache *cache = new ImageOnlyNetworkDiskCache(nam);
+        QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/network");
+        QDir().mkpath(cacheDir);
+        cache->setCacheDirectory(cacheDir);
+        cache->setMaximumCacheSize(50 * 1024 * 1024);
+        nam->setCache(cache);
+        return nam;
+    }
+};
 
 int main(int argc, char* argv[])
 {
@@ -59,6 +81,7 @@ int main(int argc, char* argv[])
     application->setApplicationName(QStringLiteral("ourmusic"));
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
+    view->engine()->setNetworkAccessManagerFactory(new CachingNetworkAccessManagerFactory());
 
     qRegisterMetaType<Artist>("Artist");
     qRegisterMetaType<Track>("Track");
@@ -81,7 +104,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
     qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
     qmlRegisterType<StantionDetector>("ru.neochapay.ourmusic", 1, 0, "StantionDetector");
-
+    qmlRegisterType<StationController>("ru.neochapay.ourmusic", 1, 0, "StationController");
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
     view->show();
 

@@ -26,6 +26,8 @@
 
 #include "service_p.h"
 
+#include <QDebug>
+
 using namespace QMdnsEngine;
 
 ServicePrivate::ServicePrivate()

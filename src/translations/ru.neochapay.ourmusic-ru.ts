@@ -22,7 +22,7 @@
         <translation>Играть</translation>
     </message>
     <message>
-        <location filename="../qml/cover/CoverPage.qml" line="113"/>
+        <location filename="../qml/cover/CoverPage.qml" line="120"/>
         <source>My wave</source>
         <translation>Мою волну</translation>
     </message>
@@ -30,22 +30,22 @@
 <context>
     <name>FeedPage</name>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="62"/>
+        <location filename="../qml/pages/FeedPage.qml" line="70"/>
         <source>Oops. We have a problem.</source>
         <translation>Упс. У нас проблема.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="80"/>
+        <location filename="../qml/pages/FeedPage.qml" line="88"/>
         <source>You feed</source>
         <translation>Ваша лента</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="90"/>
+        <location filename="../qml/pages/FeedPage.qml" line="98"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FeedPage.qml" line="96"/>
+        <location filename="../qml/pages/FeedPage.qml" line="104"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -56,6 +56,15 @@
         <location filename="../qml/components/MprisController.qml" line="30"/>
         <source>Own Music</source>
         <translation>Наша Музыка</translation>
+    </message>
+</context>
+<context>
+    <name>OurMusic</name>
+    <message>
+        <location filename="../qml/OurMusic.qml" line="133"/>
+        <location filename="../qml/OurMusic.qml" line="134"/>
+        <source>Station</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -78,12 +87,12 @@
 <context>
     <name>TrackListItemDelegate</name>
     <message>
-        <location filename="../qml/components/TrackListItemDelegate.qml" line="114"/>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="158"/>
         <source>Go to artist</source>
         <translation>Перейти к артисту</translation>
     </message>
     <message>
-        <location filename="../qml/components/TrackListItemDelegate.qml" line="119"/>
+        <location filename="../qml/components/TrackListItemDelegate.qml" line="163"/>
         <source>Go to album</source>
         <translation>Перейти к альбому</translation>
     </message>

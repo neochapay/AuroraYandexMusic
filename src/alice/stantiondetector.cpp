@@ -12,6 +12,7 @@ StantionDetector::StantionDetector(QObject *parent)
     , m_stantionName("")
     , m_stantionPort(0)
     , m_stantionPlatform("")
+    , m_stantionDeviceId("")
 {
     m_stantions["yandexstation"]   = "Яндекс Станция (2018)";
     m_stantions["yandexstation_2"] = "Яндекс Станция Макс (2020)";
@@ -39,13 +40,20 @@ StantionDetector::~StantionDetector()
 
 void StantionDetector::onServiceAdded(const QMdnsEngine::Service &service)
 {
-    m_stantionPlatform = service.attributes()["platform"];
+    m_stantionPlatform = QString::fromUtf8(service.attributes().value("platform"));
     if(m_stantionPlatform.isEmpty()) {
         return;
     }
 
     if(!isYandexStantion(m_stantionPlatform)) {
         return;
+    }
+
+    const QString deviceId = QString::fromUtf8(service.attributes().value("deviceId"));
+    bool changed = false;
+    if (!deviceId.isEmpty() && m_stantionDeviceId != deviceId) {
+        m_stantionDeviceId = deviceId;
+        changed = true;
     }
 
     QMdnsEngine::Resolver *resolver = new QMdnsEngine::Resolver(m_DetrctorServer, service.hostname(), nullptr, this);
@@ -61,6 +69,10 @@ void StantionDetector::onServiceAdded(const QMdnsEngine::Service &service)
     if(m_stantionName != m_stantions.value(m_stantionPlatform) || m_stantionPort != service.port()) {
         m_stantionName = m_stantions.value(m_stantionPlatform);
         m_stantionPort = service.port();
+        changed = true;
+    }
+
+    if (changed) {
         emit stantionChanged();
     }
 }
@@ -97,4 +109,9 @@ bool StantionDetector::valid() const
 const QString &StantionDetector::stantionPlatform() const
 {
     return m_stantionPlatform;
+}
+
+const QString &StantionDetector::stantionDeviceId() const
+{
+    return m_stantionDeviceId;
 }

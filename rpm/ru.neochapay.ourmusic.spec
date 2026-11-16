@@ -41,9 +41,26 @@ desktop-file-install --delete-original       \
 for size in 86 108 128 172 256
 do
    mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/
-   rsvg-convert --width=$size --height=$size --output \
-           %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png \
-           %{_sourcedir}/../src/icons/svg/ru.neochapay.ourmusic.svg
+   if [ -f %{_sourcedir}/../src/icons/hicolor/${size}x${size}/apps/%{name}.png ]; then
+       install -m 644 %{_sourcedir}/../src/icons/hicolor/${size}x${size}/apps/%{name}.png \
+               %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png
+   elif command -v rsvg-convert >/dev/null 2>&1; then
+       rsvg-convert --width=$size --height=$size --output \
+               %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png \
+               %{_sourcedir}/../src/icons/svg/ru.neochapay.ourmusic.svg
+   elif command -v magick >/dev/null 2>&1; then
+       magick -background none %{_sourcedir}/../src/icons/svg/ru.neochapay.ourmusic.svg -resize ${size}x${size} \
+               %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png
+   elif command -v convert >/dev/null 2>&1; then
+       convert -background none %{_sourcedir}/../src/icons/svg/ru.neochapay.ourmusic.svg -resize ${size}x${size} \
+               %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png
+   elif command -v inkscape >/dev/null 2>&1; then
+       inkscape %{_sourcedir}/../src/icons/svg/ru.neochapay.ourmusic.svg -w $size -h $size -o \
+               %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/%{name}.png
+   else
+       echo "No prebuilt icon and no SVG converter found for ${size}x${size}" >&2
+       exit 1
+   fi
 done
 
 if grep "Sailfish" /etc/os-release; then

@@ -118,8 +118,20 @@ ListItem {
             ourMusic.isMyWave = false
             rootAudio.stop()
             currentPlayListModel.clear();
-            currentPlayListModel.push(track)
-            currentPlayListModel.currentIndex = 0
+
+            var listView = trackListItemDelegate.ListView.view
+            if (listView && listView.model && listView.count > 0) {
+                for (var i = 0; i < listView.count; i++) {
+                    var t = listView.model[i] !== undefined ? listView.model[i] : listView.model.get(i)
+                    if (t !== undefined && t !== null) {
+                        currentPlayListModel.push(t)
+                    }
+                }
+                currentPlayListModel.currentIndex = index
+            } else {
+                currentPlayListModel.push(track)
+                currentPlayListModel.currentIndex = 0
+            }
         }
     }
 

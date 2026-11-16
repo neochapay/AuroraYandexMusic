@@ -20,7 +20,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import QtMultimedia 5.5
+import QtMultimedia 5.6
 
 import ru.neochapay.ourmusic 1.0
 
@@ -32,6 +32,10 @@ Page {
 
     Component.onCompleted: {
         landing.get()
+        if (auth.token.length > 0 && currentPlayListModel.rowCount === 0) {
+            ourMusic.isMyWave = true
+            rotor.getStationTracks()
+        }
     }
 
     Connections{
@@ -40,6 +44,8 @@ Page {
             if(tracks.length == 0) {
                 return;
             }
+
+            var wasAtWaveEnd = ourMusic.isMyWave && currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex >= currentPlayListModel.rowCount-1
 
             if(ourMusic.isMyWave && currentPlayListModel.rowCount == 0) {
                 rotor.postStantionFeedback(Rotor.RadioStarted, tracks[0]);
@@ -51,6 +57,8 @@ Page {
 
             if(currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex == -1) {
                 currentPlayListModel.currentIndex = 0
+            } else if(wasAtWaveEnd && typeof rootAudio !== "undefined" && rootAudio.status == MediaPlayer.EndOfMedia) {
+                currentPlayListModel.currentIndex++
             }
         }
     }
@@ -123,6 +131,8 @@ Page {
 
             MyWavePlayer{
                 id: myWavePlayer
+                // Set backgroundVideoSource to a local file or URL to enable video background, e.g.:
+                // backgroundVideoSource: Qt.resolvedUrl("../img/wave-bg.mp4")
             }
 
             Repeater{

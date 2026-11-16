@@ -57,7 +57,7 @@ Request::Request(QString point, QObject* parent)
 
 void Request::setDebug(bool debug)
 {
-    m_debug = debug;
+    m_debug = false;
 }
 
 void Request::get(const QUrlQuery& query)

@@ -23,6 +23,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonValue>
 #include <QStandardPaths>
 
@@ -40,6 +41,8 @@ Track::Track(const Track& other, QObject* parent)
         return;
     }
     d_ptr = other.d_ptr;
+    m_downloading = other.m_downloading;
+    m_downloadProgress = other.m_downloadProgress;
 }
 
 Track::Track(QJsonObject object, QObject* parent)
@@ -110,6 +113,7 @@ Track::Track(QJsonObject object, QObject* parent)
     d_ptr->trackSource = object.value("trackSource").toString();
     d_ptr->type = object.value("type").toString();
     d_ptr->contentWarning = object.value("contentWarning").toString();
+    d_ptr->backgroundVideoUri = object.value("backgroundVideoUri").toString();
 }
 
 Track::~Track()
@@ -120,6 +124,8 @@ Track::~Track()
 Track& Track::operator=(const Track& other)
 {
     *d_ptr = *other.d_ptr;
+    m_downloading = other.m_downloading;
+    m_downloadProgress = other.m_downloadProgress;
     return *this;
 }
 
@@ -238,6 +244,11 @@ const QString& Track::type() const
     return d_ptr->type;
 }
 
+const QString& Track::backgroundVideoUri() const
+{
+    return d_ptr->backgroundVideoUri;
+}
+
 const QString& Track::contentWarning() const
 {
     return d_ptr->contentWarning;
@@ -257,15 +268,83 @@ QString Track::filePath()
     return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cachedMusic/" + QString::number(d_ptr->trackId) + ".mp3";
 }
 
+bool Track::downloading() const
+{
+    return m_downloading;
+}
+
+qreal Track::downloadProgress() const
+{
+    return m_downloadProgress;
+}
+
 void Track::download()
 {
     if(downloaded()) {
+        if (m_downloading || m_downloadProgress != 1.0) {
+            m_downloading = false;
+            m_downloadProgress = 1.0;
+            emit downloadProgressChanged();
+        }
         return;
     }
 
-    MusicFetcher* fetcher = new MusicFetcher();
-    fetcher->load(this);
-    connect(fetcher, &MusicFetcher::trackReady, [=] {
-        emit trackChanged();
+    if (m_downloading) {
+        return;
+    }
+
+    m_downloading = true;
+    m_downloadProgress = 0.0;
+    emit downloadProgressChanged();
+
+    QString artistName;
+    if (!d_ptr->artists.isEmpty()) {
+        Artist* artist = qobject_cast<Artist*>(d_ptr->artists.first());
+        if (artist) {
+            artistName = artist->name();
+        }
+    }
+    qDebug().noquote() << "Now downloading" << artistName << "-" << d_ptr->title;
+
+    if (m_fetcher) {
+        m_fetcher->abort();
+        m_fetcher->deleteLater();
+        m_fetcher = nullptr;
+    }
+
+    m_fetcher = new MusicFetcher(this);
+    connect(m_fetcher, &MusicFetcher::downloadProgress, this, [=](float progress) {
+        m_downloadProgress = progress;
+        emit downloadProgressChanged();
     });
+    connect(m_fetcher, &MusicFetcher::trackReady, this, [=] {
+        m_downloading = false;
+        m_downloadProgress = 1.0;
+        m_fetcher = nullptr;
+        emit downloadProgressChanged();
+        emit trackChanged();
+        sender()->deleteLater();
+    });
+    connect(m_fetcher, &MusicFetcher::error, this, [=](const QString &message) {
+        qWarning() << "Track download error:" << message;
+        m_downloading = false;
+        m_fetcher = nullptr;
+        emit downloadProgressChanged();
+        sender()->deleteLater();
+    });
+    m_fetcher->load(this);
+}
+
+void Track::cancelDownload()
+{
+    if (m_fetcher) {
+        m_fetcher->abort();
+        m_fetcher->deleteLater();
+        m_fetcher = nullptr;
+    }
+    if (m_downloading || m_downloadProgress != 0.0) {
+        m_downloading = false;
+        m_downloadProgress = 0.0;
+        emit downloadProgressChanged();
+    }
 }

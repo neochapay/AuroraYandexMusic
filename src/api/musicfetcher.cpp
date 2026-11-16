@@ -38,6 +38,7 @@ MusicFetcher::MusicFetcher(QObject* parent)
 
 void MusicFetcher::load(Track* track)
 {
+    m_aborted = false;
     if (track == nullptr) {
         qWarning() << "Track to download is null";
         return;
@@ -69,8 +70,26 @@ void MusicFetcher::load(Track* track)
     }
 }
 
+void MusicFetcher::abort()
+{
+    m_aborted = true;
+    if (m_infoReply) {
+        m_infoReply->abort();
+        m_infoReply->deleteLater();
+        m_infoReply = nullptr;
+    }
+    if (m_fileReply) {
+        m_fileReply->abort();
+        m_fileReply->deleteLater();
+        m_fileReply = nullptr;
+    }
+}
+
 void MusicFetcher::downloadInfoHandler(QJsonValue value)
 {
+    if (m_aborted) {
+        return;
+    }
     QJsonArray linksArray = value.toArray();
 
     for (int i = 0; i < linksArray.count(); i++) {
@@ -88,7 +107,9 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
     }
 
     if (m_linksList.isEmpty()) {
-        emit error("Cant get download links");
+        if (!m_aborted) {
+            emit error("Cant get download links");
+        }
 
         return;
     }
@@ -125,21 +146,33 @@ void MusicFetcher::downloadInfoHandler(QJsonValue value)
     }
 
     if (downloadInfoUrl.isEmpty()) {
-        emit error("Cant get download links");
+        if (!m_aborted) {
+            emit error("Cant get download links");
+        }
         return;
     }
 
     QNetworkAccessManager* downloadInfoManager = new QNetworkAccessManager(this);
     QNetworkRequest downloadInfoUrlRequest(downloadInfoUrl);
-    QNetworkReply* reply = downloadInfoManager->get(downloadInfoUrlRequest);
+    m_infoReply = downloadInfoManager->get(downloadInfoUrlRequest);
 
-    connect(reply, &QNetworkReply::finished, this, &MusicFetcher::downloadInfoUrlHandler);
+    connect(m_infoReply, &QNetworkReply::finished, this, &MusicFetcher::downloadInfoUrlHandler);
 }
 
 void MusicFetcher::downloadInfoUrlHandler()
 {
     QNetworkReply* reply = static_cast<QNetworkReply*>(sender());
+    if (m_aborted || reply == nullptr) {
+        if (reply) {
+            reply->deleteLater();
+        }
+        return;
+    }
+    if (reply == m_infoReply) {
+        m_infoReply = nullptr;
+    }
     QString answerXML = reply->readAll();
+    reply->deleteLater();
 
     QString host;
     QString path;
@@ -171,18 +204,37 @@ void MusicFetcher::downloadInfoUrlHandler()
     QString sign = QString(QCryptographicHash::hash((("XGRlBW9FXlekgbPrRHuSiA" + path.mid(1) + s).toUtf8()), QCryptographicHash::Md5).toHex());
     QString finalUrl = "https://" + host + "/get-mp3/" + sign + "/" + ts + path;
 
+    if (m_aborted) {
+        return;
+    }
+
     QNetworkAccessManager* manager = new QNetworkAccessManager(this);
     QNetworkRequest request(finalUrl);
-    QNetworkReply* m_reply = manager->get(request);
+    m_fileReply = manager->get(request);
 
     connect(manager, &QNetworkAccessManager::finished, this, &MusicFetcher::dataReadyHandler);
-    connect(m_reply, &QNetworkReply::downloadProgress, this, &MusicFetcher::onDownloadProgress);
+    connect(m_fileReply, &QNetworkReply::downloadProgress, this, &MusicFetcher::onDownloadProgress);
 }
 
 void MusicFetcher::dataReadyHandler(QNetworkReply* reply)
 {
+    if (reply == nullptr) {
+        return;
+    }
+    if (reply == m_fileReply) {
+        m_fileReply = nullptr;
+    }
+    if (m_aborted) {
+        reply->deleteLater();
+        return;
+    }
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << reply->errorString();
+        if (reply->error() != QNetworkReply::OperationCanceledError) {
+            emit error(reply->errorString());
+        }
+        reply->deleteLater();
+        return;
     }
 
     QFile fileToSave(m_track->filePath());
@@ -190,12 +242,16 @@ void MusicFetcher::dataReadyHandler(QNetworkReply* reply)
     fileToSave.write(reply->readAll());
     fileToSave.close();
 
+    reply->deleteLater();
     emit trackReady(m_track->filePath());
     m_linksList.clear();
 }
 
 void MusicFetcher::onDownloadProgress(qint64 bytesRead, qint64 bytesTotal)
 {
+    if (m_aborted) {
+        return;
+    }
     if (bytesTotal > 0) {
         float progress;
         progress = (float)bytesRead / (float)bytesTotal;

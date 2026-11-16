@@ -13,6 +13,7 @@ class StantionDetector : public QObject
     Q_PROPERTY(QString stantionAddress READ stantionAddress NOTIFY stantionChanged)
     Q_PROPERTY(QString stantionName READ stantionName NOTIFY stantionChanged)
     Q_PROPERTY(QString stantionPlatform READ stantionPlatform NOTIFY stantionChanged)
+    Q_PROPERTY(QString stantionDeviceId READ stantionDeviceId NOTIFY stantionChanged)
     Q_PROPERTY(int stantionPort READ stantionPort NOTIFY stantionChanged)
     Q_PROPERTY(bool valid READ valid NOTIFY stantionChanged)
 
@@ -24,6 +25,7 @@ public:
     int stantionPort() const;
     bool valid() const;
     const QString &stantionPlatform() const;
+    const QString &stantionDeviceId() const;
 
 signals:
     void stantionChanged();
@@ -43,6 +45,7 @@ private:
     QString m_stantionName;
     int m_stantionPort;
     QString m_stantionPlatform;
+    QString m_stantionDeviceId;
 };
 
 #endif // STATIONDETECTOR_H

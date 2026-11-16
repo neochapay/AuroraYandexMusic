@@ -24,6 +24,7 @@
 #include "../types/playlist.h"
 
 #include <QDebug>
+#include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
 
@@ -167,12 +168,29 @@ void User::likedTracksHandler(QJsonValue value)
     Tracks* tracks = new Tracks();
     tracks->getTracksInfo(likedTracksIDS);
     connect(tracks, &Tracks::tracksInfoReady, [=](const QList<Track*> likedTracks) {
-        for(Track* track: likedTracks) {
-            if(track != nullptr) {
-                m_likedTrackList.push_back(track);
+        QHash<int, Track*> tracksById;
+        for (Track* track : likedTracks) {
+            if (track != nullptr) {
+                tracksById.insert(track->trackId(), track);
             }
         }
+
+        for (const QString &trackIdPair : likedTracksIDS) {
+            bool ok = false;
+            int trackId = trackIdPair.section(':', 0, 0).toInt(&ok);
+            if (!ok) {
+                continue;
+            }
+
+            Track* track = tracksById.value(trackId, nullptr);
+            if (track != nullptr) {
+                m_likedTrackList.push_back(track);
+                tracksById.remove(trackId);
+            }
+        }
+
         emit likedTracksChanged();
+        tracks->deleteLater();
     });
 }
 

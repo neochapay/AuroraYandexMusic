@@ -41,6 +41,7 @@ class MusicFetcher : public QObject {
 public:
     explicit MusicFetcher(QObject* parent = nullptr);
     Q_INVOKABLE void load(Track* track);
+    void abort();
 
 signals:
     void trackReady(QString path);
@@ -56,9 +57,12 @@ private slots:
     void onDownloadProgress(qint64 bytesRead, qint64 bytesTotal);
 
 private:
-    Track* m_track;
-    Settings* m_settings;
+    Track* m_track = nullptr;
+    Settings* m_settings = nullptr;
     QList<DownloadLink*> m_linksList;
+    QNetworkReply* m_infoReply = nullptr;
+    QNetworkReply* m_fileReply = nullptr;
+    bool m_aborted = false;
 };
 
 #endif // MUSICFETCHER_H

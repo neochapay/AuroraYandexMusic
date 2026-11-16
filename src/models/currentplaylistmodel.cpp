@@ -105,6 +105,7 @@ void CurrentPlayListModel::push(Track* track)
         m_currentTracks.push_back(track);
         endInsertRows();
         emit rowCountChanged();
+        updateDownloadQueue();
     } else {
         qWarning() << "Wrong track";
     }
@@ -115,6 +116,7 @@ void CurrentPlayListModel::setPlaylist(Playlist *playlist)
     if(playlist == nullptr) {
         return;
     }
+    cancelAllDownloads();
     clear();
     beginInsertRows(QModelIndex(), 0, playlist->tracks().count());
     for(QObject* trackObject: playlist->tracks()) {
@@ -124,11 +126,13 @@ void CurrentPlayListModel::setPlaylist(Playlist *playlist)
         }
     }
     endInsertRows();
+    emit rowCountChanged();
+    updateDownloadQueue();
 }
 
 Track* CurrentPlayListModel::getTrack(int index)
 {
-    if (index < m_currentTracks.count() && index > 0) {
+    if (index >= 0 && index < m_currentTracks.count()) {
         return m_currentTracks.at(index);
     }
     return nullptr;
@@ -149,33 +153,95 @@ Track *CurrentPlayListModel::getPrevTrack()
 
 void CurrentPlayListModel::clear()
 {
+    cancelAllDownloads();
     beginResetModel();
     m_currentTracks.clear();
     m_currentIndex = -1;
+    m_nextTrack = nullptr;
     endResetModel();
+    emit rowCountChanged();
     emit currentIndexChanged();
+}
+
+void CurrentPlayListModel::cancelAllDownloads()
+{
+    for (Track* track : m_currentTracks) {
+        if (track) {
+            track->cancelDownload();
+        }
+    }
+    m_nextTrack = nullptr;
+}
+
+void CurrentPlayListModel::updateDownloadQueue()
+{
+    if (m_currentIndex < 0 || m_currentTracks.isEmpty()) {
+        return;
+    }
+
+    for (Track* track : m_currentTracks) {
+        if (track) {
+            connect(track, &Track::trackChanged, this, [=] {
+                emit nextReadyChanged();
+                updateDownloadQueue();
+            }, Qt::UniqueConnection);
+            connect(track, &Track::downloadProgressChanged, this, [=] {
+                if (!track->downloading()) {
+                    emit nextReadyChanged();
+                    updateDownloadQueue();
+                }
+            }, Qt::UniqueConnection);
+        }
+    }
+
+    for (Track* track : m_currentTracks) {
+        if (track && track->downloading()) {
+            return;
+        }
+    }
+
+    for (int i = m_currentIndex; i < m_currentTracks.count(); ++i) {
+        Track* track = m_currentTracks.at(i);
+        if (track == nullptr || track->downloaded()) {
+            continue;
+        }
+        track->download();
+        return;
+    }
 }
 
 bool CurrentPlayListModel::nextReady() const
 {
-    if(m_nextTrack == nullptr) {
+    if (m_currentIndex < 0 || m_currentIndex >= m_currentTracks.count() - 1) {
         return false;
     }
 
-    if(m_nextTrack->downloaded()) {
-        return true;
-    }
-    return false;
+    Track* nextTrack = m_currentTracks.at(m_currentIndex + 1);
+    return nextTrack != nullptr && nextTrack->downloaded();
 }
 
 void CurrentPlayListModel::calculateNextready()
 {
-    m_nextTrack = getTrack(m_currentIndex+1);
-    if(m_nextTrack != nullptr) {
-        m_nextTrack->download();
-        connect(m_nextTrack, &Track::trackChanged, [=] {
+    m_nextTrack = getTrack(m_currentIndex + 1);
+    if (m_nextTrack != nullptr) {
+        connect(m_nextTrack, &Track::trackChanged, this, [=] {
             emit nextReadyChanged();
-        });
+            updateDownloadQueue();
+        }, Qt::UniqueConnection);
+        connect(m_nextTrack, &Track::downloadProgressChanged, this, [=] {
+            emit nextReadyChanged();
+        }, Qt::UniqueConnection);
     }
+
+    Track* currentTrack = getCurrentTrack();
+    if (currentTrack != nullptr) {
+        connect(currentTrack, &Track::trackChanged, this, [=] {
+            emit nextReadyChanged();
+            updateDownloadQueue();
+        }, Qt::UniqueConnection);
+    }
+
+    emit nextReadyChanged();
+    updateDownloadQueue();
 }
 

@@ -52,16 +52,17 @@ public:
     Q_INVOKABLE void clear();
 
     bool nextReady() const;
+    Q_INVOKABLE void calculateNextready();
 
 signals:
     void rowCountChanged();
     void currentIndexChanged();
     void nextReadyChanged();
 
-private slots:
-    void calculateNextready();
-
 private:
+    void cancelAllDownloads();
+    void updateDownloadQueue();
+
     int m_currentIndex;
 
     QHash<int, QByteArray> m_hash;

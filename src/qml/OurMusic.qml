@@ -18,7 +18,7 @@
  */
 
 import QtQuick 2.0
-import QtMultimedia
+import QtMultimedia 5.6
 import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
 import ru.neochapay.ourmusic 1.0
@@ -31,6 +31,13 @@ ApplicationWindow {
 
     property bool isMyWave: false
     property Track currentTrack;
+    property bool playOnStation: false
+    property real savedPhoneVolume: -1
+    property bool applyingStationVolume: false
+    property string suppressStationTrackId: ""
+    property bool syncingFromStation: false
+    property alias stationDetectorItem: stantionDetector
+    property alias stationControllerItem: stationController
 
     initialPage: {
         if (auth.token.length > 0) {
@@ -44,22 +51,89 @@ ApplicationWindow {
         id: auth
     }
 
-    /*StantionDetector{
+    StantionDetector{
         id: stantionDetector
-        onStantionChanged: {
-            if(stantionDetector.valid) {
-                stantionDetectNotification.publish()
+    }
+
+    StationController{
+        id: stationController
+        onStatusChanged: {
+            if (stationController.status.length > 0) {
+                console.log("StationController:", stationController.status)
+                stationStatusNotification.body = stationController.status
+                stationStatusNotification.publish()
             }
         }
-    }*/
+        onRemotePlayingChanged: {
+            if (stationController.remotePlaying) {
+                rootAudio.stop()
+            }
+        }
+        onRemoteStateChanged: {
+            if (ourMusic.playOnStation && stationController.remoteVolume >= 0) {
+                var currentVol = rootAudio.volume
+                console.log("Station state volume update: station =", stationController.remoteVolume, "player =", rootAudio.volume)
+                if (Math.abs(currentVol - stationController.remoteVolume) > 0.01) {
+                    console.log("Applying station volume to player:", stationController.remoteVolume)
+                    ourMusic.applyingStationVolume = true
+                    rootAudio.volume = stationController.remoteVolume
+                    ourMusic.applyingStationVolume = false
+                }
+            }
+        }
+        onRemoteTrackChanged: {
+            if (!ourMusic.playOnStation) {
+                return
+            }
+            var remoteId = stationController.remoteTrackId
+            if (!remoteId || remoteId.length === 0) {
+                return
+            }
+            if (ourMusic.suppressStationTrackId === remoteId) {
+                ourMusic.suppressStationTrackId = ""
+                return
+            }
+            var current = currentPlayListModel.getCurrentTrack()
+            if (current && String(current.trackId) === remoteId) {
+                return
+            }
+            for (var i = 0; i < currentPlayListModel.rowCount; i++) {
+                var t = currentPlayListModel.getTrack(i)
+                if (t && String(t.trackId) === remoteId) {
+                    ourMusic.syncingFromStation = true
+                    currentPlayListModel.currentIndex = i
+                    ourMusic.syncingFromStation = false
+                    return
+                }
+            }
+            console.log("Remote station track not found in current playlist:", remoteId)
+        }
+    }
 
-    /*Notification{
-        id: stantionDetectNotification
+    Connections {
+        target: Qt.application
+        onAboutToQuit: {
+            if (ourMusic.playOnStation) {
+                stationController.stopRemotePlayback()
+                stationController.disconnectFromStation()
+            }
+        }
+    }
+
+    Component.onDestruction: {
+        if (playOnStation) {
+            stationController.stopRemotePlayback()
+            stationController.disconnectFromStation()
+        }
+    }
+
+    Notification{
+        id: stationStatusNotification
         appName: "OwnMusic"
-        appIcon: "/usr/share/ru.neochapay.ourmusic/qml/img/devices/"+ stantionDetector.stantionPlatform + ".svg"
-        summary: "Connect to " + stantionDetector.stantionName
-        body: "Do you want play music on " + stantionDetector.stantionName
-    }*/
+        summary: qsTr("Station")
+        previewSummary: qsTr("Station")
+        previewBody: stationController.status
+    }
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
@@ -93,9 +167,36 @@ ApplicationWindow {
     Connections{
         target: currentTrack
         onTrackChanged:{
-            if(currentTrack.downloaded) {
+            if (ourMusic.playOnStation) {
+                return
+            }
+            if(currentTrack && currentTrack === currentPlayListModel.getCurrentTrack() && currentTrack.downloaded) {
                 rootAudio.source = currentTrack.filePath;
                 rootAudio.play()
+            }
+        }
+    }
+
+    onPlayOnStationChanged: {
+        if (!playOnStation) {
+            if (savedPhoneVolume >= 0) {
+                rootAudio.volume = savedPhoneVolume
+                savedPhoneVolume = -1
+            }
+            var track = currentPlayListModel.getCurrentTrack();
+            if (track && track.downloaded) {
+                rootAudio.source = track.filePath;
+                rootAudio.play()
+            }
+        } else {
+            rootAudio.stop()
+            if (savedPhoneVolume < 0) {
+                savedPhoneVolume = rootAudio.volume
+            }
+            if (stationController.remoteVolume >= 0) {
+                applyingStationVolume = true
+                rootAudio.volume = stationController.remoteVolume
+                applyingStationVolume = false
             }
         }
     }
@@ -115,19 +216,30 @@ ApplicationWindow {
             if(!tr) {
                 console.warn("Track is null")
                 return
-            } else {
-                ourMusic.currentTrack = tr;
             }
 
-            if(ourMusic.isMyWave && currentPlayListModel.currentIndex == currentPlayListModel.rowCount-1) {
+            currentTrack = tr;
+
+            if(ourMusic.isMyWave && currentPlayListModel.currentIndex >= currentPlayListModel.rowCount-1) {
                 rotor.getStationTracks("user:onyourwave", currentTrack.trackId)
             }
 
-            if(currentTrack.downloaded) {
+            if (ourMusic.playOnStation) {
+                rootAudio.stop()
+                if (!ourMusic.syncingFromStation) {
+                    ourMusic.suppressStationTrackId = String(currentTrack.trackId)
+                    var albumId = 0
+                    if (currentTrack.albums && currentTrack.albums.length > 0) {
+                        albumId = currentTrack.albums[0].albumId
+                    }
+                    stationController.playTrackByIds(parseInt(currentTrack.trackId), albumId)
+                }
+            } else if(currentTrack.downloaded) {
                 rootAudio.source = currentTrack.filePath;
                 rootAudio.play()
             } else {
-                currentTrack.download(currentTrack)
+                rootAudio.stop()
+                currentTrack.download()
             }
         }
     }
@@ -136,6 +248,10 @@ ApplicationWindow {
     MainPlayer{
         id: mainPlayer
         visible: currentPlayListModel.rowCount > 0 && currentPlayListModel.currentIndex != -1
+        stationDetector: stantionDetector
+        stationController: stationController
+        playOnStation: ourMusic.playOnStation
+        onPlayOnStationChanged: ourMusic.playOnStation = playOnStation
         onVisibleChanged: {
             if(mainPlayer.visible) {
                 //ourMusic.bottomMargin = mainPlayer.height
@@ -147,12 +263,38 @@ ApplicationWindow {
 
     MediaPlayer{
         id: rootAudio
-        /*onStopped: {
+        onVolumeChanged: {
+            console.log("Player volume changed:", rootAudio.volume, "playOnStation:", ourMusic.playOnStation, "applyingStationVolume:", ourMusic.applyingStationVolume)
+            if (ourMusic.playOnStation && !ourMusic.applyingStationVolume) {
+                console.log("Syncing player volume to station:", rootAudio.volume)
+                stationController.setRemoteVolume(rootAudio.volume)
+            }
+        }
+        onStatusChanged: {
             if (rootAudio.status == MediaPlayer.EndOfMedia) {
                 feedbackSender.sendFeedback(currentPlayListModel.getCurrentTrack(), rootAudio.duration, rootAudio.position)
-                ++currentPlayListModel.currentIndex
+                if(ourMusic.isMyWave && currentPlayListModel.currentIndex >= currentPlayListModel.rowCount-1) {
+                    var track = currentPlayListModel.getCurrentTrack();
+                    if(track) {
+                        rotor.getStationTracks("user:onyourwave", track.trackId)
+                    }
+                } else if(currentPlayListModel.currentIndex < currentPlayListModel.rowCount - 1) {
+                    ++currentPlayListModel.currentIndex
+                }
             }
-        }*/
+        }
+        onPlaybackStateChanged: {
+            if (rootAudio.playbackState == MediaPlayer.StoppedState && rootAudio.status == MediaPlayer.EndOfMedia) {
+                if(ourMusic.isMyWave && currentPlayListModel.currentIndex >= currentPlayListModel.rowCount-1) {
+                    var track = currentPlayListModel.getCurrentTrack();
+                    if(track) {
+                        rotor.getStationTracks("user:onyourwave", track.trackId)
+                    }
+                } else if(currentPlayListModel.currentIndex < currentPlayListModel.rowCount - 1) {
+                    ++currentPlayListModel.currentIndex
+                }
+            }
+        }
     }
 
     MprisController{

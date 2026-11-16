@@ -1,5 +1,7 @@
 Makefile
 *.o
+*.so*
+*.rpm
 *gen_*.h
 *gen_*.cpp
 *gen_*.o

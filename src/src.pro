@@ -1,9 +1,10 @@
 TARGET = ru.neochapay.ourmusic
 
+
 CONFIG += \
     sailfishapp
 
-INCLUDEPATH += ../libs/
+INCLUDEPATH += ../libs/ ../libs/qtwebsockets
 LIBS += -L../libs/qmdnsengine -lqmdnsengine -L../libs/qtwebsockets -lqtwebsockets
 
 SOURCES += \
@@ -21,7 +22,9 @@ SOURCES += \
     api/settings.cpp \
     api/tracks.cpp \
     api/user.cpp \
+    alice/stationcontroller.cpp \
     alice/stantiondetector.cpp \
+    imageonlynetworkdiskcache.cpp \
     models/currentplaylistmodel.cpp \
     main.cpp \
     types/album.cpp \
@@ -31,6 +34,7 @@ SOURCES += \
     types/track.cpp
 
 HEADERS += \
+    alice/stationcontroller.h \
     alice/stationdetector.h \
     api/albuminfo.h \
     api/artistinfo.h \
@@ -47,6 +51,7 @@ HEADERS += \
     api/tracks.h \
     api/user.h \
     alice/stantiondetector.h \
+    imageonlynetworkdiskcache.h \
     models/currentplaylistmodel.h \
     types/ArtistInfoData.h \
     types/LandingResultBlock.h \

@@ -24,6 +24,8 @@
 #include "artist.h"
 
 #include <QObject>
+
+class MusicFetcher;
 struct DerivedColors {
     Q_GADGET
     Q_PROPERTY(QString accent MEMBER accent)
@@ -72,6 +74,7 @@ public:
     QString trackSource;
     QString type;
     QString contentWarning;
+    QString backgroundVideoUri;
 };
 
 class Track : public QObject {
@@ -103,8 +106,11 @@ class Track : public QObject {
     Q_PROPERTY(QString trackSharingFlag READ trackSharingFlag NOTIFY trackChanged)
     Q_PROPERTY(QString trackSource READ trackSource NOTIFY trackChanged)
     Q_PROPERTY(QString type READ type NOTIFY trackChanged)
+    Q_PROPERTY(QString backgroundVideoUri READ backgroundVideoUri NOTIFY trackChanged)
     Q_PROPERTY(bool downloaded READ downloaded NOTIFY trackChanged)
     Q_PROPERTY(QString filePath READ filePath CONSTANT)
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadProgressChanged)
+    Q_PROPERTY(qreal downloadProgress READ downloadProgress NOTIFY downloadProgressChanged)
 
 public:
     explicit Track(QObject* parent = nullptr);
@@ -136,16 +142,24 @@ public:
     const QString& trackSharingFlag() const;
     const QString& trackSource() const;
     const QString& type() const;
+    const QString& backgroundVideoUri() const;
     const QString& contentWarning() const;
     bool downloaded();
     QString filePath();
+    bool downloading() const;
+    qreal downloadProgress() const;
     Q_INVOKABLE void download();
+    Q_INVOKABLE void cancelDownload();
 
 signals:
     void trackChanged();
+    void downloadProgressChanged();
 
 private:
     TrackPrivate* d_ptr;
+    bool m_downloading = false;
+    qreal m_downloadProgress = 0.0;
+    MusicFetcher* m_fetcher = nullptr;
 };
 
 Q_DECLARE_METATYPE(Track)

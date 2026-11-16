@@ -6,11 +6,15 @@ import ru.neochapay.ourmusic 1.0
 Item {
     id: mainPlayer
 
+    property var stationDetector: null
+    property var stationController: null
+    property bool playOnStation: false
+
     width: parent.width
     height: Theme.itemSizeLarge
     anchors{
         bottom: parent.bottom
-        bottomMargin: -Theme.itemSizeLarge
+        bottomMargin: 0
     }
     z: 99
 
@@ -28,13 +32,19 @@ Item {
         width: parent.width
         height: Theme.itemSizeLarge
         visible: littlePlayer.height == mainPlayer.height
+        stationController: mainPlayer.stationController
+        playOnStation: mainPlayer.playOnStation
     }
 
     BigPlayer{
         id: bigPlayer
         width: parent.width
-        height: mainPlayer.parent.height + Theme.itemSizeLarge
+        height: mainPlayer.parent.height
         visible: !littlePlayer.visible
+        stationDetector: mainPlayer.stationDetector
+        stationController: mainPlayer.stationController
+        playOnStation: mainPlayer.playOnStation
+        onPlayOnStationChanged: mainPlayer.playOnStation = playOnStation
         anchors{
             bottom: parent.bottom
         }

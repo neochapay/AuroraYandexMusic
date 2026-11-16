@@ -19,7 +19,7 @@
 
 import QtQuick 2.0
 import Amber.Mpris 1.0
-import QtMultimedia
+import QtMultimedia 5.6
 
 MprisPlayer {
     id: mprisPlayer
@@ -49,7 +49,7 @@ MprisPlayer {
         metaData.title = track.title
         metaData.contributingArtist = track.artists[0].name
         metaData.artUrl = "https://"+track.albums[0].coverUri.replace("%%", "100x100")
-        mprisPlayer.canGoNext = currentPlayListModel.currentIndex < currentPlayListModel.rowCount
+        mprisPlayer.canGoNext = currentPlayListModel.nextReady
         mprisPlayer.canGoPrevious = currentPlayListModel.currentIndex > 0
     }
 
@@ -71,10 +71,14 @@ MprisPlayer {
     }
 
     onNextRequested: {
-        rootAudio.stop()
-        ++currentPlayListModel.currentIndex
+        if(currentPlayListModel.nextReady) {
+            rootAudio.stop()
+            ++currentPlayListModel.currentIndex
+        }
     }
     onPreviousRequested: {
-        --currentPlayListModel.currentIndex
+        if(currentPlayListModel.currentIndex > 0) {
+            --currentPlayListModel.currentIndex
+        }
     }
 }
