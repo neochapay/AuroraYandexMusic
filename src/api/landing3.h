@@ -20,6 +20,8 @@
 #ifndef LANDING3_H
 #define LANDING3_H
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonValue>
 #include <QObject>
 
@@ -29,22 +31,48 @@ class Landing3 : public QObject {
     Q_OBJECT
 public:
     explicit Landing3(QObject* parent = nullptr);
-    Q_INVOKABLE void get(QString blocks = "personalplaylists,promotions,new-releases,new-playlists,mixes,chart,artists,albums,playlists,play_contexts,podcasts");
-    // Available values :  "personalplaylists,promotions,new-releases,new-playlists,mixes,chart,artists,albums,playlists,play_contexts,podcasts"
-    Q_INVOKABLE void loadingBlock(QString blockName);
-    // Available values : russia, world
-    Q_INVOKABLE void chart(QString charType);
+
+    // GET /landing3?blocks=...
+    Q_INVOKABLE void get(const QString &blocks = QStringLiteral("personalplaylists,promotions,new-releases,new-playlists,mixes,chart,artists,albums,playlists,play_contexts,podcasts"));
+    Q_INVOKABLE void getLanding(const QString &blocks = QString()); // alias
+
+    // GET /landing3/{landingBlock} (new-playlists,new-releases,chart,podcasts)
+    Q_INVOKABLE void getLandingBlock(const QString &blockName);
+    Q_INVOKABLE void loadingBlock(const QString &blockName); // compatibility alias
+
+    // Specific endpoints
+    Q_INVOKABLE void getNewReleases();
+    Q_INVOKABLE void getNewPodcasts();
+    Q_INVOKABLE void getNewPlaylists();
+    Q_INVOKABLE void getChart(const QString &chartType = QStringLiteral("russia")); // russia|world
+    Q_INVOKABLE void chart(const QString &chartType); // compatibility alias
 
 signals:
     void landingBlocksReady(QList<QObject*> blocks);
+    void landingReady(const QJsonObject &result, const QList<QObject*> &blocks);
+    void landingBlockReady(const QString &blockName, const QJsonValue &result);
+    void newReleasesReady(const QJsonValue &result);
+    void newPodcastsReady(const QJsonValue &result);
+    void newPlaylistsReady(const QJsonValue &result);
+    void chartReady(const QString &chartType, const QJsonValue &result);
+    void error(const QString &message);
 
 private slots:
     void getLandingRequestHandler(QJsonValue value);
     void loadingBlockRequestHandler(QJsonValue value);
+    void newReleasesRequestHandler(QJsonValue value);
+    void newPodcastsRequestHandler(QJsonValue value);
+    void newPlaylistsRequestHandler(QJsonValue value);
     void chartRequestHandler(QJsonValue value);
 
 private:
+    QList<QObject*> parseBlocks(const QJsonObject &landingResult) const;
+    QObject* parseEntity(const QString &blockType, const QJsonValue &entityValue) const;
+
     QString m_gettingBlocks;
+    QString m_requestedBlock;
+    QString m_requestedChartType;
 };
 
 #endif // LANDING3_H
+
