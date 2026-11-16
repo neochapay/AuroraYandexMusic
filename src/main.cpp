@@ -32,6 +32,7 @@
 #include "api/queues.h"
 #include "api/rotor.h"
 #include "api/search.h"
+#include "api/tags.h"
 #include "api/user.h"
 
 #include "types/cover.h"
@@ -104,6 +105,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");
     qmlRegisterType<Landing3>("ru.neochapay.ourmusic", 1, 0, "Landing");
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
+    qmlRegisterType<Tags>("ru.neochapay.ourmusic", 1, 0, "Tags");
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
     qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
     qmlRegisterType<Albums>("ru.neochapay.ourmusic", 1, 0, "Albums");

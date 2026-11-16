@@ -22,6 +22,7 @@ SOURCES += \
     api/rotor.cpp \
     api/search.cpp \
     api/settings.cpp \
+    api/tags.cpp \
     api/tracks.cpp \
     api/user.cpp \
     alice/stationcontroller.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     api/rotor.h \
     api/search.h \
     api/settings.h \
+    api/tags.h \
     api/tracks.h \
     api/user.h \
     alice/stantiondetector.h \
