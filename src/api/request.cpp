@@ -60,6 +60,11 @@ void Request::setDebug(bool debug)
     m_debug = false;
 }
 
+void Request::setRawHeader(const QByteArray &headerName, const QByteArray &value)
+{
+    m_request.setRawHeader(headerName, value);
+}
+
 void Request::get(const QUrlQuery& query)
 {
     m_type = "get";

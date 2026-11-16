@@ -17,6 +17,7 @@ SOURCES += \
     api/musicfetcher.cpp \
     api/oauth.cpp \
     api/playlists.cpp \
+    api/queues.cpp \
     api/request.cpp \
     api/rotor.cpp \
     api/search.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     api/musicfetcher.h \
     api/oauth.h \
     api/playlists.h \
+    api/queues.h \
     api/request.h \
     api/rotor.h \
     api/search.h \

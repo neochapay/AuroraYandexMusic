@@ -29,6 +29,7 @@
 #include "api/landing3.h"
 #include "api/oauth.h"
 #include "api/playlists.h"
+#include "api/queues.h"
 #include "api/rotor.h"
 #include "api/search.h"
 #include "api/user.h"
@@ -99,6 +100,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Feed>("ru.neochapay.ourmusic", 1, 0, "Feed");
     qmlRegisterType<FeedbackSender>("ru.neochapay.ourmusic", 1, 0, "FeedbackSender");
     qmlRegisterType<Playlists>("ru.neochapay.ourmusic", 1, 0, "Playlists");
+    qmlRegisterType<Queues>("ru.neochapay.ourmusic", 1, 0, "Queues");
     qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");
     qmlRegisterType<Landing3>("ru.neochapay.ourmusic", 1, 0, "Landing");
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
