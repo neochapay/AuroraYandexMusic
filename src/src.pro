@@ -9,6 +9,7 @@ LIBS += -L../libs/qmdnsengine -lqmdnsengine -L../libs/qtwebsockets -lqtwebsocket
 
 SOURCES += \
     api/albuminfo.cpp \
+    api/albums.cpp \
     api/artistinfo.cpp \
     api/feed.cpp \
     api/feedbacksender.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     alice/stationcontroller.h \
     alice/stationdetector.h \
     api/albuminfo.h \
+    api/albums.h \
     api/artistinfo.h \
     api/feed.h \
     api/feedbacksender.h \

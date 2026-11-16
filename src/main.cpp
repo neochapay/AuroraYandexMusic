@@ -22,6 +22,7 @@
 #endif
 
 #include "api/albuminfo.h"
+#include "api/albums.h"
 #include "api/artistinfo.h"
 #include "api/feed.h"
 #include "api/feedbacksender.h"
@@ -103,6 +104,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
     qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
+    qmlRegisterType<Albums>("ru.neochapay.ourmusic", 1, 0, "Albums");
     qmlRegisterType<StantionDetector>("ru.neochapay.ourmusic", 1, 0, "StantionDetector");
     qmlRegisterType<StationController>("ru.neochapay.ourmusic", 1, 0, "StationController");
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));
