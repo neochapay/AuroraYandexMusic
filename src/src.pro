@@ -9,17 +9,21 @@ LIBS += -L../libs/qmdnsengine -lqmdnsengine -L../libs/qtwebsockets -lqtwebsocket
 
 SOURCES += \
     api/albuminfo.cpp \
+    api/albums.cpp \
     api/artistinfo.cpp \
+    api/booksandpodcasts.cpp \
     api/feed.cpp \
     api/feedbacksender.cpp \
     api/landing3.cpp \
     api/musicfetcher.cpp \
     api/oauth.cpp \
     api/playlists.cpp \
+    api/queues.cpp \
     api/request.cpp \
     api/rotor.cpp \
     api/search.cpp \
     api/settings.cpp \
+    api/tags.cpp \
     api/tracks.cpp \
     api/user.cpp \
     alice/stationcontroller.cpp \
@@ -37,17 +41,21 @@ HEADERS += \
     alice/stationcontroller.h \
     alice/stationdetector.h \
     api/albuminfo.h \
+    api/albums.h \
     api/artistinfo.h \
+    api/booksandpodcasts.h \
     api/feed.h \
     api/feedbacksender.h \
     api/landing3.h \
     api/musicfetcher.h \
     api/oauth.h \
     api/playlists.h \
+    api/queues.h \
     api/request.h \
     api/rotor.h \
     api/search.h \
     api/settings.h \
+    api/tags.h \
     api/tracks.h \
     api/user.h \
     alice/stantiondetector.h \

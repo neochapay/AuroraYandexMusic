@@ -20,8 +20,12 @@
 #ifndef PLAYLISTS_H
 #define PLAYLISTS_H
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonValue>
 #include <QObject>
+#include <QStringList>
+#include <QVariantList>
 
 #include "../types/playlist.h"
 
@@ -32,16 +36,29 @@ class Playlists : public QObject {
 public:
     explicit Playlists(QObject* parent = nullptr);
 
+    // User playlists
     Q_INVOKABLE void getUserLists();
     Q_INVOKABLE void getUserList(int kind);
     Q_INVOKABLE void getUserLists(QList<int> kinds);
-    Q_INVOKABLE void create(QString title, QString visibility);
-    Q_INVOKABLE void rename(int kind, QString value);
+    Q_INVOKABLE void getPlaylistsByIds(const QStringList &playlistIds); // "uid:kind" pairs, POST /playlists/list
+
+    // Playlist management
+    Q_INVOKABLE void create(const QString &title, const QString &visibility = QStringLiteral("public"));
+    Q_INVOKABLE void rename(int kind, const QString &value);
     Q_INVOKABLE void deleteList(int kind);
-    Q_INVOKABLE void change(int kind, QList<int> addedTracks = QList<int>(), QList<int> deletedTraks = QList<int>());
+
+    // Track changes (change-relative)
+    Q_INVOKABLE void changeTracks(int kind, int revision, const QJsonObject &diff);
+    Q_INVOKABLE void addTracks(int kind, int revision, const QVariantList &tracks, int at = 0);      // tracks: [{id, albumId}, ...] or ["id:albumId"]
+    Q_INVOKABLE void removeTracks(int kind, int revision, const QVariantList &tracks, int from = 0, int to = -1);
+    Q_INVOKABLE void change(int kind, QList<int> addedTracks = QList<int>(), QList<int> deletedTraks = QList<int>()); // legacy/limited
+
     Q_INVOKABLE void recommindations(int kind);
-    //Необходимо передать "public" или "private" в качестве значения
-    Q_INVOKABLE void changeVisiblity(int kind, QString visiblity);
+    Q_INVOKABLE void recommendations(int kind);
+
+    // Visibility
+    Q_INVOKABLE void changeVisiblity(int kind, QString visiblity); // legacy typo name
+    Q_INVOKABLE void changeVisibility(int kind, const QString &visibility);
 
     int userID() const;
     void setUserID(int newUserID);
@@ -49,11 +66,21 @@ public:
 signals:
     void userIDChanged();
     void playlistChanged(Playlist* playlist);
-    void userPlaylistsReady();
+    void playlistsReady(const QList<Playlist*> &playlists);
+    void userPlaylistsReady(); // compatibility
+
+    void playlistCreated(Playlist* playlist);
+    void playlistRenamed(Playlist* playlist);
+    void playlistDeleted(int kind, bool success);
+    void playlistTracksChanged(Playlist* playlist);
+    void recommendationsReady(int kind, const QJsonObject &result);
+    void visibilityChanged(Playlist* playlist);
+    void error(const QString &message);
 
 private slots:
     void getUserListRequestHandler(QJsonValue value);
     void getUserListsRequestHandler(QJsonValue value);
+    void getPlaylistsByIdsRequestHandler(QJsonValue value);
     void createRequestHandler(QJsonValue value);
     void renameRequestHandler(QJsonValue value);
     void deleteListRequestHandler(QJsonValue value);
@@ -62,7 +89,12 @@ private slots:
     void changeVisiblityRequestHandler(QJsonValue value);
 
 private:
+    QJsonArray tracksToJsonArray(const QVariantList &tracks) const;
+    void emitPlaylistOrList(QJsonValue value, bool asListSignal);
+
     int m_userID;
+    int m_currentKind = 0;
 };
 
 #endif // PLAYLISTS_H
+

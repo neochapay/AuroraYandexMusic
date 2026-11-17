@@ -21,6 +21,11 @@
 #define TRACKS_H
 
 #include <QObject>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QStringList>
+#include <QVariant>
+
 #include "../types/track.h"
 
 class Tracks : public QObject
@@ -28,13 +33,36 @@ class Tracks : public QObject
     Q_OBJECT
 public:
     explicit Tracks(QObject *parent = nullptr);
-    void getTracksInfo(QList<QString> ids); //TRACK_ID:ALBUM_ID
+
+    // Batch tracks info (POST /tracks/)
+    Q_INVOKABLE void getTracksInfo(const QStringList &ids, bool withPositions = false); // TRACK_ID or TRACK_ID:ALBUM_ID
+    void getTracksInfo(QList<QString> ids); // compatibility overload
+
+    // Single track endpoints
+    Q_INVOKABLE void getDownloadInfo(const QString &trackId);
+    Q_INVOKABLE void getSupplement(const QString &trackId);
+    Q_INVOKABLE void getSimilarTracks(const QString &trackId);
+    Q_INVOKABLE void getLyrics(const QString &trackId, const QString &format = QString(), const QString &timeStamp = QString(), const QString &sign = QString());
 
 signals:
     void tracksInfoReady(QList<Track*> tracks);
+    void downloadInfoReady(const QString &trackId, const QJsonArray &downloadInfo);
+    void supplementReady(const QString &trackId, const QJsonObject &supplement);
+    void similarTracksReady(const QString &trackId, const QList<Track*> &similarTracks, const QJsonObject &rawResult);
+    void lyricsReady(const QString &trackId, const QJsonObject &lyrics);
+
+    void error(const QString &message);
+
+private slots:
+    void getTracksInfoHandler(QJsonValue value);
+    void getDownloadInfoHandler(QJsonValue value);
+    void getSupplementHandler(QJsonValue value);
+    void getSimilarTracksHandler(QJsonValue value);
+    void getLyricsHandler(QJsonValue value);
 
 private:
-    void getTracksInfoHandler(QJsonValue value);
+    QString m_trackId;
 };
 
 #endif // TRACKS_H
+

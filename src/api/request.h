@@ -36,6 +36,7 @@ class Request : public QObject {
 public:
     explicit Request(QString point, QObject* parent = nullptr);
     void setDebug(bool debug);
+    void setRawHeader(const QByteArray &headerName, const QByteArray &value);
     void get(const QUrlQuery& query = QUrlQuery());
     void post(const QString& query = "");
 

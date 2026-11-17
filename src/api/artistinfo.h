@@ -20,12 +20,16 @@
 #ifndef ARTISTINFO_H
 #define ARTISTINFO_H
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonValue>
 #include <QObject>
+#include <QStringList>
 
-#include "../types/artist.h"
 #include "../types/album.h"
+#include "../types/artist.h"
 #include "../types/playlist.h"
+#include "../types/track.h"
 #include "../types/ArtistInfoData.h"
 
 class ArtistInfo : public QObject {
@@ -37,8 +41,8 @@ public:
 
     Q_INVOKABLE void getTrackIdsByRating();
     Q_INVOKABLE void getBriefInfo();
-    Q_INVOKABLE void getTracks();
-    Q_INVOKABLE void getDirectAlbums(QString sortBy = "rating"); // rating || year
+    Q_INVOKABLE void getTracks(int page = 0, int pageSize = 20);
+    Q_INVOKABLE void getDirectAlbums(const QString &sortBy = QStringLiteral("rating"), int page = 0, int pageSize = 20); // rating || year
 
     int artistId() const;
     void setArtistId(int newArtistId);
@@ -46,6 +50,11 @@ public:
 signals:
     void artistIdChanged();
     void getBriefInfoArtistInfoReady(ArtistInfoData* artistData);
+    void briefInfoReady(ArtistInfoData* artistData, const QJsonObject &rawResult);
+    void trackIdsByRatingReady(const QStringList &trackIds, const QJsonObject &rawResult);
+    void tracksReady(const QList<Track*> &tracks, const QJsonObject &rawResult);
+    void directAlbumsReady(const QList<Album*> &albums, const QJsonObject &rawResult);
+    void error(const QString &message);
 
 private slots:
     void getTrackIdsByRatingRequestHandler(QJsonValue value);
@@ -54,7 +63,8 @@ private slots:
     void getDirectAlbumsRequestHandler(QJsonValue value);
 
 private:
-    int m_artistId;
+    int m_artistId = 0;
 };
 
 #endif // ARTISTINFO_H
+

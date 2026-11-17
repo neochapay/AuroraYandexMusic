@@ -22,14 +22,18 @@
 #endif
 
 #include "api/albuminfo.h"
+#include "api/albums.h"
 #include "api/artistinfo.h"
+#include "api/booksandpodcasts.h"
 #include "api/feed.h"
 #include "api/feedbacksender.h"
 #include "api/landing3.h"
 #include "api/oauth.h"
 #include "api/playlists.h"
+#include "api/queues.h"
 #include "api/rotor.h"
 #include "api/search.h"
+#include "api/tags.h"
 #include "api/user.h"
 
 #include "types/cover.h"
@@ -98,11 +102,15 @@ int main(int argc, char* argv[])
     qmlRegisterType<Feed>("ru.neochapay.ourmusic", 1, 0, "Feed");
     qmlRegisterType<FeedbackSender>("ru.neochapay.ourmusic", 1, 0, "FeedbackSender");
     qmlRegisterType<Playlists>("ru.neochapay.ourmusic", 1, 0, "Playlists");
+    qmlRegisterType<Queues>("ru.neochapay.ourmusic", 1, 0, "Queues");
     qmlRegisterType<Rotor>("ru.neochapay.ourmusic", 1, 0, "Rotor");
     qmlRegisterType<Landing3>("ru.neochapay.ourmusic", 1, 0, "Landing");
     qmlRegisterType<Search>("ru.neochapay.ourmusic", 1, 0, "Search");
+    qmlRegisterType<Tags>("ru.neochapay.ourmusic", 1, 0, "Tags");
     qmlRegisterType<ArtistInfo>("ru.neochapay.ourmusic", 1, 0, "ArtistInfo");
+    qmlRegisterType<BooksAndPodcasts>("ru.neochapay.ourmusic", 1, 0, "BooksAndPodcasts");
     qmlRegisterType<AlbumInfo>("ru.neochapay.ourmusic", 1, 0, "AlbumInfo");
+    qmlRegisterType<Albums>("ru.neochapay.ourmusic", 1, 0, "Albums");
     qmlRegisterType<StantionDetector>("ru.neochapay.ourmusic", 1, 0, "StantionDetector");
     qmlRegisterType<StationController>("ru.neochapay.ourmusic", 1, 0, "StationController");
     view->setSource(SailfishApp::pathTo("qml/OurMusic.qml"));

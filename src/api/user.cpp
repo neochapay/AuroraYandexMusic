@@ -27,10 +27,12 @@
 #include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QUrlQuery>
 
 User::User(QObject* parent)
     : QObject(parent)
     , m_userID(-1)
+    , m_likeActionID(0)
     , m_displayName("Loading..")
 {
 }
@@ -39,7 +41,6 @@ void User::getAccountStatus()
 {
     Request* getAccoutStatusApiRequest = new Request("/account/status");
     connect(getAccoutStatusApiRequest, &Request::dataReady, this, &User::getAccountStatusHandler);
-
     getAccoutStatusApiRequest->get();
 }
 
@@ -47,73 +48,168 @@ void User::getFeed()
 {
     Request* getFeedApiRequest = new Request("/feed");
     connect(getFeedApiRequest, &Request::dataReady, this, &User::getFeedHandler);
-
     getFeedApiRequest->get();
 }
 
-void User::like(QString type, int id, bool remove)
+void User::sendTrackAction(const QString &path, const QStringList &trackIds, const char *slot, const QString &actionName, int actionId)
 {
-    if (type != "track" && type != "artist" && type != "playlist") {
+    if (m_userID <= 0) {
+        qWarning() << "Wrong user id";
+        return;
+    }
+    if (trackIds.isEmpty()) {
+        qWarning() << "Empty track ids";
+        return;
+    }
+
+    QUrlQuery query;
+    for (const QString &id : trackIds) {
+        query.addQueryItem(QStringLiteral("track-ids"), id);
+    }
+
+    m_likeAction = actionName;
+    m_likeActionID = actionId;
+
+    Request* request = new Request(path);
+    connect(request, &Request::dataReady, this, slot);
+    request->post(query.toString(QUrl::FullyEncoded));
+}
+
+void User::like(const QString &type, int id, bool remove)
+{
+    if (type != "track" && type != "artist" && type != "playlist" && type != "album") {
         qWarning() << "Wrong type" << type;
         return;
     }
 
-    if (m_userID == 0) {
+    if (m_userID <= 0) {
         qWarning() << "Wrong user id";
         return;
     }
 
-    if (id == 0) {
+    if (id <= 0) {
         qWarning() << "Wrong item id";
         return;
     }
 
-    m_likeAction = "add-multiple";
-    if (remove) {
-        m_likeAction = "remove";
+    // Use dedicated track endpoints per spec
+    if (type == "track") {
+        const QStringList ids{QString::number(id)};
+        if (remove) {
+            removeLikedTracks(ids);
+        } else {
+            likeTracks(ids);
+        }
+        return;
     }
 
+    m_likeAction = remove ? QStringLiteral("remove") : QStringLiteral("add-multiple");
     m_likeActionID = id;
 
     QUrlQuery query;
     query.addQueryItem(type + "-ids", QString::number(id));
 
     Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/" + type + "s/" + m_likeAction);
-    likeRequest->setDebug(true);
     connect(likeRequest, &Request::dataReady, this, &User::likeRequestHandler);
-
-    likeRequest->post(query.toString());
+    likeRequest->post(query.toString(QUrl::FullyEncoded));
 }
 
-void User::dislike(QString type, int id)
+void User::dislike(const QString &type, int id)
 {
+    // Backward-compatible: in existing UI "dislike" is used as unlike/remove-like for tracks.
+    if (type == "track") {
+        removeLikedTracks({QString::number(id)});
+        return;
+    }
     like(type, id, true);
 }
 
 void User::loadLikedTracks()
 {
-    if (m_userID == 0) {
+    if (m_userID <= 0) {
         qWarning() << "user ID is empty";
         return;
     }
-    Request* likeRequest = new Request("/users/" + QString::number(m_userID) + "/likes/tracks/");
-    connect(likeRequest, &Request::dataReady, this, &User::likedTracksHandler);
-    likeRequest->get();
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/likes/tracks");
+    connect(request, &Request::dataReady, this, &User::likedTracksHandler);
+    request->get();
 }
 
-bool User::isTrackLiked(Track* track)
+void User::likeTracks(const QStringList &trackIds)
 {
-    if (track->trackId() == 0) {
+    if (m_userID <= 0) {
+        return;
+    }
+    const int actionId = trackIds.value(0).toInt();
+    sendTrackAction("/users/" + QString::number(m_userID) + "/likes/tracks/add-multiple",
+                    trackIds, SLOT(likeRequestHandler(QJsonValue)), QStringLiteral("add-multiple"), actionId);
+}
+
+void User::removeLikedTracks(const QStringList &trackIds)
+{
+    if (m_userID <= 0) {
+        return;
+    }
+    const int actionId = trackIds.value(0).toInt();
+    sendTrackAction("/users/" + QString::number(m_userID) + "/likes/tracks/remove",
+                    trackIds, SLOT(likeRequestHandler(QJsonValue)), QStringLiteral("remove"), actionId);
+}
+
+bool User::isTrackLiked(int trackId) const
+{
+    return m_likedTrackIds.contains(trackId);
+}
+
+bool User::isTrackLiked(Track* track) const
+{
+    if (!track || track->trackId() == 0) {
         return false;
     }
+    return m_likedTrackIds.contains(track->trackId());
+}
 
-    foreach (QObject* trackFromList, m_likedTrackList) {
-        if (reinterpret_cast<Track*>(trackFromList)->trackId() == track->trackId()) {
-            return true;
-        }
+void User::loadDislikedTracks()
+{
+    if (m_userID <= 0) {
+        qWarning() << "user ID is empty";
+        return;
     }
+    Request* request = new Request("/users/" + QString::number(m_userID) + "/dislikes/tracks");
+    connect(request, &Request::dataReady, this, &User::dislikedTracksHandler);
+    request->get();
+}
 
-    return false;
+void User::dislikeTracks(const QStringList &trackIds)
+{
+    if (m_userID <= 0) {
+        return;
+    }
+    const int actionId = trackIds.value(0).toInt();
+    sendTrackAction("/users/" + QString::number(m_userID) + "/dislikes/tracks/add-multiple",
+                    trackIds, SLOT(dislikeRequestHandler(QJsonValue)), QStringLiteral("dislike-add"), actionId);
+}
+
+void User::removeDislikedTracks(const QStringList &trackIds)
+{
+    if (m_userID <= 0) {
+        return;
+    }
+    const int actionId = trackIds.value(0).toInt();
+    sendTrackAction("/users/" + QString::number(m_userID) + "/dislikes/tracks/remove",
+                    trackIds, SLOT(dislikeRequestHandler(QJsonValue)), QStringLiteral("dislike-remove"), actionId);
+}
+
+bool User::isTrackDisliked(int trackId) const
+{
+    return m_dislikedTrackIds.contains(trackId);
+}
+
+bool User::isTrackDisliked(Track* track) const
+{
+    if (!track || track->trackId() == 0) {
+        return false;
+    }
+    return m_dislikedTrackIds.contains(track->trackId());
 }
 
 void User::getAccountStatusHandler(QJsonValue value)
@@ -128,8 +224,9 @@ void User::getAccountStatusHandler(QJsonValue value)
     int userId = accountObject.value("uid").toInt();
 
     if (userId == 0) {
-        qWarning() << "uers ID is null";
+        qWarning() << "user ID is null";
         emit wrongUser();
+        return;
     }
 
     if (userId != m_userID) {
@@ -140,58 +237,123 @@ void User::getAccountStatusHandler(QJsonValue value)
 
 void User::getFeedHandler(QJsonValue value)
 {
+    Q_UNUSED(value)
 }
 
 void User::likeRequestHandler(QJsonValue value)
 {
-    if (value.toObject().value("revision").toInt() > 0) {
-        emit likeActionFinished(m_likeActionID, m_likeAction);
-    }
+    Q_UNUSED(value)
+    emit likeActionFinished(m_likeActionID, m_likeAction);
+    loadLikedTracks();
 }
 
-void User::likedTracksHandler(QJsonValue value)
+void User::dislikeRequestHandler(QJsonValue value)
 {
-    m_likedTrackList.clear();
-    QStringList likedTracksIDS;
-    QJsonArray likedTracksArray = value.toObject().value("library").toObject().value("tracks").toArray();
+    Q_UNUSED(value)
+    emit likeActionFinished(m_likeActionID, m_likeAction);
+    loadDislikedTracks();
+}
 
-    for (const QJsonValue& v : likedTracksArray) {
+void User::requestTrackIds(const QString &pathLabel, const QJsonValue &value, bool likedList)
+{
+    Q_UNUSED(pathLabel)
+    QList<QObject*> &targetList = likedList ? m_likedTrackList : m_dislikedTrackList;
+    QSet<int> &targetIds = likedList ? m_likedTrackIds : m_dislikedTrackIds;
+
+    qDeleteAll(targetList);
+    targetList.clear();
+    targetIds.clear();
+
+    QStringList ids;
+    QJsonArray tracksArray;
+    const QJsonObject obj = value.toObject();
+
+    // Likes endpoint: result.library.tracks ; Dislikes endpoint: result.tracks (TracksList) in many implementations
+    if (obj.contains("library")) {
+        tracksArray = obj.value("library").toObject().value("tracks").toArray();
+    } else if (obj.contains("tracks")) {
+        tracksArray = obj.value("tracks").toArray();
+    } else if (value.isArray()) {
+        tracksArray = value.toArray();
+    }
+
+    for (const QJsonValue& v : tracksArray) {
         QJsonObject trackObject = v.toObject();
         QString trackID = trackObject.value("id").toString();
+        if (trackID.isEmpty()) {
+            trackID = QString::number(trackObject.value("id").toInt());
+        }
         QString tAlbum = trackObject.value("albumId").toString();
+        if (tAlbum.isEmpty()) {
+            // albumId may be inside albums[] or track might be "id:albumId" not present; try to keep id only for fetch fallback
+        }
 
-        if(!trackID.isEmpty() && !tAlbum.isEmpty()) {
-            likedTracksIDS.push_back(trackID+":"+tAlbum);
+        if (!trackID.isEmpty() && trackID != "0") {
+            if (!tAlbum.isEmpty()) {
+                ids.push_back(trackID + ":" + tAlbum);
+            } else {
+                ids.push_back(trackID);
+            }
+            targetIds.insert(trackID.toInt());
         }
     }
 
+    if (ids.isEmpty()) {
+        if (likedList) {
+            emit likedTracksChanged();
+        } else {
+            emit dislikedTracksChanged();
+        }
+        return;
+    }
+
     Tracks* tracks = new Tracks();
-    tracks->getTracksInfo(likedTracksIDS);
-    connect(tracks, &Tracks::tracksInfoReady, [=](const QList<Track*> likedTracks) {
+    tracks->getTracksInfo(ids);
+    connect(tracks, &Tracks::tracksInfoReady, [=](const QList<Track*> resolvedTracks) mutable {
+        QList<QObject*> &list = likedList ? m_likedTrackList : m_dislikedTrackList;
+        QSet<int> &idSet = likedList ? m_likedTrackIds : m_dislikedTrackIds;
+        qDeleteAll(list);
+        list.clear();
+        idSet.clear();
+
         QHash<int, Track*> tracksById;
-        for (Track* track : likedTracks) {
+        for (Track* track : resolvedTracks) {
             if (track != nullptr) {
                 tracksById.insert(track->trackId(), track);
             }
         }
 
-        for (const QString &trackIdPair : likedTracksIDS) {
+        for (const QString &trackIdPair : ids) {
             bool ok = false;
             int trackId = trackIdPair.section(':', 0, 0).toInt(&ok);
             if (!ok) {
                 continue;
             }
-
             Track* track = tracksById.value(trackId, nullptr);
             if (track != nullptr) {
-                m_likedTrackList.push_back(track);
+                list.push_back(track);
+                idSet.insert(track->trackId());
                 tracksById.remove(trackId);
             }
         }
 
-        emit likedTracksChanged();
+        if (likedList) {
+            emit likedTracksChanged();
+        } else {
+            emit dislikedTracksChanged();
+        }
         tracks->deleteLater();
     });
+}
+
+void User::likedTracksHandler(QJsonValue value)
+{
+    requestTrackIds(QStringLiteral("likes"), value, true);
+}
+
+void User::dislikedTracksHandler(QJsonValue value)
+{
+    requestTrackIds(QStringLiteral("dislikes"), value, false);
 }
 
 int User::userID() const
@@ -203,3 +365,4 @@ const QString& User::displayName() const
 {
     return m_displayName;
 }
+
